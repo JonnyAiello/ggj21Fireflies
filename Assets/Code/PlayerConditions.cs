@@ -4,6 +4,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(Player))]
 [RequireComponent(typeof(PlayerInput))]
+[RequireComponent(typeof(Animator))]
 public class PlayerConditions : MonoBehaviour {
 
 	// Player Flags
@@ -34,7 +35,8 @@ public class PlayerConditions : MonoBehaviour {
 
 	// Reference Variables
 	private Player p; 
-	private PlayerInput pInput; 
+	private PlayerInput pInput;
+    private Animator anim;  
 	public Transform groundCheck; 
 	public Transform ceilingCheck;
 	public Transform rightCheck;
@@ -65,6 +67,7 @@ public class PlayerConditions : MonoBehaviour {
 	private void Awake(){
 		p = GetComponent<Player>(); 
 		pInput = GetComponent<PlayerInput>();
+        anim = GetComponent<Animator>(); 
 		jumpPhase = Jump.Landed_ButtonReleased; 
 	}
 
@@ -79,6 +82,27 @@ public class PlayerConditions : MonoBehaviour {
 		}
 
 	}
+
+    private void Update(){
+
+        // Update anim states
+        /*
+        if( jumpPhase == Jump.WaitForLiftoff
+            || jumpPhase == Jump.Jumping_EscapeVelocity
+            || jumpPhase == Jump.Jumping_ButtonHeld
+            || jumpPhase == Jump.Jumping_ButtonReleased ){
+
+            anim.SetBool("Jumped", true);
+            anim.SetBool("Landed", false);  
+        }else{ anim.SetBool("Jumped", false); }
+
+        if( grounded ){
+            anim.SetBool("Jumped", false); 
+            anim.SetBool("Landed", true); 
+        }
+        */
+    }
+
 
 	// Update Flags - called during Player.FixedUpdate()
     public void UpdateFlags(){
@@ -132,6 +156,8 @@ public class PlayerConditions : MonoBehaviour {
     		case Jump.Landed_ButtonReleased:
     			if( !grounded ){ jumpPhase = Jump.Freefall; }
     			else if( pInput.jumpButton ){
+                    // anim.SetBool("Jumped", true); 
+                    // anim.SetBool("Landed", false); 
     				jumpPhase = Jump.WaitForLiftoff;
     			}
     			/*Debug.Log("switch: jumpPhase = " + Jump.Landed_ButtonReleased);*/
@@ -158,7 +184,11 @@ public class PlayerConditions : MonoBehaviour {
     			break;
 
     		case Jump.Jumping_ButtonHeld:
-    			if( grounded ){ jumpPhase = Jump.Landed_ButtonHeld; }
+    			if( grounded ){ 
+                    // anim.SetBool("Jumped", true); 
+                    // anim.SetBool("Landed", false);
+                    jumpPhase = Jump.Landed_ButtonHeld; 
+                }
     			else if( !pInput.jumpButton ){
     				jumpPhase = Jump.Jumping_ButtonReleased;
     			}
@@ -171,6 +201,8 @@ public class PlayerConditions : MonoBehaviour {
     				jumpPhase = Jump.WaitForLiftoff; 
     			
     			}else if( grounded ){
+                    // anim.SetBool("Jumped", false); 
+                    // anim.SetBool("Landed", true);
     				if( pInput.jumpButton ){jumpPhase = Jump.Landed_ButtonHeld;}
     				else{ jumpPhase = Jump.Landed_ButtonReleased; }
     			}
@@ -190,6 +222,8 @@ public class PlayerConditions : MonoBehaviour {
     				jumpPhase = Jump.WaitForLiftoff; 
     			}
     			if( grounded ){
+                    // anim.SetBool("Jumped", false); 
+                    // anim.SetBool("Landed", true);
     				if( pInput.jumpButton ){jumpPhase = Jump.Landed_ButtonHeld;}
     				else{jumpPhase = Jump.Landed_ButtonReleased;}
     			}
