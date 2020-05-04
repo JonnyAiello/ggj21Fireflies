@@ -9,14 +9,21 @@ public class Player : MonoBehaviour {
 
 	// Variables
 
+    // Reference Variables
+    private PCState pcState; 
+    private PCInput pcInput; 
 
-	// Reference Variables
+	// Reference Variables OLD
 	private PlayerMove pMove;
 	private PlayerConditions pConditions; 
 	private PlayerInput pInput; 
 
 
 	private void Awake(){
+        pcState = GetComponent<PCState>();
+        pcInput = GetComponent<PCInput>();
+
+        // OLD
 		pMove = GetComponent<PlayerMove>();
 		pConditions = GetComponent<PlayerConditions>(); 
 		pInput = GetComponent<PlayerInput>();
@@ -29,17 +36,27 @@ public class Player : MonoBehaviour {
     }
 
     void Update(){
-        pInput.InputUpdate();
+        
+        pcInput.InputUpdate(); 
+        pcState.StateUpdate();    
+
+        // OLD LOGIC
+        // pInput.InputUpdate();
     	
 
     }
 
     private void FixedUpdate(){
+
+        pcInput.InputFixedUpdate(); 
+        pcState.StateFixedUpdate(); 
+
+        // OLD LOGIC
     	// get input
     	pInput.InputFixedUpdate(); 
         pConditions.UpdateFlags();
     	// process move
-    	pMove.Move();
+    	// pMove.Move();
 
     }
 }

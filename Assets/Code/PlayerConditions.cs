@@ -24,7 +24,7 @@ public class PlayerConditions : MonoBehaviour {
 	[SerializeField] private LayerMask whatIsSolid;
 	[SerializeField] private bool gizmosOn; 
 	const float groundedRadius = .2f;
-	const float contactRadius = .15f;
+	const float contactRadius = .1f;
 	private float escapeTimer = 0f; 
 	private float escapeDelay = 0.1f; 
     private float dashCooldown = 0; 
@@ -86,27 +86,64 @@ public class PlayerConditions : MonoBehaviour {
     private void Update(){
 
         // Update anim states
-        /*
         if( jumpPhase == Jump.WaitForLiftoff
             || jumpPhase == Jump.Jumping_EscapeVelocity
             || jumpPhase == Jump.Jumping_ButtonHeld
             || jumpPhase == Jump.Jumping_ButtonReleased ){
 
             anim.SetBool("Jumped", true);
-            anim.SetBool("Landed", false);  
+            anim.SetBool("Landed", false); 
+
+            if( walledLeft || walledRight ){ 
+                anim.SetBool("Walled", true); 
+            }else{ anim.SetBool("Walled", false); }
+
         }else{ anim.SetBool("Jumped", false); }
 
-        if( grounded ){
+        if( grounded && anim.GetBool("Jumped") ){
+            Debug.Log("Triggering GROUNDED" + null);
             anim.SetBool("Jumped", false); 
             anim.SetBool("Landed", true); 
         }
-        */
+
     }
 
+    void OnCollisionEnter2D( Collision2D c ){
+        Debug.Log("COLLISION ENTERED" + null);
+        if( c.gameObject.layer == LayerMask.NameToLayer("Solids") ){
+            // grounded flag
+            // grounded = false; 
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(
+                groundCheck.position, groundedRadius, whatIsSolid);
+            for (int i = 0; i < colliders.Length; i++){
+                if (colliders[i].gameObject != gameObject){ 
+                    grounded = true;  
+                    Debug.Log("Grounded" + null);
+                }
+            }
+        }
+    }
+
+    void OnCollisionExit2D( Collision2D c ){
+        Debug.Log("COLLISION EXITED" + null);
+        if( c.gameObject.layer == LayerMask.NameToLayer("Solids") ){
+            // grounded flag
+            grounded = false;
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(
+                groundCheck.position, groundedRadius, whatIsSolid); 
+            for (int i = 0; i < colliders.Length; i++){
+                if (colliders[i].gameObject != gameObject){ 
+                    grounded = true;  
+                }
+            }
+            if( !grounded ){Debug.Log("NOT Grounded" + null);}
+        }
+    }
 
 	// Update Flags - called during Player.FixedUpdate()
     public void UpdateFlags(){
 
+        /*
     	// grounded flag
         grounded = false; 
         Collider2D[] colliders = Physics2D.OverlapCircleAll(
@@ -116,6 +153,7 @@ public class PlayerConditions : MonoBehaviour {
         		grounded = true;  
         	}
 		}
+        */
 
 		// set move states
 		SetJumpPhase();
@@ -124,7 +162,7 @@ public class PlayerConditions : MonoBehaviour {
 		// walled flags
 		walledRight = false;
 		walledLeft = false; 
-		colliders = Physics2D.OverlapCircleAll(
+		Collider2D[] colliders = Physics2D.OverlapCircleAll(
         	rightCheck.position, contactRadius, whatIsSolid);
         for (int i = 0; i < colliders.Length; i++){
         	if (colliders[i].gameObject != gameObject){ walledRight = true; }
