@@ -12,6 +12,7 @@ public class Player : MonoBehaviour {
     // Reference Variables
     private PCState pcState; 
     private PCInput pcInput; 
+    private PCMove pcMove; 
 
 	// Reference Variables OLD
 	private PlayerMove pMove;
@@ -22,6 +23,7 @@ public class Player : MonoBehaviour {
 	private void Awake(){
         pcState = GetComponent<PCState>();
         pcInput = GetComponent<PCInput>();
+        pcMove = GetComponent<PCMove>(); 
 
         // OLD
 		pMove = GetComponent<PlayerMove>();
@@ -50,6 +52,7 @@ public class Player : MonoBehaviour {
 
         pcInput.InputFixedUpdate(); 
         pcState.StateFixedUpdate(); 
+        pcMove.MoveFixedUpdate(); 
 
         // OLD LOGIC
     	// get input

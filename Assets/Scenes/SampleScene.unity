@@ -180,6 +180,7 @@ GameObject:
   - component: {fileID: 102709973}
   - component: {fileID: 102709972}
   - component: {fileID: 102709974}
+  - component: {fileID: 102709975}
   m_Layer: 0
   m_Name: SuperBox
   m_TagString: Player
@@ -411,7 +412,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42e3713f3a4ae0f379c1ff44d382e4d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHSpeed: 6
   accelSpeed: 2
   autoBrakes: 1
 --- !u!114 &102709973
@@ -429,6 +429,7 @@ MonoBehaviour:
   moving: 0
   jumping: 0
   dashing: 0
+  rbVelocity: {x: 0, y: 0}
   maxHSpeed: 6
   maxVSpeed: 15
 --- !u!114 &102709974
@@ -443,6 +444,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 570f4a8797543a48b80433b9dcaaafff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  h: 0
+  jumpButton: 0
+  dashButton: 0
+--- !u!114 &102709975
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 102709960}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3ac44b2d317345639b75927e6430987, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  jumpForce: 13
+  jumpReleaseLimit: 0.5
+  jState: 0
 --- !u!1 &140409349
 GameObject:
   m_ObjectHideFlags: 0

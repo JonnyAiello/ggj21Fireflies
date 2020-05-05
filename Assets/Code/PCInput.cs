@@ -5,9 +5,9 @@ using UnityEngine;
 public class PCInput : MonoBehaviour{
 
 	// Variables
-	private float h; 
-	private bool jumpButton; 
-    private bool dashButton; 
+	[SerializeField] private float h; 
+	[SerializeField] private bool jumpButton; 
+    [SerializeField] private bool dashButton; 
 
     // Properties
     public float H { get{return h;} }
@@ -29,5 +29,9 @@ public class PCInput : MonoBehaviour{
     public void InputFixedUpdate(){
     	// h = Input.GetAxis("Horizontal");
     	// jumpButton = false; 
+    }
+
+    public void ResetInputJump(){
+        jumpButton = false; 
     }
 }
