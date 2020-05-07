@@ -14,9 +14,10 @@ public class PCMove : MonoBehaviour{
 	// Variables
 	[SerializeField] private float maxHSpeed = 6f;
     [SerializeField] private float maxVSpeed = 15f;
-    [SerializeField] private float inputThreshold = 0.2f;
+    /*[SerializeField] private float inputThreshold = 0.2f;
     [SerializeField] private float inputReleaseThreshold = 0.6f; 
     	// the minimum axis input to recognize from joystick/keyboard
+*/
 
 	// Reference Variables
 	private Move_Run run; 	
@@ -40,8 +41,10 @@ public class PCMove : MonoBehaviour{
 	public bool WallSliding { get{return wallSliding;} }
 	public float MaxHSpeed { get{return maxHSpeed;} }
 	public float MaxVSpeed { get{return maxVSpeed;} }
-	public float InputThresh { get{return inputThreshold;} }
-	public float InputReleaseThresh { get{return inputReleaseThreshold;} }
+/*	public float InputThresh { get{return inputThreshold;} }
+	public float InputReleaseThresh { get{return inputReleaseThreshold;} }*/
+	public float VelocityX { get{return rbVelocity.x;} }
+	public float VelocityY { get{return rbVelocity.y;} }
 
 
 	// [[ ----- MOVE FIXED UPDATE ----- ]]
@@ -91,9 +94,7 @@ public class PCMove : MonoBehaviour{
 		rbVelocity = rb.velocity;    
 
 		// reset inputs
-		if( pcInput.JumpButton && !Input.GetButton("Jump") ){
-            pcInput.ResetInputJump(); 
-        }
+		pcInput.ResetInputs();
 	}
 
 	// [[ ----- SET JUMPING ----- ]]

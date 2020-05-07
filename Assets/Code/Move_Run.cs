@@ -9,6 +9,7 @@ public class Move_Run : MonoBehaviour {
     [SerializeField] private float autoBrakes = 1f;
 	private float minH;
     private float maxH; 
+    private bool active; 
   
 	// Reference Variables
 	private PCInput pcInput; 
@@ -24,18 +25,22 @@ public class Move_Run : MonoBehaviour {
 
 
     public bool IsActive(){
-    	float h = pcInput.H; 
+    	if( pcInput.LeftButton || pcInput.RightButton ){ active = true; }
+        /*
+        float h = pcInput.H; 
     	if( Mathf.Abs(h) > pcMove.InputThresh ){
     		if( h > 0 && !pcState.WalledRight ){ return true; }
     		if( h < 0 && !pcState.WalledLeft ){ return true; }
     	}
-    	return false; 
+        */
+        else{ active = false; }
+    	return active; 
     }
 
 
     public Vector2 GetForces(){
     	float hForce = accelSpeed;
-        if( pcInput.H < 0 ){ hForce *= -1; }
+        if( pcInput.LeftButton ){ hForce *= -1; }
     	return new Vector2(hForce, 0); 
     }
 
@@ -49,16 +54,18 @@ public class Move_Run : MonoBehaviour {
         if( pcState.Walled ){
             if( pcState.WalledRight ){ maxH = 0; }
             if( pcState.WalledLeft ){ minH = 0; }
+        
         // horizontal auto-brakes
         }else{
             if( pcState.Grounded ){
-                if( pcInput.H > pcMove.InputReleaseThresh * -1 
-                    && pcInput.H < pcMove.InputReleaseThresh ){
+                if( !active 
+                    /*pcInput.H > pcMove.InputReleaseThresh * -1 
+                    && pcInput.H < pcMove.InputReleaseThresh*/ ){
                     
                     minH = autoBrakes * -1;
                     maxH = autoBrakes;
-                }else if( pcInput.H > 0 ){ minH = autoBrakes * -1; }
-                else if( pcInput.H < 0 ){ maxH = autoBrakes; }
+                }else if( pcInput.RightButton ){ minH = autoBrakes * -1; }
+                else if( pcInput.LeftButton ){ maxH = autoBrakes; }
             }
         }
 

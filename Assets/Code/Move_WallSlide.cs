@@ -20,10 +20,8 @@ public class Move_WallSlide : MonoBehaviour {
 	}
 
 	public bool IsActive(){
-		bool leftWallSlide = 
-			(pcState.WalledLeft && pcInput.H < pcMove.InputReleaseThresh * -1);
-		bool rightWallSlide = 
-			(pcState.WalledRight && pcInput.H > pcMove.InputReleaseThresh); 
+		bool leftWallSlide = (pcState.WalledLeft && pcInput.LeftButton);
+		bool rightWallSlide = (pcState.WalledRight && pcInput.RightButton); 
 		if( pcState.Airborn && (leftWallSlide || rightWallSlide) ){return true;}
 		return false; 
 	} 
