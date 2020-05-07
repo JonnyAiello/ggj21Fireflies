@@ -6,9 +6,11 @@ public class Move_Jump : MonoBehaviour {
 
 	// Variables
     [SerializeField] private float jumpForce = 13f;
+    [SerializeField] private float wallJumpForce = 16;
     [SerializeField] private float jumpReleaseLimit = 0.5f; // maximum upward speed once State button released
     [SerializeField] private State jState; 
     private float vForce; 
+    private float hForce; 
     private Vector2 vLimits; 
     private float escapeTimer = 0f; 
 	private float escapeDelay = 0.1f; 
@@ -26,6 +28,7 @@ public class Move_Jump : MonoBehaviour {
 		Jumping_EscapeVelocity, 
 		Jumping_ButtonHeld,
 		Jumping_ButtonReleased,
+        Jumping_WallJump,
 		Freefall
 	}
 
@@ -45,21 +48,20 @@ public class Move_Jump : MonoBehaviour {
     }
     public Vector2 GetForces(){
     	vForce = 0; 
+        hForce = 0; 
     	switch( jState ){
 
     		case State.Landed_ButtonReleased:
     			if( pcMove.Jumping ){ pcMove.SetJumping(false); }
     			if( !pcState.Grounded ){ jState = State.Freefall; }
     			else if( pcInput.JumpButton ){ GetForces( State.Jumping_Liftoff ); }
-    			/*Debug.Log("switch: jState = " + State.Landed_ButtonReleased);*/
     			break;
     		
-    		// apply State force
+    		// apply Jump force
 			case State.Jumping_Liftoff:
 				vForce = jumpForce; 
 				jState = State.Jumping_EscapeVelocity; 
 				if( !pcMove.Jumping ){ pcMove.SetJumping(true); }
-    			/*Debug.Log("switch: jState = " + State.Jumping_Liftoff);*/
     			break;
 
     		// creates timegap so we escape the ground check
@@ -70,41 +72,38 @@ public class Move_Jump : MonoBehaviour {
     				else{jState = State.Jumping_ButtonReleased;}
     				escapeTimer = 0; 
     			}
-    			/*Debug.Log("switch: jState = " + State.Jumping_EscapeVelocity);*/
     			break;
 
     		case State.Jumping_ButtonHeld:
     			if( pcState.Grounded ){ 
-                    // anim.SetBool("Jumped", true); 
-                    // anim.SetBool("Landed", false);
                     jState = State.Landed_ButtonHeld; 
-                }
-    			else if( !pcInput.JumpButton ){
+                }else if( !pcInput.JumpButton ){
     				jState = State.Jumping_ButtonReleased;
     			}
-    			/*Debug.Log("switch: jState = " + State.Jumping_ButtonHeld);*/
     			break;
     		
     		case State.Jumping_ButtonReleased:
-    			// wall State
-    			if( pcState.Walled && pcInput.JumpButton ){
-    				jState = State.Jumping_Liftoff; 
-    			
-    			}else if( pcState.Grounded ){
-                    // anim.SetBool("Jumped", false); 
-                    // anim.SetBool("Landed", true);
+    			if( pcState.Grounded ){
     				if( pcInput.JumpButton ){jState = State.Landed_ButtonHeld;}
     				else{ jState = State.Landed_ButtonReleased; }
-    			}
-    			/*Debug.Log("switch: jState = " + State.Jumping_ButtonReleased);*/
+    			}else if( pcState.Walled && pcInput.JumpButton ){
+                    GetForces(State.Jumping_WallJump); 
+                }
     			break;
+
+            case State.Jumping_WallJump:
+                // wall Jump
+                vForce = wallJumpForce;
+                if( pcState.WalledLeft ){ hForce += 200; }
+                else{ hForce += -200; }
+                jState = State.Jumping_ButtonHeld; 
+                break;
     		
     		// must release State before next State begins
     		case State.Landed_ButtonHeld:
     			if( pcMove.Jumping ){ pcMove.SetJumping(false); }
     			if( !pcState.Grounded ){ jState = State.Freefall; }
     			if( !pcInput.JumpButton ){jState = State.Landed_ButtonReleased;}
-    			/*Debug.Log("switch: jState = " + State.Landed_ButtonHeld);*/
     			break;
 
     		// if pc steps off or airborn not from jumping
@@ -113,12 +112,9 @@ public class Move_Jump : MonoBehaviour {
     				jState = State.Jumping_Liftoff; 
     			}
     			if( pcState.Grounded ){
-                    // anim.SetBool("Jumped", false); 
-                    // anim.SetBool("Landed", true);
     				if( pcInput.JumpButton ){jState = State.Landed_ButtonHeld;}
     				else{jState = State.Landed_ButtonReleased;}
     			}
-    			/*Debug.Log("switch: jState = " + State.Freefall);*/
     			break;
     		
     		default:
@@ -126,7 +122,7 @@ public class Move_Jump : MonoBehaviour {
     			break;
     	}
 
-    	return new Vector2(0, vForce); 
+    	return new Vector2(hForce, vForce); 
     }
 
     public Vector2 GetVerticalLimits(){
