@@ -180,6 +180,7 @@ GameObject:
   - component: {fileID: 102709973}
   - component: {fileID: 102709972}
   - component: {fileID: 102709974}
+  - component: {fileID: 102709976}
   - component: {fileID: 102709975}
   m_Layer: 0
   m_Name: SuperBox
@@ -414,6 +415,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   accelSpeed: 2
   autoBrakes: 1
+  inputThreshold: 0.2
 --- !u!114 &102709973
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -462,6 +464,19 @@ MonoBehaviour:
   jumpForce: 13
   jumpReleaseLimit: 0.5
   jState: 0
+--- !u!114 &102709976
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 102709960}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2192056481e9a06beb2f8d3fcae5b097, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slidingSpeedMax: -1
 --- !u!1 &140409349
 GameObject:
   m_ObjectHideFlags: 0

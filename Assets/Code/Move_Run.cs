@@ -7,6 +7,7 @@ public class Move_Run : MonoBehaviour {
 	// Variables
     [SerializeField] private float accelSpeed = 2f;
     [SerializeField] private float autoBrakes = 1f;
+    [SerializeField] private float inputThreshold = 0.2f;
 	private float minH;
     private float maxH; 
   
@@ -25,7 +26,7 @@ public class Move_Run : MonoBehaviour {
 
     public bool IsActive(){
     	float h = pcInput.H; 
-    	if( Mathf.Abs(h) > 0.5f ){
+    	if( Mathf.Abs(h) > inputThreshold ){
     		if( h > 0 && !pcState.WalledRight ){ return true; }
     		if( h < 0 && !pcState.WalledLeft ){ return true; }
     	}
@@ -34,7 +35,8 @@ public class Move_Run : MonoBehaviour {
 
 
     public Vector2 GetForces(){
-    	float hForce = pcInput.H * accelSpeed;
+    	float hForce = accelSpeed;
+        if( pcInput.H < 0 ){ hForce *= -1; }
     	return new Vector2(hForce, 0); 
     }
 
@@ -51,7 +53,9 @@ public class Move_Run : MonoBehaviour {
         // horizontal auto-brakes
         }else{
             if( pcState.Grounded ){
-                if( pcInput.H > -0.5f && pcInput.H < 0.5f ){
+                if( pcInput.H > inputThreshold * -1 
+                    && pcInput.H < inputThreshold ){
+                    
                     minH = autoBrakes * -1;
                     maxH = autoBrakes;
                 }else if( pcInput.H > 0 ){ minH = autoBrakes * -1; }
