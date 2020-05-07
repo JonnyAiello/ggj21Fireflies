@@ -109,7 +109,7 @@ public class PlayerConditions : MonoBehaviour {
     }
 
     void OnCollisionEnter2D( Collision2D c ){
-        Debug.Log("COLLISION ENTERED" + null);
+        // Debug.Log("COLLISION ENTERED" + null);
         if( c.gameObject.layer == LayerMask.NameToLayer("Solids") ){
             // grounded flag
             // grounded = false; 
@@ -118,14 +118,14 @@ public class PlayerConditions : MonoBehaviour {
             for (int i = 0; i < colliders.Length; i++){
                 if (colliders[i].gameObject != gameObject){ 
                     grounded = true;  
-                    Debug.Log("Grounded" + null);
+                    // Debug.Log("Grounded" + null);
                 }
             }
         }
     }
 
     void OnCollisionExit2D( Collision2D c ){
-        Debug.Log("COLLISION EXITED" + null);
+        // Debug.Log("COLLISION EXITED" + null);
         if( c.gameObject.layer == LayerMask.NameToLayer("Solids") ){
             // grounded flag
             grounded = false;
@@ -136,7 +136,7 @@ public class PlayerConditions : MonoBehaviour {
                     grounded = true;  
                 }
             }
-            if( !grounded ){Debug.Log("NOT Grounded" + null);}
+            // if( !grounded ){Debug.Log("NOT Grounded" + null);}
         }
     }
 

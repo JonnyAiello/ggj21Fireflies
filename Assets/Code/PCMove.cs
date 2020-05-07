@@ -8,21 +8,27 @@ public class PCMove : MonoBehaviour{
 	[SerializeField] private bool moving;
 	[SerializeField] private bool jumping; 
 	[SerializeField] private bool dashing;
+	[SerializeField] private bool wallSliding;
 	[SerializeField] private Vector2 rbVelocity; 
 	
 	// Variables
 	[SerializeField] private float maxHSpeed = 6f;
     [SerializeField] private float maxVSpeed = 15f;
+    [SerializeField] private float inputThreshold = 0.2f;
+    [SerializeField] private float inputReleaseThreshold = 0.6f; 
+    	// the minimum axis input to recognize from joystick/keyboard
 
 	// Reference Variables
 	private Move_Run run; 	
 	private Move_Jump jump; 
+	private Move_WallSlide wallSlide; 
 	private Rigidbody2D rb; 
 	private PCInput pcInput; 
 
 	private void Awake(){
 		run = GetComponent<Move_Run>(); 
 		jump = GetComponent<Move_Jump>(); 
+		wallSlide = GetComponent<Move_WallSlide>(); 
 		rb = GetComponent<Rigidbody2D>();
 		pcInput = GetComponent<PCInput>();  
 	}
@@ -31,8 +37,11 @@ public class PCMove : MonoBehaviour{
 	public bool Moving { get{return moving;} }
 	public bool Jumping { get{return jumping;} }
 	public bool Dashing { get{return dashing;} }
+	public bool WallSliding { get{return wallSliding;} }
 	public float MaxHSpeed { get{return maxHSpeed;} }
 	public float MaxVSpeed { get{return maxVSpeed;} }
+	public float InputThresh { get{return inputThreshold;} }
+	public float InputReleaseThresh { get{return inputReleaseThreshold;} }
 
 
 	// [[ ----- MOVE FIXED UPDATE ----- ]]
@@ -51,6 +60,8 @@ public class PCMove : MonoBehaviour{
 		if( jump.IsActive() ){
 			addativeForce += jump.GetForces(); 
 		}
+		wallSliding = wallSlide.IsActive();
+		
 
 		rb.velocity = rb.velocity + addativeForce; 
 
@@ -65,6 +76,14 @@ public class PCMove : MonoBehaviour{
 		Vector2 jumpVertLimits = jump.GetVerticalLimits();
 		vertLimits.x = Mathf.Max( vertLimits.x, jumpVertLimits.x ); 
 		vertLimits.y = Mathf.Min( vertLimits.y, jumpVertLimits.y ); 
+		
+
+		if( wallSliding ){
+			Vector2 wallSlideLimits = wallSlide.GetVerticalLimits(); 
+			vertLimits.x = Mathf.Max( vertLimits.x, wallSlideLimits.x ); 
+			vertLimits.y = Mathf.Min( vertLimits.y, wallSlideLimits.y );
+		}
+
 		float cappedY = Mathf.Clamp( rb.velocity.y, vertLimits.x, vertLimits.y);
 
 		// create final vector

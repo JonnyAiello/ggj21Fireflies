@@ -73,7 +73,7 @@ public class PCState : MonoBehaviour {
             for (int i = 0; i < colliders.Length; i++){
                 if (colliders[i].gameObject != gameObject){ 
                     grounded = true;  
-                    Debug.Log("Grounded" + null);
+                    // Debug.Log("Grounded" + null);
                 }
             }
         }
