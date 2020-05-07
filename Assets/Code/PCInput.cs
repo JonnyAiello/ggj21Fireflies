@@ -42,6 +42,7 @@ public class PCInput : MonoBehaviour{
         if( leftButton && !Input.GetButton("LeftButton") ){ leftButton = false; }
         if( rightButton && !Input.GetButton("RightButton") ){ rightButton = false; }
         if( jumpButton && !Input.GetButton("Jump") ){ jumpButton = false; }
+        if( dashButton && !Input.GetButton("Fire1") ){ dashButton = false; }
          
     }
 }

@@ -10,7 +10,6 @@ gravity scale: 3 (default 2d gravity of -9.51)
 */
 
 [RequireComponent(typeof(Move_RunJump))]
-[RequireComponent(typeof(Move_Dash))]
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerMove : MonoBehaviour {
 
@@ -30,7 +29,7 @@ public class PlayerMove : MonoBehaviour {
     private PlayerInput pInput;
     private PlayerConditions pCon; 
     private Move_RunJump mRunJump; 
-    private Move_Dash mDash; 
+    private Move_Dash_OLD mDash; 
     private Rigidbody2D rb; 
 
     // Enums
@@ -45,7 +44,7 @@ public class PlayerMove : MonoBehaviour {
         pInput = GetComponent<PlayerInput>(); 
         pCon = GetComponent<PlayerConditions>(); 
         mRunJump = GetComponent<Move_RunJump>(); 
-        mDash = GetComponent<Move_Dash>(); 
+        mDash = GetComponent<Move_Dash_OLD>(); 
     }
 
     // Called during Player.FixedUpdate()

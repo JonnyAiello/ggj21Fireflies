@@ -23,6 +23,7 @@ public class PCMove : MonoBehaviour{
 	private Move_Run run; 	
 	private Move_Jump jump; 
 	private Move_WallSlide wallSlide; 
+	private Move_Dash dash; 
 	private Rigidbody2D rb; 
 	private PCInput pcInput; 
 
@@ -30,6 +31,7 @@ public class PCMove : MonoBehaviour{
 		run = GetComponent<Move_Run>(); 
 		jump = GetComponent<Move_Jump>(); 
 		wallSlide = GetComponent<Move_WallSlide>(); 
+		dash = GetComponent<Move_Dash>(); 
 		rb = GetComponent<Rigidbody2D>();
 		pcInput = GetComponent<PCInput>();  
 	}
@@ -64,6 +66,7 @@ public class PCMove : MonoBehaviour{
 			addativeForce += jump.GetForces(); 
 		}
 		wallSliding = wallSlide.IsActive();
+		dashing = dash.IsActive(); 
 		
 
 		rb.velocity = rb.velocity + addativeForce; 
@@ -92,6 +95,9 @@ public class PCMove : MonoBehaviour{
 		// create final vector
 		rb.velocity = new Vector2(cappedX, cappedY);
 		rbVelocity = rb.velocity;    
+
+		// set position (if move sets position directly)
+		if( dashing ){ transform.position = dash.GetPosition(); }
 
 		// reset inputs
 		pcInput.ResetInputs();
