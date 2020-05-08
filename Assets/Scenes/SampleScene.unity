@@ -169,14 +169,10 @@ GameObject:
   - component: {fileID: 102709964}
   - component: {fileID: 102709962}
   - component: {fileID: 102709961}
-  - component: {fileID: 102709967}
-  - component: {fileID: 102709965}
-  - component: {fileID: 102709966}
-  - component: {fileID: 102709968}
-  - component: {fileID: 102709969}
-  - component: {fileID: 102709970}
   - component: {fileID: 102709963}
+  - component: {fileID: 102709967}
   - component: {fileID: 102709971}
+  - component: {fileID: 102709965}
   - component: {fileID: 102709973}
   - component: {fileID: 102709972}
   - component: {fileID: 102709974}
@@ -275,44 +271,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 102709960}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fda4574685385d6968e98a6741a6032b, type: 3}
+  m_Script: {fileID: 11500000, guid: 04e0903a62c5f199c81fbefd1291b0ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  state: 0
-  hForce: 0
-  vForce: 0
-  hVelocity: 0
-  vVelocity: 0
-  maxH: 0
-  minH: 0
-  maxV: 0
-  minV: 0
---- !u!114 &102709966
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 102709960}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a199ad46b878b4ecfac13c4616cb2a8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  grounded: 0
-  walledLeft: 0
-  walledRight: 0
-  jumpPhase: 0
-  whatIsSolid:
-    serializedVersion: 2
-    m_Bits: 256
-  gizmosOn: 0
-  liftoffGranted: 0
-  dashing: 0
-  groundCheck: {fileID: 1037095822}
-  ceilingCheck: {fileID: 442725855}
-  rightCheck: {fileID: 2034399046}
-  leftCheck: {fileID: 140409350}
 --- !u!114 &102709967
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -325,58 +286,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba3851c04127607b9a21cfc2cfc37d72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &102709968
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 102709960}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8cdaf592d08461ce393bc2dcf25c8668, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  h: 0
-  jumpButton: 0
-  dashButton: 0
---- !u!114 &102709969
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 102709960}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1bb26862969575d687b92d9e4eb37cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHSpeed: 6
-  maxVSpeed: 15
-  accelSpeed: 2
-  jumpForce: 13
-  jumpReleaseLimit: 0.5
-  wallSlideMax: -1
-  autoBrakes: 1
---- !u!114 &102709970
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 102709960}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e57e35ac1c7b781c9aefa7644044dcdd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dist: 3
-  dashTime: 0.1
-  dashMask:
-    serializedVersion: 2
-    m_Bits: 256
-  bodyCollider: {fileID: 102709961}
 --- !u!114 &102709971
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -449,7 +358,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leftButton: 0
   rightButton: 0
-  h: 0
   jumpButton: 0
   dashButton: 0
 --- !u!114 &102709975
