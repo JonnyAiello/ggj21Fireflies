@@ -11,6 +11,7 @@ public class PCAnim : MonoBehaviour {
     private float processTimer;
 
     // Reference Variables
+    public SpriteRenderer spriteRenderer; 
     private Animator anim; 
     private PCState pcState;
     private Move_Jump mJump; 
@@ -26,6 +27,7 @@ public class PCAnim : MonoBehaviour {
 
     private void Awake(){
     	anim = GetComponent<Animator>(); 
+    	// spriteRenderer = GetComponent<SpriteRenderer>(); 
     	pcState = GetComponent<PCState>();
     	mJump = GetComponent<Move_Jump>();
     	mWallslide = GetComponent<Move_WallSlide>(); 
@@ -46,11 +48,25 @@ public class PCAnim : MonoBehaviour {
     				process = true; 
     				anim.SetBool("ToIdle", false);
     			}else if( process ){
-    				if( mJump.IsActive ){
+    				if( !pcState.Grounded ){
+    					// go to Wallslide
+    					if( mWallslide.IsActive ){
+    						transition = true;
+	    					process = false;  
+	    					anim.SetBool("ToWallslide", true);
+	    					aState = State.BoxWallslide; 
+	    				// go to jump
+    					}else{
+    						transition = true;
+	    					process = false;  
+	    					anim.SetBool("ToJump", true);
+	    					aState = State.BoxJump; 
+    					}
+    				// go to jump
+    				}else if( mJump.IsActive ){
     					transition = true;
     					process = false;  
     					anim.SetBool("ToJump", true);
-    					Debug.Log("ToJump: " + anim.GetBool("ToJump"));
     					aState = State.BoxJump; 
     				}
     			}
@@ -65,11 +81,13 @@ public class PCAnim : MonoBehaviour {
     				process = true; 
     				anim.SetBool("ToJump", false);
     			}else if( process ){
+    				// go to wallslide
     				if( mWallslide.IsActive ){
     					transition = true; 
     					process = false; 
     					anim.SetBool("ToWallslide", true);
     					aState = State.BoxWallslide;
+    				// go to land
     				}else if( pcState.Grounded 
     					|| mJump.JState == Move_Jump.State.Landed_ButtonHeld
     					|| mJump.JState == Move_Jump.State.Landed_ButtonReleased){
@@ -92,6 +110,7 @@ public class PCAnim : MonoBehaviour {
     				anim.SetBool("ToLand", false);
     				processTimer = 0; 
     			}else if( process ){
+    				// go to idle
     				processTimer += Time.deltaTime;
     				if( processTimer >= 0.33 ){
     					transition = true;
@@ -110,12 +129,20 @@ public class PCAnim : MonoBehaviour {
     				transition = false; 
     				process = true; 
     				anim.SetBool("ToWallslide", false);
+    				// flip sprite
+    				if( pcState.WalledLeft 
+    					&& spriteRenderer.transform.localScale.x > 0 ){
+
+    					spriteRenderer.flipX = true; 
+    				}else{ spriteRenderer.flipX = false; }
     			}else if( process ){
+    				// go to idle
     				if( pcState.Grounded ){
     					transition = true;
     					process = false;  
     					anim.SetBool("ToIdle", true); 
     					aState = State.BoxIdle; 
+    				// go to jump
     				}else if( !mWallslide.IsActive
     					|| mJump.JState == Move_Jump.State.Jumping_WallJump ){
     					transition = true;
