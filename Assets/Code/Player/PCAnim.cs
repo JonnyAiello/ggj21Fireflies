@@ -16,13 +16,15 @@ public class PCAnim : MonoBehaviour {
     private PCState pcState;
     private Move_Jump mJump; 
     private Move_WallSlide mWallslide;
+    private Move_Dash mDash;
 
     // Enums
     public enum State{
     	BoxIdle,
     	BoxJump,
     	BoxLand,
-    	BoxWallslide
+    	BoxWallslide,
+    	BoxDash
     }
 
     private void Awake(){
@@ -31,6 +33,7 @@ public class PCAnim : MonoBehaviour {
     	pcState = GetComponent<PCState>();
     	mJump = GetComponent<Move_Jump>();
     	mWallslide = GetComponent<Move_WallSlide>(); 
+    	mDash = GetComponent<Move_Dash>(); 
 
     	aState = State.BoxIdle;
     	transition = true; 
@@ -48,7 +51,13 @@ public class PCAnim : MonoBehaviour {
     				process = true; 
     				anim.SetBool("ToIdle", false);
     			}else if( process ){
-    				if( !pcState.Grounded ){
+    				// go to dash
+    				if( mDash.IsActive ){
+    					transition = true; 
+    					process = false;  
+    					anim.SetBool("ToDash", true);
+    					aState = State.BoxDash; 
+    				}else if( !pcState.Grounded ){
     					// go to Wallslide
     					if( mWallslide.IsActive ){
     						transition = true;
@@ -81,8 +90,14 @@ public class PCAnim : MonoBehaviour {
     				process = true; 
     				anim.SetBool("ToJump", false);
     			}else if( process ){
+    				// go to dash
+    				if( mDash.IsActive ){
+    					transition = true; 
+    					process = false;  
+    					anim.SetBool("ToDash", true);
+    					aState = State.BoxDash; 
     				// go to wallslide
-    				if( mWallslide.IsActive ){
+    				}else if( mWallslide.IsActive ){
     					transition = true; 
     					process = false; 
     					anim.SetBool("ToWallslide", true);
@@ -117,6 +132,12 @@ public class PCAnim : MonoBehaviour {
     					process = false;  
     					anim.SetBool("ToIdle", true); 
     					aState = State.BoxIdle; 
+    				// go to dash
+    				}else if( mDash.IsActive ){
+    					transition = true; 
+    					process = false;  
+    					anim.SetBool("ToDash", true);
+    					aState = State.BoxDash; 
     				}
     			}
     			break;
@@ -136,8 +157,14 @@ public class PCAnim : MonoBehaviour {
     					spriteRenderer.flipX = true; 
     				}else{ spriteRenderer.flipX = false; }
     			}else if( process ){
+    				// go to dash
+    				if( mDash.IsActive ){
+    					transition = true; 
+    					process = false;  
+    					anim.SetBool("ToDash", true);
+    					aState = State.BoxDash; 
     				// go to idle
-    				if( pcState.Grounded ){
+    				}else if( pcState.Grounded ){
     					transition = true;
     					process = false;  
     					anim.SetBool("ToIdle", true); 
@@ -153,6 +180,25 @@ public class PCAnim : MonoBehaviour {
     			}
     			break;
     		
+
+    		case State.BoxDash:
+    			if( transition 
+    				&& anim.GetCurrentAnimatorStateInfo(0).IsName("BoxDash")){
+
+    				transition = false; 
+    				process = true; 
+    				anim.SetBool("ToDash", false);
+    				processTimer = 0; 
+    			}else if( process ){
+    				processTimer += Time.deltaTime;
+    				if( processTimer >= 0.33 ){
+    					transition = true;
+    					process = false;  
+    					anim.SetBool("ToIdle", true); 
+    					aState = State.BoxIdle; 
+    				}
+    			}
+    			break;
 
     		default:
     			Debug.Log("switch: value match not found");
