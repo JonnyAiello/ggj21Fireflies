@@ -34,7 +34,7 @@ public class Move_WallSlide : MoveBehavior {
 		}else{ isActive = false; }
 	}
        
-    public override bool AffectsVLimits(){ return true; }
+    public override bool AffectsVLimits(){ return isActive; }
      
     // [[ ----- GET V LIMITS ----- ]]
     public override Vector2 GetVLimits(){
@@ -43,13 +43,4 @@ public class Move_WallSlide : MoveBehavior {
 
     	return new Vector2(minV, maxV); 
     }
-
-    public override bool IsExclusive(){ return false; }
-	public override bool ZeroMovement(){ return false; }
-	public override bool AffectsForce(){ return false; }
-    public override Vector2 GetForce(){ return Vector2.zero; } 
-    public override bool AffectsHLimits(){ return false; }
-    public override Vector2 GetHLimits(){ return Vector2.zero; }
-    public override bool AffectsPosition(){ return false; } 
-    public override Vector2 GetPosition(){ return Vector2.zero; } 
 }

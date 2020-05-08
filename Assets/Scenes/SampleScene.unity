@@ -171,14 +171,14 @@ GameObject:
   - component: {fileID: 102709961}
   - component: {fileID: 102709963}
   - component: {fileID: 102709967}
+  - component: {fileID: 102709974}
   - component: {fileID: 102709971}
   - component: {fileID: 102709965}
   - component: {fileID: 102709973}
-  - component: {fileID: 102709972}
-  - component: {fileID: 102709974}
-  - component: {fileID: 102709976}
-  - component: {fileID: 102709975}
   - component: {fileID: 102709977}
+  - component: {fileID: 102709972}
+  - component: {fileID: 102709975}
+  - component: {fileID: 102709976}
   m_Layer: 0
   m_Name: SuperBox
   m_TagString: Player
@@ -323,6 +323,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42e3713f3a4ae0f379c1ff44d382e4d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isActive: 0
   accelSpeed: 2
   autoBrakes: 1
 --- !u!114 &102709973
@@ -337,15 +338,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f5e7b6800ecb1186b3a7f18a6f39146, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moving: 0
-  jumping: 0
-  dashing: 0
-  wallSliding: 0
   rbVelocity: {x: 0, y: 0}
   maxHSpeed: 6
   maxVSpeed: 15
   moveList:
+  - {fileID: 102709977}
   - {fileID: 102709972}
+  - {fileID: 102709975}
+  - {fileID: 102709976}
 --- !u!114 &102709974
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -374,10 +374,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3ac44b2d317345639b75927e6430987, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  jState: 0
+  isActive: 0
   jumpForce: 13
   wallJumpForce: 16
   jumpReleaseLimit: 0.5
-  jState: 0
 --- !u!114 &102709976
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -390,6 +391,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2192056481e9a06beb2f8d3fcae5b097, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isActive: 0
   slidingSpeedMax: -1
 --- !u!114 &102709977
 MonoBehaviour:
@@ -403,6 +405,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff71d9ffa9ca7325db1385ea0e16a899, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isActive: 0
   dist: 3
   dashDuration: 0.3
   cooldownDuration: 0.6

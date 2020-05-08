@@ -2,16 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Move_Jump : MonoBehaviour {
+public class Move_Jump : MoveBehavior {
 
 	// Variables
+    [SerializeField] private State jState;
+    [SerializeField] private bool isActive; 
     [SerializeField] private float jumpForce = 13f;
     [SerializeField] private float wallJumpForce = 16;
     [SerializeField] private float jumpReleaseLimit = 0.5f; // maximum upward speed once State button released
-    [SerializeField] private State jState; 
+     
     private float vForce; 
-    private float hForce; 
-    private Vector2 vLimits; 
+    private float hForce;  
     private float escapeTimer = 0f; 
 	private float escapeDelay = 0.1f; 
 
@@ -19,6 +20,9 @@ public class Move_Jump : MonoBehaviour {
     private PCMove pcMove;
     private PCInput pcInput; 
     private PCState pcState;
+
+    // Properties
+    public bool IsActive { get{return isActive;} }
 
     // Enums
 	public enum State{
@@ -38,99 +42,130 @@ public class Move_Jump : MonoBehaviour {
     	pcState = GetComponent<PCState>(); 
     }
 
-    public bool IsActive(){
-    	return true; 
-    }
+// -----------------------------------------------------------------------------
+// MoveBehavior
 
-    public Vector2 GetForces( State _newState ){
-    	jState = _newState; 
-    	return GetForces(); 
-    }
-    public Vector2 GetForces(){
-    	vForce = 0; 
-        hForce = 0; 
-    	switch( jState ){
 
-    		case State.Landed_ButtonReleased:
-    			if( pcMove.Jumping ){ pcMove.SetJumping(false); }
-    			if( !pcState.Grounded ){ jState = State.Freefall; }
-    			else if( pcInput.JumpButton ){ GetForces( State.Jumping_Liftoff ); }
-    			break;
-    		
-    		// apply Jump force
-			case State.Jumping_Liftoff:
-				vForce = jumpForce; 
-				jState = State.Jumping_EscapeVelocity; 
-				if( !pcMove.Jumping ){ pcMove.SetJumping(true); }
-    			break;
+    // [[ ----- INIT ----- ]]
+    public override void Init(){
+        // Jump state machine
+        switch( jState ){
 
-    		// creates timegap so we escape the ground check
-    		case State.Jumping_EscapeVelocity:
-    			escapeTimer += Time.deltaTime;
-    			if( escapeTimer > escapeDelay ){
-    				if( pcInput.JumpButton ){jState = State.Jumping_ButtonHeld;}
-    				else{jState = State.Jumping_ButtonReleased;}
-    				escapeTimer = 0; 
-    			}
-    			break;
+            case State.Landed_ButtonReleased:
+                /*if( pcMove.Jumping ){ pcMove.SetJumping(false); }*/
+                if( !pcState.Grounded ){ jState = State.Freefall; }
+                else if( pcInput.JumpButton ){ jState = State.Jumping_Liftoff; }
+                break;
+            
+            case State.Jumping_Liftoff:
+                /*vForce = jumpForce; */
+                jState = State.Jumping_EscapeVelocity; 
+                /*if( !pcMove.Jumping ){ pcMove.SetJumping(true); }*/
+                break;
 
-    		case State.Jumping_ButtonHeld:
-    			if( pcState.Grounded ){ 
+            // creates timegap so we escape the ground check
+            case State.Jumping_EscapeVelocity:
+                escapeTimer += Time.deltaTime;
+                if( escapeTimer > escapeDelay ){
+                    if( pcInput.JumpButton ){jState = State.Jumping_ButtonHeld;}
+                    else{jState = State.Jumping_ButtonReleased;}
+                    escapeTimer = 0; 
+                }
+                break;
+
+            case State.Jumping_ButtonHeld:
+                if( pcState.Grounded ){ 
                     jState = State.Landed_ButtonHeld; 
                 }else if( !pcInput.JumpButton ){
-    				jState = State.Jumping_ButtonReleased;
-    			}
-    			break;
-    		
-    		case State.Jumping_ButtonReleased:
-    			if( pcState.Grounded ){
-    				if( pcInput.JumpButton ){jState = State.Landed_ButtonHeld;}
-    				else{ jState = State.Landed_ButtonReleased; }
-    			}else if( pcState.Walled && pcInput.JumpButton ){
-                    GetForces(State.Jumping_WallJump); 
+                    jState = State.Jumping_ButtonReleased;
                 }
-    			break;
+                break;
+            
+            case State.Jumping_ButtonReleased:
+                if( pcState.Grounded ){
+                    if( pcInput.JumpButton ){jState = State.Landed_ButtonHeld;}
+                    else{ jState = State.Landed_ButtonReleased; }
+                }else if( pcState.Walled && pcInput.JumpButton ){
+                    jState = State.Jumping_WallJump; 
+                }
+                break;
 
             case State.Jumping_WallJump:
-                // wall Jump
-                vForce = wallJumpForce;
-                if( pcState.WalledLeft ){ hForce += 200; }
-                else{ hForce += -200; }
+                /*vForce = wallJumpForce;*/
                 jState = State.Jumping_ButtonHeld; 
                 break;
-    		
-    		// must release State before next State begins
-    		case State.Landed_ButtonHeld:
-    			if( pcMove.Jumping ){ pcMove.SetJumping(false); }
-    			if( !pcState.Grounded ){ jState = State.Freefall; }
-    			if( !pcInput.JumpButton ){jState = State.Landed_ButtonReleased;}
-    			break;
+            
+            // must release State before next State begins
+            case State.Landed_ButtonHeld:
+                /*if( pcMove.Jumping ){ pcMove.SetJumping(false); }*/
+                if( !pcState.Grounded ){ jState = State.Freefall; }
+                if( !pcInput.JumpButton ){jState = State.Landed_ButtonReleased;}
+                break;
 
-    		// if pc steps off or airborn not from jumping
-    		case State.Freefall:
-    			if( pcState.Walled && pcInput.JumpButton ){
-    				jState = State.Jumping_Liftoff; 
-    			}
-    			if( pcState.Grounded ){
-    				if( pcInput.JumpButton ){jState = State.Landed_ButtonHeld;}
-    				else{jState = State.Landed_ButtonReleased;}
-    			}
-    			break;
-    		
-    		default:
-    			Debug.Log("switch: value match not found");
-    			break;
-    	}
+            // if pc steps off or airborn not from jumping
+            case State.Freefall:
+                if( pcState.Walled && pcInput.JumpButton ){
+                    jState = State.Jumping_Liftoff; 
+                }
+                if( pcState.Grounded ){
+                    if( pcInput.JumpButton ){jState = State.Landed_ButtonHeld;}
+                    else{jState = State.Landed_ButtonReleased;}
+                }
+                break;
+            
+            default:
+                Debug.LogError("switch: value match not found");
+                break;
+        }
 
-    	return new Vector2(hForce, vForce); 
+        // set isActive
+        if( jState == State.Jumping_Liftoff
+            || jState == State.Jumping_EscapeVelocity
+            || jState == State.Jumping_ButtonHeld
+            || jState == State.Jumping_ButtonReleased
+            || jState == State.Jumping_WallJump ){
+
+            isActive = true; 
+        }else{ isActive = false; }
     }
 
-    public Vector2 GetVerticalLimits(){
-    	float minV = pcMove.MaxVSpeed * -1; 
-    	float maxV = pcMove.MaxVSpeed; 
+    // [[ ----- AFFECTS FORCE ----- ]]
+    public override bool AffectsForce(){
+        if( jState == State.Jumping_Liftoff
+            || jState == State.Jumping_WallJump){
 
-    	if( jState == State.Jumping_ButtonReleased ){ maxV = jumpReleaseLimit; }
-
-    	return new Vector2(minV, maxV); 
+            return true; 
+        }
+        return false; 
     }
+
+    // [[ ----- GET FORCE ----- ]]
+    public override Vector2 GetForce(){
+        float vForce = 0;
+        float hForce = 0; 
+
+        if( jState == State.Jumping_Liftoff ){ vForce = jumpForce; }
+        if( jState == State.Jumping_WallJump ){
+            vForce = wallJumpForce;
+            if( pcState.WalledLeft ){ hForce += 200; }
+            else{ hForce += -200; }
+        }
+
+        return new Vector2(hForce, vForce); 
+    } 
+
+
+    // [[ ----- AFFECTS V LIMITS ----- ]]
+    public override bool AffectsVLimits(){
+        if( jState == State.Jumping_ButtonReleased ){ return true; }
+        return false; 
+    }
+    
+
+    // [[ ----- GET V LIMITS ----- ]]
+    public override Vector2 GetVLimits(){
+        float minV = pcMove.MaxVSpeed * -1; 
+        float maxV = jumpReleaseLimit; 
+        return new Vector2(minV, maxV);
+    }  
 }

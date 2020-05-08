@@ -35,6 +35,7 @@ public class Move_Run : MoveBehavior {
 
     public override bool AffectsForce(){ return isActive; }
     
+    // [[ ----- GET FORCE ----- ]]
     public override Vector2 GetForce(){
     	float hForce = accelSpeed;
         if( pcInput.LeftButton ){ hForce *= -1; }
@@ -65,11 +66,4 @@ public class Move_Run : MoveBehavior {
         }
         return new Vector2(minH, maxH); 
     }	
-
-    public override bool AffectsVLimits(){ return false; }
-    public override bool IsExclusive(){ return false; }
-    public override bool ZeroMovement(){ return false; }
-    public override Vector2 GetVLimits(){ return Vector2.zero; }  
-    public override bool AffectsPosition(){ return false; } 
-    public override Vector2 GetPosition(){ return Vector2.zero; } 
 }

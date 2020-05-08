@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Move_Dash : MonoBehaviour {
+public class Move_Dash : MoveBehavior {
 
 	// Variables
+    [SerializeField] private bool isActive; 
 	[SerializeField] private float dist = 3f; 
     [SerializeField] private float dashDuration = 0.3f; 
     [SerializeField] private float cooldownDuration = 0.6f; 
     [SerializeField] private LayerMask dashMask; 
-	private bool active; 
 	private bool initialized; 
 	private float dashTimer;
 	private float cooldownTimer; 
@@ -26,12 +26,17 @@ public class Move_Dash : MonoBehaviour {
 	private PCInput pcInput; 
 	private PCState pcState;
     private PCMove pcMove; 
+    private Move_Run mRun; 
     private CircleCollider2D bodyCollider;  
+
+    // Properties
+    public bool IsActive { get{return isActive;} }
 
 	private void Awake(){
 		pcInput = GetComponent<PCInput>();
 		pcState = GetComponent<PCState>(); 
         pcMove = GetComponent<PCMove>();
+        mRun = GetComponent<Move_Run>(); 
         bodyCollider = GetComponent<CircleCollider2D>(); 
         colliderRadius = (bodyCollider.bounds.size.x / 2f) + 0.2f; 
 
@@ -47,58 +52,64 @@ public class Move_Dash : MonoBehaviour {
 		*/
 	}
 
-	public bool IsActive(){
-		if( active ){ return true; }
-    	else{
-    		cooldownTimer += Time.fixedDeltaTime; 
-    		if( pcInput.DashButton 
-    			&& pcMove.Moving
-    			&& cooldownTimer > cooldownDuration ){
-    			
-    			cooldownTimer = 0;  
-	    		active = true; 
-	    		return true; 
-	    	}
-    	}
-       	
-        active = false;
-    	return false; 
-    }
+// -----------------------------------------------------------------------------
+// MoveBehavor
 
+	public override void Init(){
+        // if not active, update the cooldown timer, check for input
+        if( !isActive ){
+            cooldownTimer += Time.fixedDeltaTime; 
+            if( pcInput.DashButton 
+                && mRun.IsActive
+                && cooldownTimer > cooldownDuration ){
 
-    public Vector2 GetPosition(){
-    	Vector2 setToPosition = transform.position; 
+                cooldownTimer = 0; 
+                isActive = true; 
+            }
+        }
 
-    	if( !initialized ){
-	    	// determine hit point / end point
-	        wallHit = false; 
-	        if( pcInput.RightButton ){ castDir = Vector2.right; }
-	        else{ castDir = Vector2.left; }
-	        startPoint = transform.position;
-			endPoint = (Vector2)transform.position + (castDir * dist);
+        // if active but not initialized, then initialize
+        if( isActive && !initialized ){
+            // determine hit point / end point
+            wallHit = false; 
+            if( pcInput.RightButton ){ castDir = Vector2.right; }
+            else{ castDir = Vector2.left; }
+            startPoint = transform.position;
+            endPoint = (Vector2)transform.position + (castDir * dist);
 
-			// raycast
-    		RaycastHit2D hit = Physics2D.Raycast(
+            // raycast
+            RaycastHit2D hit = Physics2D.Raycast(
                 transform.position, castDir, 3f, dashMask);
 
-    		// if collided with wall
-    		if( hit.collider != null ){ 
+            // if collided with wall
+            if( hit.collider != null ){ 
                 wallHit = true; 
-    			hitPoint = hit.point; 
-    			// set beside raycast hit object
-    			if( castDir == Vector2.right ){ 
-    				hitPoint += new Vector2(colliderRadius * -1, 0); 
-    			}else{ hitPoint += new Vector2(colliderRadius, 0); }
+                hitPoint = hit.point; 
+                // set beside raycast hit object
+                if( castDir == Vector2.right ){ 
+                    hitPoint += new Vector2(colliderRadius * -1, 0); 
+                }else{ hitPoint += new Vector2(colliderRadius, 0); }
             }else{
                 hitPoint = endPoint; 
             }
-    		
+            
             // init dash variables
-    		initialized = true;
+            initialized = true;
             targetReached = false; 
             dashTimer = dashDuration * 0.25f; 
-            	// add a little skip to the beginning of dash  
-		}
+                // add a little skip to the beginning of dash  
+        }
+    }
+
+    public override bool IsExclusive(){ return isActive; }
+
+    public override bool AffectsPosition(){
+        return (isActive && initialized); 
+    } 
+
+    // [[ ----- GET POSITION ----- ]]
+    public override Vector2 GetPosition(){
+    	Vector2 setToPosition = transform.position; 
 
 	    // if dash started - determine point lerp
 	    if( !targetReached ){
@@ -113,8 +124,6 @@ public class Move_Dash : MonoBehaviour {
                 targetReached = true; 
                 setToPosition = hitPoint;
             }else if( ratio >= 1 ){
-                Debug.LogError("Dash stuck, time exit:\n");
-                Debug.LogError("pos x: " + transform.position.x + " hit x: " + hitPoint.x); 
                 targetReached = true; 
             }
 
@@ -122,10 +131,9 @@ public class Move_Dash : MonoBehaviour {
 	    // end the move
 	    }else{
 	    	initialized = false; 
-	    	active = false; 
+	    	isActive = false; 
 	    }
 
 	    return setToPosition; 
     }
-
 }
