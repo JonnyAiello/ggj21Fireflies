@@ -23,6 +23,7 @@ public class Move_Jump : MoveBehavior {
 
     // Properties
     public bool IsActive { get{return isActive;} }
+    public State JState { get{return jState;} }
 
     // Enums
 	public enum State{
