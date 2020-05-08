@@ -344,6 +344,8 @@ MonoBehaviour:
   rbVelocity: {x: 0, y: 0}
   maxHSpeed: 6
   maxVSpeed: 15
+  moveList:
+  - {fileID: 102709972}
 --- !u!114 &102709974
 MonoBehaviour:
   m_ObjectHideFlags: 0

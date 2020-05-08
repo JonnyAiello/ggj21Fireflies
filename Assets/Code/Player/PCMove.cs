@@ -20,6 +20,7 @@ public class PCMove : MonoBehaviour{
 */
 
 	// Reference Variables
+	[SerializeField] private List<MoveBehavior> moveList;
 	private Move_Run run; 	
 	private Move_Jump jump; 
 	private Move_WallSlide wallSlide; 
@@ -51,12 +52,41 @@ public class PCMove : MonoBehaviour{
 
 	// [[ ----- MOVE FIXED UPDATE ----- ]]
 	public void MoveFixedUpdate(){
+		bool zeroMovement = false;
 		Vector2 addativeForce = Vector2.zero; 
 		Vector2 horizLimits = new Vector2(maxHSpeed * -1, maxHSpeed); 
 		Vector2 vertLimits = new Vector2(maxVSpeed * -1, maxVSpeed);
+		rbVelocity = rb.velocity; 
 
-		// make active moves list
+		// process all attached moves
+		foreach( MoveBehavior mb in moveList ){
+			mb.Init();
+			if( mb.AffectsForce() ){ addativeForce += mb.GetForce(); }
+			if( mb.AffectsHLimits() ){
+				Vector2 newHLimits = mb.GetHLimits();
+				horizLimits.x = Mathf.Max( horizLimits.x, newHLimits.x);
+				horizLimits.y = Mathf.Min( horizLimits.y, newHLimits.y); 
+			}
+			if( mb.AffectsVLimits() ){
+				Vector2 newVLimits = mb.GetVLimits(); 
+				vertLimits.x = Mathf.Max( vertLimits.x, newVLimits.x ); 
+				vertLimits.y = Mathf.Min( vertLimits.y, newVLimits.y ); 
+			}
+			if( mb.AffectsPosition() ){transform.position = mb.GetPosition();}
+			if( mb.IsExclusive() ){ break; }
+		}
 
+		if( zeroMovement ){ rbVelocity = Vector2.zero; }
+
+		// add forces, apply limits
+		rbVelocity += addativeForce; 
+		float cappedX = Mathf.Clamp(rbVelocity.x, horizLimits.x, horizLimits.y);
+		float cappedY = Mathf.Clamp( rbVelocity.y, vertLimits.x, vertLimits.y);
+
+		rbVelocity = new Vector2(cappedX, cappedY); 
+		rb.velocity = rbVelocity; 
+
+/*
 		// add forces from moves
 		moving = run.IsActive();
 		if( moving ){
@@ -73,8 +103,6 @@ public class PCMove : MonoBehaviour{
 
 		// set limits
 		Vector2 runHorizLimits = run.GetHorizontalLimits();
-		/*Debug.Log("Horiz Min Limit: " + runHorizLimits.x);
-		Debug.Log("Horiz Max Limit: " + runHorizLimits.y);*/
 		horizLimits.x = Mathf.Max( horizLimits.x, runHorizLimits.x);
 		horizLimits.y = Mathf.Min( horizLimits.y, runHorizLimits.y);  
 		float cappedX = Mathf.Clamp(rb.velocity.x, horizLimits.x, horizLimits.y);
@@ -98,7 +126,8 @@ public class PCMove : MonoBehaviour{
 
 		// set position (if move sets position directly)
 		if( dashing ){ transform.position = dash.GetPosition(); }
-
+		
+		*/
 		// reset inputs
 		pcInput.ResetInputs();
 	}
