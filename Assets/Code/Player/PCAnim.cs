@@ -14,6 +14,7 @@ public class PCAnim : MonoBehaviour {
     public SpriteRenderer spriteRenderer; 
     private Animator anim; 
     private PCState pcState;
+    private PCInput pcInput; 
     private Move_Jump mJump; 
     private Move_WallSlide mWallslide;
     private Move_Dash mDash;
@@ -31,6 +32,7 @@ public class PCAnim : MonoBehaviour {
     	anim = GetComponent<Animator>(); 
     	// spriteRenderer = GetComponent<SpriteRenderer>(); 
     	pcState = GetComponent<PCState>();
+    	pcInput = GetComponent<PCInput>();
     	mJump = GetComponent<Move_Jump>();
     	mWallslide = GetComponent<Move_WallSlide>(); 
     	mDash = GetComponent<Move_Dash>(); 
@@ -188,7 +190,14 @@ public class PCAnim : MonoBehaviour {
     				transition = false; 
     				process = true; 
     				anim.SetBool("ToDash", false);
-    				processTimer = 0; 
+    				processTimer = 0;
+    				// flip sprite
+    				if( pcInput.RightButton 
+    					&& spriteRenderer.transform.localScale.x > 0 ){
+
+    					spriteRenderer.flipX = true; 
+    				}else{ spriteRenderer.flipX = false; }
+    			// go to idle
     			}else if( process ){
     				processTimer += Time.deltaTime;
     				if( processTimer >= 0.33 ){
