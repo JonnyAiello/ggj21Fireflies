@@ -44,6 +44,7 @@ public class PCMove : MonoBehaviour{
 
 	// [[ ----- MOVE FIXED UPDATE ----- ]]
 	public void MoveFixedUpdate(){
+		bool overrideMove = false; 
 		bool zeroMovement = false;
 		Vector2 addativeForce = Vector2.zero; 
 		Vector2 horizLimits = new Vector2(maxHSpeed * -1, maxHSpeed); 
@@ -52,7 +53,8 @@ public class PCMove : MonoBehaviour{
 
 		// process all attached moves
 		foreach( MoveBehavior mb in moveList ){
-			mb.Init();
+			mb.Init( overrideMove );
+			if( mb.IsExclusive() ){ overrideMove = true; }
 			if( !zeroMovement && mb.ZeroMovement() ){ zeroMovement = true; }
 			if( mb.AffectsForce() ){ addativeForce += mb.GetForce(); }
 			if( mb.AffectsHLimits() ){
@@ -66,7 +68,6 @@ public class PCMove : MonoBehaviour{
 				vertLimits.y = Mathf.Min( vertLimits.y, newVLimits.y ); 
 			}
 			if( mb.AffectsPosition() ){transform.position = mb.GetPosition();}
-			if( mb.IsExclusive() ){ break; }
 		}
 
 		if( zeroMovement ){ rbVelocity = Vector2.zero; }

@@ -48,20 +48,19 @@ public class Move_Jump : MoveBehavior {
 
 
     // [[ ----- INIT ----- ]]
-    public override void Init(){
+    public override void Init( bool _overridden ){
+        if( _overridden ){ jState = State.Freefall; }
+
         // Jump state machine
         switch( jState ){
 
             case State.Landed_ButtonReleased:
-                /*if( pcMove.Jumping ){ pcMove.SetJumping(false); }*/
                 if( !pcState.Grounded ){ jState = State.Freefall; }
                 else if( pcInput.JumpButton ){ jState = State.Jumping_Liftoff; }
                 break;
             
             case State.Jumping_Liftoff:
-                /*vForce = jumpForce; */
                 jState = State.Jumping_EscapeVelocity; 
-                /*if( !pcMove.Jumping ){ pcMove.SetJumping(true); }*/
                 break;
 
             // creates timegap so we escape the ground check
@@ -92,13 +91,11 @@ public class Move_Jump : MoveBehavior {
                 break;
 
             case State.Jumping_WallJump:
-                /*vForce = wallJumpForce;*/
                 jState = State.Jumping_ButtonHeld; 
                 break;
             
             // must release State before next State begins
             case State.Landed_ButtonHeld:
-                /*if( pcMove.Jumping ){ pcMove.SetJumping(false); }*/
                 if( !pcState.Grounded ){ jState = State.Freefall; }
                 if( !pcInput.JumpButton ){jState = State.Landed_ButtonReleased;}
                 break;

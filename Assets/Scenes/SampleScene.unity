@@ -411,7 +411,9 @@ MonoBehaviour:
   isActive: 0
   dist: 4
   dashDuration: 0.15
-  cooldownDuration: 0.6
+  momentumDuration: 0.3
+  cooldownDuration: 0.4
+  dState: 0
   dashMask:
     serializedVersion: 2
     m_Bits: 256

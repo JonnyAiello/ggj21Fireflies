@@ -54,7 +54,7 @@ public class PCAnim : MonoBehaviour {
     				anim.SetBool("ToIdle", false);
     			}else if( process ){
     				// go to dash
-    				if( mDash.IsActive ){
+    				if( mDash.DState == Move_Dash.State.Move ){
     					transition = true; 
     					process = false;  
     					anim.SetBool("ToDash", true);
@@ -93,7 +93,7 @@ public class PCAnim : MonoBehaviour {
     				anim.SetBool("ToJump", false);
     			}else if( process ){
     				// go to dash
-    				if( mDash.IsActive ){
+    				if( mDash.DState == Move_Dash.State.Move ){
     					transition = true; 
     					process = false;  
     					anim.SetBool("ToDash", true);
@@ -135,7 +135,7 @@ public class PCAnim : MonoBehaviour {
     					anim.SetBool("ToIdle", true); 
     					aState = State.BoxIdle; 
     				// go to dash
-    				}else if( mDash.IsActive ){
+    				}else if( mDash.DState == Move_Dash.State.Move ){
     					transition = true; 
     					process = false;  
     					anim.SetBool("ToDash", true);
@@ -160,7 +160,7 @@ public class PCAnim : MonoBehaviour {
     				}else{ spriteRenderer.flipX = false; }
     			}else if( process ){
     				// go to dash
-    				if( mDash.IsActive ){
+    				if( mDash.DState == Move_Dash.State.Move ){
     					transition = true; 
     					process = false;  
     					anim.SetBool("ToDash", true);

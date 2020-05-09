@@ -8,6 +8,7 @@ public class Move_Run : MoveBehavior {
     [SerializeField] private bool isActive; 
     [SerializeField] private float accelSpeed = 2f;
     [SerializeField] private float autoBrakes = 1f;
+    private bool overriden; 
 	private float minH;
     private float maxH; 
   
@@ -28,9 +29,13 @@ public class Move_Run : MoveBehavior {
 // -----------------------------------------------------------------------------
 // Movebehavior
 
-    public override void Init(){
-    	if( pcInput.LeftButton || pcInput.RightButton ){ isActive = true; }
-        else{ isActive = false; }
+    public override void Init( bool _overridden ){
+        overriden = _overridden; 
+    	if( !overriden
+            && (pcInput.LeftButton || pcInput.RightButton) ){ 
+
+            isActive = true; 
+        }else{ isActive = false; }
     }
 
     public override bool AffectsForce(){ return isActive; }
@@ -42,7 +47,7 @@ public class Move_Run : MoveBehavior {
     	return new Vector2(hForce, 0); 
     }
 
-    public override bool AffectsHLimits(){ return true; }
+    public override bool AffectsHLimits(){ return !overriden; }
     
     // [[ ----- GET H LIMITS ----- ]]
     public override Vector2 GetHLimits(){ 

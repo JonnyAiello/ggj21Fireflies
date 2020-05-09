@@ -26,7 +26,7 @@ public class Move_WallSlide : MoveBehavior {
 // Movebehavior
 
 	// [[ ----- INIT ----- ]]
-	public override void Init(){
+	public override void Init( bool _overridden ){
 		bool leftWallSlide = (pcState.WalledLeft && pcInput.LeftButton);
 		bool rightWallSlide = (pcState.WalledRight && pcInput.RightButton); 
 		if( pcState.Airborn && (leftWallSlide || rightWallSlide) ){

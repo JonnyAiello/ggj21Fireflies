@@ -7,11 +7,18 @@ public class Move_Dash : MoveBehavior {
 	// Variables
     [SerializeField] private bool isActive; 
 	[SerializeField] private float dist = 4f; 
-    [SerializeField] private float dashDuration = 0.15f; 
-    [SerializeField] private float cooldownDuration = 0.6f; 
+    [SerializeField] private float dashDuration = 0.15f;
+    [SerializeField] private float momentumDuration = 0.3f; 
+    [SerializeField] private float cooldownDuration = 0.4f; 
+    [SerializeField] private State dState; 
     [SerializeField] private LayerMask dashMask; 
+
 	private bool initialized; 
+    private bool momentumAddedLock;
+    private bool momentumDone; 
+    private bool cooldownDone; 
 	private float dashTimer;
+    private float momentumTimer; 
 	private float cooldownTimer; 
 	private float colliderRadius; 
 
@@ -31,6 +38,16 @@ public class Move_Dash : MoveBehavior {
 
     // Properties
     public bool IsActive { get{return isActive;} }
+    public State DState { get{return dState;} }
+
+    // Enums
+    public enum State{
+        NotDashing,
+        Initialize,
+        Move,
+        PostMomentum,
+        Cooldown
+    }
 
 	private void Awake(){
 		pcInput = GetComponent<PCInput>();
@@ -55,35 +72,66 @@ public class Move_Dash : MoveBehavior {
 // -----------------------------------------------------------------------------
 // MoveBehavor
 
-	public override void Init(){
-        // if not active, update the cooldown timer, check for input
-        if( !isActive ){
-            cooldownTimer += Time.fixedDeltaTime; 
-            if( pcInput.DashButton 
-                && mRun.IsActive
-                && cooldownTimer > cooldownDuration ){
+	public override void Init( bool _overridden ){
+        switch( dState ){
+            
+            case State.NotDashing:
+                if( !_overridden ){
+                    if( pcInput.DashButton && mRun.IsActive ){
+                        dState = State.Initialize;
+                    }
+                }
+                break;
+            
+            case State.Initialize:
+                if( _overridden ){ dState = State.NotDashing; }
+                else if( initialized ){ dState = State.Move; }
+                break;
+            
+            case State.Move:
+                if( _overridden ){ dState = State.NotDashing; }
+                else if( targetReached ){ dState = State.PostMomentum; }
+                break;
 
-                cooldownTimer = 0; 
-                isActive = true; 
-            }
+            case State.PostMomentum:
+                if( _overridden ){ dState = State.NotDashing; }
+                else if( momentumDone ){ dState = State.Cooldown; }
+                break;
+            
+            case State.Cooldown:
+                if( _overridden || cooldownDone ){ dState = State.NotDashing; }
+                break;
+            
+            default:
+                Debug.Log("switch: value match not found");
+                break;
         }
 
-        // if active but not initialized, then initialize
-        if( isActive && !initialized ){
+        // reset triggers if not dashing
+        if( dState == State.NotDashing
+            && (isActive || initialized || targetReached || cooldownDone)){
+
+            isActive = false;
+            initialized = false;
+            targetReached = false; 
+            momentumAddedLock = false; 
+            momentumDone = false; 
+            cooldownDone = false; 
+        }
+
+        // Initialize dash 
+        if( dState == State.Initialize ){
             // determine hit point / end point
             wallHit = false; 
             if( pcInput.RightButton ){ castDir = Vector2.right; }
             else{ castDir = Vector2.left; }
             startPoint = transform.position;
             endPoint = (Vector2)transform.position + (castDir * dist);
-
             // raycast
             RaycastHit2D hit = Physics2D.Raycast(
                 transform.position, castDir, dist, dashMask);
-
             // if collided with wall
             if( hit.collider != null ){
-                Debug.Log("Wall HIT"); 
                 wallHit = true; 
                 hitPoint = hit.point; 
                 // set beside raycast hit object
@@ -91,22 +139,38 @@ public class Move_Dash : MoveBehavior {
                     hitPoint += new Vector2(colliderRadius * -1, 0); 
                 }else{ hitPoint += new Vector2(colliderRadius, 0); }
             }else{
-                Debug.Log("No Wall HIT");
                 hitPoint = endPoint; 
             }
-            
             // init dash variables
+            isActive = true; 
             initialized = true;
-            targetReached = false; 
+            // targetReached = false; 
+            cooldownTimer = 0; 
+            momentumTimer = 0; 
             dashTimer = dashDuration * 0.25f; 
                 // add a little skip to the beginning of dash  
+        }
+
+        // post momentum timer
+        if( dState == State.PostMomentum ){
+            momentumTimer += Time.fixedDeltaTime; 
+            if( momentumTimer > momentumDuration ){ 
+                momentumDone = true; 
+                isActive = false;
+            }
+        }
+
+        // Cooldown timer
+        if( dState == State.Cooldown ){
+            cooldownTimer += Time.fixedDeltaTime; 
+            if( cooldownTimer > cooldownDuration ){ cooldownDone = true; }
         }
     }
 
     public override bool IsExclusive(){ return isActive; }
 
     public override bool AffectsPosition(){
-        return (isActive && initialized); 
+        return (dState == State.Move); 
     } 
 
     // [[ ----- GET POSITION ----- ]]
@@ -121,21 +185,29 @@ public class Move_Dash : MoveBehavior {
             float ratio = dashTimer / dashDuration; 
             setToPosition = Vector2.Lerp(startPoint, endPoint, ratio);
             if( (castDir.x > 0 && setToPosition.x >= hitPoint.x)
-                || (castDir.x < 0 && setToPosition.x <= hitPoint.x) ){
+                || (castDir.x < 0 && setToPosition.x <= hitPoint.x)
+                || ratio >= 1 ){
 
                 targetReached = true; 
                 setToPosition = hitPoint;
-            }else if( ratio >= 1 ){
-                targetReached = true; 
             }
-
-
-	    // end the move
-	    }else{
-	    	initialized = false; 
-	    	isActive = false; 
 	    }
-
 	    return setToPosition; 
     }
+
+
+    public override bool AffectsForce(){
+        if( dState == State.PostMomentum && !momentumAddedLock ){ return true; }    
+        return false; 
+    }
+
+    // [[ ----- GET FORCE ----- ]]
+    public override Vector2 GetForce(){
+        float xForce = 40f;
+        if( castDir.x < 0 ){ xForce *= -1; }
+        momentumAddedLock = true; 
+
+        return new Vector2(xForce, 0); 
+    } 
+
 }
