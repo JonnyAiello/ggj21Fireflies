@@ -6,8 +6,8 @@ public class Move_Dash : MoveBehavior {
 
 	// Variables
     [SerializeField] private bool isActive; 
-	[SerializeField] private float dist = 3f; 
-    [SerializeField] private float dashDuration = 0.3f; 
+	[SerializeField] private float dist = 4f; 
+    [SerializeField] private float dashDuration = 0.15f; 
     [SerializeField] private float cooldownDuration = 0.6f; 
     [SerializeField] private LayerMask dashMask; 
 	private bool initialized; 
@@ -44,12 +44,12 @@ public class Move_Dash : MoveBehavior {
 
 	// On Draw Gizmos
 	private void OnDrawGizmos(){
-		/*
+
 		if( hitPoint != Vector2.zero ){
 			Gizmos.color = Color.green; 
 			Gizmos.DrawSphere(hitPoint, .2f);
 		}
-		*/
+
 	}
 
 // -----------------------------------------------------------------------------
@@ -79,10 +79,11 @@ public class Move_Dash : MoveBehavior {
 
             // raycast
             RaycastHit2D hit = Physics2D.Raycast(
-                transform.position, castDir, 3f, dashMask);
+                transform.position, castDir, dist, dashMask);
 
             // if collided with wall
-            if( hit.collider != null ){ 
+            if( hit.collider != null ){
+                Debug.Log("Wall HIT"); 
                 wallHit = true; 
                 hitPoint = hit.point; 
                 // set beside raycast hit object
@@ -90,6 +91,7 @@ public class Move_Dash : MoveBehavior {
                     hitPoint += new Vector2(colliderRadius * -1, 0); 
                 }else{ hitPoint += new Vector2(colliderRadius, 0); }
             }else{
+                Debug.Log("No Wall HIT");
                 hitPoint = endPoint; 
             }
             
