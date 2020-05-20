@@ -35,6 +35,8 @@ public class Move_Dash : MoveBehavior {
     private PCMove pcMove; 
     private Move_Run mRun; 
     private CircleCollider2D bodyCollider;  
+    // public ParticleSystem cooldownEffect;
+    public GameObject cooldownEffectGO;
 
     // Properties
     public bool IsActive { get{return isActive;} }
@@ -144,7 +146,6 @@ public class Move_Dash : MoveBehavior {
             // init dash variables
             isActive = true; 
             initialized = true;
-            // targetReached = false; 
             cooldownTimer = 0; 
             momentumTimer = 0; 
             dashTimer = dashDuration * 0.25f; 
@@ -205,6 +206,8 @@ public class Move_Dash : MoveBehavior {
     public override Vector2 GetForce(){
         float xForce = 40f;
         if( castDir.x < 0 ){ xForce *= -1; }
+        cooldownEffectGO.SetActive(true); 
+            // begin cooldown particle effect
         momentumAddedLock = true; 
 
         return new Vector2(xForce, 0); 
