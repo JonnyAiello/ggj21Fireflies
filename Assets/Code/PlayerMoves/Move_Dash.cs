@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Note: to edit the duration of the coodlown particle system effect, change
+// the START TIME value of ParticleSystemReverseSimulationSuperSimple, this 
+// overrides the duration value of the actual particle system
+
+
 public class Move_Dash : MoveBehavior {
 
 	// Variables
@@ -35,8 +40,8 @@ public class Move_Dash : MoveBehavior {
     private PCMove pcMove; 
     private Move_Run mRun; 
     private CircleCollider2D bodyCollider;  
-    // public ParticleSystem cooldownEffect;
     public GameObject cooldownEffectGO;
+    public GameObject dashBurstEffectPrefab;
 
     // Properties
     public bool IsActive { get{return isActive;} }
@@ -149,7 +154,13 @@ public class Move_Dash : MoveBehavior {
             cooldownTimer = 0; 
             momentumTimer = 0; 
             dashTimer = dashDuration * 0.25f; 
-                // add a little skip to the beginning of dash  
+                // add a little skip to the beginning of dash 
+
+            // create burst effect
+            GameObject burst = Instantiate(dashBurstEffectPrefab, 
+                transform.position, Quaternion.identity) as GameObject;
+            burst.GetComponent<ParticleSystem>().Play();
+            Destroy(burst, 1f); 
         }
 
         // post momentum timer

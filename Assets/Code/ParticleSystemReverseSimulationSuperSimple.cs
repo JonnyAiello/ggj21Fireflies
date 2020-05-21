@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // code from http://www.mirzabeig.com/tutorials/rewinding-particle-systems/
+// START TIME DETERMINES DURATION OF THE EFFECT - this overrides the durration
+// field within the particle system inspector
 
 public class ParticleSystemReverseSimulationSuperSimple : MonoBehaviour
 {

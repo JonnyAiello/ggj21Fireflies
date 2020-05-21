@@ -12,6 +12,9 @@ public class PCAnim : MonoBehaviour {
 
     // Reference Variables
     public SpriteRenderer spriteRenderer; 
+    // public GameObject particleEffects;
+    public ParticleSystem wallSlideRightEffect;
+    public ParticleSystem wallSlideLeftEffect;
     private Animator anim; 
     private PCState pcState;
     private PCInput pcInput; 
@@ -157,7 +160,13 @@ public class PCAnim : MonoBehaviour {
     					&& spriteRenderer.transform.localScale.x > 0 ){
 
     					spriteRenderer.flipX = true; 
-    				}else{ spriteRenderer.flipX = false; }
+                        wallSlideLeftEffect.gameObject.SetActive(true);
+                        wallSlideLeftEffect.Play();
+    				}else{ 
+                        spriteRenderer.flipX = false; 
+                        wallSlideRightEffect.gameObject.SetActive(true); 
+                        wallSlideRightEffect.Play();
+                    }
     			}else if( process ){
     				// go to dash
     				if( mDash.DState == Move_Dash.State.Move ){
@@ -165,12 +174,14 @@ public class PCAnim : MonoBehaviour {
     					process = false;  
     					anim.SetBool("ToDash", true);
     					aState = State.BoxDash; 
+                        ResetWallslideEffects();
     				// go to idle
     				}else if( pcState.Grounded ){
     					transition = true;
     					process = false;  
     					anim.SetBool("ToIdle", true); 
     					aState = State.BoxIdle; 
+                        ResetWallslideEffects();
     				// go to jump
     				}else if( !mWallslide.IsActive
     					|| mJump.JState == Move_Jump.State.Jumping_WallJump ){
@@ -178,6 +189,7 @@ public class PCAnim : MonoBehaviour {
     					process = false;  
     					anim.SetBool("ToJump", true); 
     					aState = State.BoxJump; 
+                        ResetWallslideEffects();
     				}
     			}
     			break;
@@ -213,5 +225,12 @@ public class PCAnim : MonoBehaviour {
     			Debug.Log("switch: value match not found");
     			break;
     	}
+    }
+
+    private void ResetWallslideEffects(){
+        wallSlideRightEffect.gameObject.SetActive(false);
+        wallSlideLeftEffect.gameObject.SetActive(false); 
+        wallSlideRightEffect.Stop();
+        wallSlideLeftEffect.Stop(); 
     }
 }
