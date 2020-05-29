@@ -31,10 +31,6 @@ public class PCInput : MonoBehaviour{
     public void InputUpdate(){    	
         // only engage here, disengage bool in fixed update after PlayerMove
         // has had a chance to process the button push (avoid dropped inputs)
-
-        Debug.Log("down button: " + Input.GetButton("DownButton"));
-        Debug.Log("axis vertical: " + Input.GetAxis("Vertical"));
-
         if( (!leftButton && Input.GetButton("LeftButton"))
             || Input.GetAxis("Horizontal") < -0.1f ){ 
             

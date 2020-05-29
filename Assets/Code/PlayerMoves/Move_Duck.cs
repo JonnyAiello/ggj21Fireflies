@@ -14,6 +14,9 @@ public class Move_Duck : MoveBehavior {
 	private PCInput pcInput; 
 	private PCState pcState;
 
+	// Properties
+	public bool IsActive { get{return isActive;} }
+
 	// [[ ----- AWAKE ----- ]]
 	private void Awake(){
 		pcInput = GetComponent<PCInput>();

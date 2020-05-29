@@ -21,6 +21,7 @@ public class PCAnim : MonoBehaviour {
     private Move_Jump mJump; 
     private Move_WallSlide mWallslide;
     private Move_Dash mDash;
+    private Move_Duck mDuck; 
 
     // Enums
     public enum State{
@@ -28,7 +29,9 @@ public class PCAnim : MonoBehaviour {
     	BoxJump,
     	BoxLand,
     	BoxWallslide,
-    	BoxDash
+    	BoxDash,
+        BoxDuck, 
+        BoxUnduck
     }
 
     private void Awake(){
@@ -39,6 +42,7 @@ public class PCAnim : MonoBehaviour {
     	mJump = GetComponent<Move_Jump>();
     	mWallslide = GetComponent<Move_WallSlide>(); 
     	mDash = GetComponent<Move_Dash>(); 
+        mDuck = GetComponent<Move_Duck>(); 
 
     	aState = State.BoxIdle;
     	transition = true; 
@@ -56,8 +60,14 @@ public class PCAnim : MonoBehaviour {
     				process = true; 
     				anim.SetBool("ToIdle", false);
     			}else if( process ){
+                    // go to duck 
+                    if( mDuck.IsActive ){
+                        transition = true; 
+                        process = false; 
+                        anim.SetBool("ToDuck", true);
+                        aState = State.BoxDuck; 
     				// go to dash
-    				if( mDash.DState == Move_Dash.State.Move ){
+    				}else if( mDash.DState == Move_Dash.State.Move ){
     					transition = true; 
     					process = false;  
     					anim.SetBool("ToDash", true);
@@ -143,7 +153,13 @@ public class PCAnim : MonoBehaviour {
     					process = false;  
     					anim.SetBool("ToDash", true);
     					aState = State.BoxDash; 
-    				}
+    				// go to duck 
+                    }else if( mDuck.IsActive ){
+                        transition = true; 
+                        process = false; 
+                        anim.SetBool("ToDuck", true);
+                        aState = State.BoxDuck; 
+                    }
     			}
     			break;
     		
@@ -220,6 +236,69 @@ public class PCAnim : MonoBehaviour {
     				}
     			}
     			break;
+
+            case State.BoxDuck:
+                if( transition 
+                    && anim.GetCurrentAnimatorStateInfo(0).IsName("BoxDuck")){
+
+                    transition = false; 
+                    process = true; 
+                    anim.SetBool("ToDuck", false);
+                }else if( process ){
+                    // go to Unduck
+                    if( !mDuck.IsActive ){
+                        transition = true; 
+                        process = false; 
+                        anim.SetBool("ToUnduck", true); 
+                        aState = State.BoxUnduck; 
+                    // go to dash
+                    }else if( mDash.DState == Move_Dash.State.Move ){
+                        transition = true; 
+                        process = false;  
+                        anim.SetBool("ToDash", true);
+                        aState = State.BoxDash; 
+                    // go to jump
+                    }else if( mJump.IsActive ){
+                        transition = true; 
+                        process = false; 
+                        anim.SetBool("ToJump", true); 
+                        aState = State.BoxJump; 
+                    }
+                }
+                break;
+
+            case State.BoxUnduck:
+                if( transition 
+                    && anim.GetCurrentAnimatorStateInfo(0).IsName("BoxUnduck")){
+
+                    transition = false; 
+                    process = true; 
+                    anim.SetBool("ToUnduck", false);
+                    processTimer = 0;
+                }else if( process ){
+                    processTimer += Time.deltaTime;
+                    // go to dash
+                    if( mDash.DState == Move_Dash.State.Move ){
+                        transition = true; 
+                        process = false;  
+                        anim.SetBool("ToDash", true);
+                        aState = State.BoxDash; 
+                    // go to jump
+                    }else if( mJump.IsActive ){
+                        transition = true; 
+                        process = false; 
+                        anim.SetBool("ToJump", true); 
+                        aState = State.BoxJump; 
+                    // go to idle
+                    }else if( processTimer >= 0.2f ){
+                        transition = true; 
+                        process = false; 
+                        anim.SetBool("ToIdle", true); 
+                        aState = State.BoxIdle; 
+                    }
+                    
+                }
+                break;
 
     		default:
     			Debug.Log("switch: value match not found");
