@@ -39,7 +39,7 @@ public class Move_Dash : MoveBehavior {
 	private PCState pcState;
     private PCMove pcMove; 
     private Move_Run mRun; 
-    private CircleCollider2D bodyCollider;  
+    public CircleCollider2D bodyCollider;  
     public GameObject cooldownEffectGO;
     public GameObject dashBurstEffectPrefab;
 
@@ -61,7 +61,6 @@ public class Move_Dash : MoveBehavior {
 		pcState = GetComponent<PCState>(); 
         pcMove = GetComponent<PCMove>();
         mRun = GetComponent<Move_Run>(); 
-        bodyCollider = GetComponent<CircleCollider2D>(); 
         colliderRadius = (bodyCollider.bounds.size.x / 2f) + 0.2f; 
 
 	}
