@@ -7,6 +7,7 @@ public class PCState : MonoBehaviour {
 	// Flags
 	[SerializeField] private bool airborn;
 	[SerializeField] private bool grounded; 
+	[SerializeField] private bool ceilinged; 
 	[SerializeField] private bool walledLeft;
 	[SerializeField] private bool walledRight; 
 	[SerializeField] private bool walled; 
@@ -14,6 +15,7 @@ public class PCState : MonoBehaviour {
 	// Properties
 	public bool Airborn { get{return airborn;} }
 	public bool Grounded { get{return grounded;} }
+	public bool Ceilinged { get{return ceilinged;} }
 	public bool WalledLeft { get{return walledLeft;} }
 	public bool WalledRight { get{return walledRight;} }
 	public bool Walled { get{return walled;} }
@@ -30,6 +32,20 @@ public class PCState : MonoBehaviour {
 	public Transform rightCheck;
 	public Transform leftCheck;
 
+
+	private void OnDrawGizmos(){
+		// Debug.Log("TESTING");
+		Gizmos.DrawSphere(ceilingCheck.position, contactRadius); 
+	}
+
+	private bool IsPlayerCollider( Collider2D _c ){
+		if( _c.name == "Collider_standing"
+			|| _c.name == "Collider_crouching" ){
+
+			return true;
+		}
+		return false; 
+	}
 
 	// [[ ----- UPDATE ----- ]]
 	public void StateUpdate(){
@@ -48,8 +64,18 @@ public class PCState : MonoBehaviour {
         Collider2D[] colliders = Physics2D.OverlapCircleAll(
             groundCheck.position, groundedRadius, whatIsSolid);
         for (int i = 0; i < colliders.Length; i++){
-            if (colliders[i].gameObject != gameObject){ 
+            if( !IsPlayerCollider(colliders[i]) ){ 
                 grounded = true;  
+            }
+        }
+
+        // set ceilinged flag
+        ceilinged = false;
+        colliders = Physics2D.OverlapCircleAll(
+            ceilingCheck.position, contactRadius, whatIsSolid);
+        for (int i = 0; i < colliders.Length; i++){
+            if( !IsPlayerCollider(colliders[i]) ){
+                ceilinged = true;  
             }
         }
 
@@ -60,12 +86,12 @@ public class PCState : MonoBehaviour {
 		colliders = Physics2D.OverlapCircleAll(
         	rightCheck.position, contactRadius, whatIsSolid);
         for (int i = 0; i < colliders.Length; i++){
-        	if (colliders[i].gameObject != gameObject){ walledRight = true; }
+        	if( !IsPlayerCollider(colliders[i]) ){ walledRight = true; }
 		}
 		colliders = Physics2D.OverlapCircleAll(
         	leftCheck.position, contactRadius, whatIsSolid);
         for (int i = 0; i < colliders.Length; i++){
-        	if (colliders[i].gameObject != gameObject){ walledLeft = true; }
+        	if( !IsPlayerCollider(colliders[i]) ){ walledLeft = true; }
 		}
 		if( walledLeft || walledRight ){ walled = true; }
 		else{ walled = false; }

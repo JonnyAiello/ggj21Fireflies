@@ -7,6 +7,7 @@ public class Move_Duck : MoveBehavior {
 	// Variables
     [SerializeField] private bool isActive;
     [SerializeField] private float maxHSpeed = 2f;
+    // private bool duckLock; 
 
     // Reference Variables
     public CircleCollider2D standingCollider;
@@ -21,6 +22,7 @@ public class Move_Duck : MoveBehavior {
 	private void Awake(){
 		pcInput = GetComponent<PCInput>();
 		pcState = GetComponent<PCState>();
+		// duckLock = false; 
 	}
 
 
@@ -28,8 +30,20 @@ public class Move_Duck : MoveBehavior {
 // MoveBehavoir
 
     public override void Init( bool _override ){
-    	isActive = false; 
-    	if( pcState.Grounded && pcInput.DownButton ){ isActive = true; }
+    	// isActive = false; 
+
+    	// engage duck
+    	if( !isActive && pcState.Grounded && pcInput.DownButton ){
+    		isActive = true; 
+    	}
+
+    	// disengage duck
+    	else if( isActive ){
+    		if( !pcState.Grounded ){ isActive = false; }
+    		if( !pcInput.DownButton && !pcState.Ceilinged ){ isActive = false; }
+    	}
+
+    	// if( pcState.Grounded && pcInput.DownButton ){ isActive = true; }
 
     	// set colliders
     	if( isActive ){
