@@ -11,7 +11,7 @@ public class LevelGoal : MonoBehaviour {
 		if( !triggerLock ){
 			if( col.gameObject.tag == "Player" ){
 				Debug.Log("YOU WIN");
-				triggerLock = false; 
+				triggerLock = true; 
 				Invoke("ReloadLevel", 1f); 
 			}
 		}
