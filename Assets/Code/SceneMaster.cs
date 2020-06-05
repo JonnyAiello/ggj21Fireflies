@@ -6,18 +6,26 @@ using UnityEngine.UI;
 public class SceneMaster : MonoBehaviour {
 
 	// Variables
+    [HideInInspector] public static SceneMaster active; 
 	private bool gameStart; 
 	private float timeUpdateTick = 0.5f;
 	private float gameTime; 
 	private float updateTimer;
 
 	// Reference Variables
+    public Checkpoint currentCheckpoint; 
 	public Text timerMinutes;
 	public Text timerSeconds; 
 
-    // Start is called before the first frame update
-    void Start() {
-        
+    // Awake
+    private void Awake(){
+        // singleton game object
+        if( active == null ){ active = this; }
+        else{ Destroy(gameObject); }
+
+        if( currentCheckpoint == null ){ 
+            Debug.LogError("Checkpoint not provided"); 
+        }
     }
 
     // Update is called once per frame

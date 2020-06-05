@@ -35,7 +35,7 @@ public class PCState : MonoBehaviour {
 
 	private void OnDrawGizmos(){
 		// Debug.Log("TESTING");
-		Gizmos.DrawSphere(ceilingCheck.position, contactRadius); 
+		// Gizmos.DrawSphere(ceilingCheck.position, contactRadius); 
 	}
 
 	private bool IsPlayerCollider( Collider2D _c ){

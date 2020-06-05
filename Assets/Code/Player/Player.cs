@@ -21,9 +21,10 @@ public class Player : MonoBehaviour {
 	}
 
 
-    // Start is called before the first frame update
     void Start(){
-        
+        transform.position 
+            = SceneMaster.active.currentCheckpoint.transform.position;         
+        Debug.Log("Box Position: " + transform.position);
     }
 
     void Update(){
