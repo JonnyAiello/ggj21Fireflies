@@ -8,18 +8,14 @@ using UnityEngine.SceneManagement;
 public class Checkpoint : MonoBehaviour{ 
 
 	// Variables
-	private static List<Checkpoint> levelCheckpoints = new List<Checkpoint>(); 
-	public string level; 
 	private float timer; 
 	private float lockTime = 1f; 
 	private bool onHitLock; 
 	private bool isCurrCheckpoint; 
 
-    // Reference Variables
-    // private SceneMaster sceneMaster; 
-
-    // Properties
-    public string Level { get{return level;} }
+	// Reference Variables
+	private GameObject activeSprite; 
+	private GameObject inactiveSprite; 
 
 	// Event setup
 	public delegate void UpdateCheckpointDel( string _cpName ); 
@@ -29,27 +25,20 @@ public class Checkpoint : MonoBehaviour{
 	// [[ ----- ON ENABLE ----- ]]
 	private void OnEnable(){
 		OnCheckpointHit += UpdateCheckpoint; 
-		SceneManager.sceneLoaded += Initialize; 
 	}
 
 	// [[ ----- ON DISABLE ----- ]]
 	private void OnDisable(){
 		OnCheckpointHit -= UpdateCheckpoint; 
-		SceneManager.sceneLoaded -= Initialize;
 	}
 
-	// [[ ----- AWAKE ----- ]]
-	private void Awake(){
-		// awake code is run the first time checkpoint is loaded, code to run
-		// on a scene load goes in Initialize() 
-
-		// DontDestroyOnLoad(gameObject); 
-
-		// set the level id this checkpoint is attached to
-		Scene scene = SceneManager.GetActiveScene();
-		level = scene.name;
-		Initialize(scene, LoadSceneMode.Single);
-
+	// [[ ----- START ----- ]]
+	private void Start(){
+		// set up sprite references
+		activeSprite = transform.Find("activeSprite").gameObject; 
+		inactiveSprite = transform.Find("inactiveSprite").gameObject; 
+		if( SceneMaster.active.currentCheckpoint == this ){SetSpriteActive(true);}
+		else{ SetSpriteActive(false); }
 	}
 
 	// [[ ----- UPDATE ----- ]]
@@ -63,23 +52,18 @@ public class Checkpoint : MonoBehaviour{
 		}
 	}
 
-	// [[ ----- INITIALIZE ----- ]]
-	private void Initialize( Scene scene, LoadSceneMode mode ){
-		if( level == SceneManager.GetActiveScene().name ){
-			if( !levelCheckpoints.Contains(this) ){ levelCheckpoints.Add(this); }
-		}else{
-			if( levelCheckpoints.Contains(this) ){ levelCheckpoints.Remove(this); }
-			Destroy(gameObject); 
-		}
-	}
-
+	// [[ ----- UPDATE CHECKPOINT ----- ]]
+	// called by OnCheckpointHit event
 	public void UpdateCheckpoint( string _cpName ){
-		// called by OnCheckpointHit event
 		if( gameObject.name == _cpName ){
 			SceneMaster.active.currentCheckpoint = this; 
+			SetSpriteActive(true); 
+		}else{
+			SetSpriteActive(false); 
 		}
 	}
 
+	// [[ ----- ON TRIGGER ENTER 2D ----- ]]
 	private void OnTriggerEnter2D( Collider2D _c ){
 		if( !onHitLock && !isCurrCheckpoint ){
 			if( _c.gameObject.tag == "Player" ){
@@ -88,6 +72,17 @@ public class Checkpoint : MonoBehaviour{
 				// trigger checkpoint event to deactivate all 
 				Checkpoint.OnCheckpointHit( gameObject.name ); 
 			}
+		}
+	}
+
+	// [[ ----- SET SPRITE ACTIVE ----- ]]
+	private void SetSpriteActive( bool _true ){
+		if( _true ){
+			activeSprite.SetActive(true);
+			inactiveSprite.SetActive(false);
+		}else{
+			activeSprite.SetActive(false);
+			inactiveSprite.SetActive(true); 
 		}
 	}
     
