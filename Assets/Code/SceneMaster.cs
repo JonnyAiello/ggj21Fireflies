@@ -12,7 +12,7 @@ on level load such as the timer UI elements
 public class SceneMaster : MonoBehaviour {
 
 	// Variables
-    [HideInInspector] public static SceneMaster active; 
+    public static SceneMaster active; 
     private string levelID; 
 	private bool gameStart; 
 	private float timeUpdateTick = 0.5f;
@@ -63,13 +63,13 @@ public class SceneMaster : MonoBehaviour {
             SceneMaster.active = this; 
             Debug.Log("No active SceneMaster found, making this active");
             DontDestroyOnLoad(this); 
-            Initialize(scene, LoadSceneMode.Single);
         }
     }
 
     // [[ ----- INITIALIZE ----- ]]
     // Logic that should be called at the load of the level 
     private void Initialize( Scene scene, LoadSceneMode mode ){
+        Debug.Log("Initialize called");
         // create and bind timer GUI
         Transform canvasTrans = GameObject.FindWithTag("Canvas").transform; 
         GameObject tgui = (GameObject)Instantiate(timerGuiPref, canvasTrans); 

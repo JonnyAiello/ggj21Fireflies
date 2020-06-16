@@ -190,6 +190,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9714502715f8062208c012ae8c9daecb, type: 3}
+--- !u!114 &6318372 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5525721535467831279, guid: 9714502715f8062208c012ae8c9daecb,
+    type: 3}
+  m_PrefabInstance: {fileID: 6318371}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93b674c5d3d144e7b93d6396a8030dd3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &88995185
 GameObject:
   m_ObjectHideFlags: 0
@@ -236,7 +248,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10bef68ce9b5af6fd81c731ea6d8d5ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  level: 
 --- !u!1 &102709960
 GameObject:
   m_ObjectHideFlags: 0
@@ -709,7 +720,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f312b23472bcb9f59c269bfdd784344, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentCheckpoint: {fileID: 1318061391}
+  currentCheckpoint: {fileID: 6318372}
   timerGuiPref: {fileID: 2173843584384548570, guid: e96c80efe3e6091fd820cc9fddb2a14b,
     type: 3}
 --- !u!1 &298135022
@@ -57023,6 +57034,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd667d738acb28bd786d943024343589, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nextLevelID: SampleScene
 --- !u!61 &1109495121
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -61900,18 +61912,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1318061391 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5525721535467831279, guid: 9714502715f8062208c012ae8c9daecb,
-    type: 3}
-  m_PrefabInstance: {fileID: 685790058}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93b674c5d3d144e7b93d6396a8030dd3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1450042143
 GameObject:
   m_ObjectHideFlags: 0

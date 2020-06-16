@@ -5,19 +5,21 @@ using UnityEngine.SceneManagement;
 
 public class LevelGoal : MonoBehaviour {
     
+    // Variables
+    public string nextLevelID; 
 	private bool triggerLock;
 
 	void OnTriggerEnter2D(Collider2D col){
 		if( !triggerLock ){
 			if( col.gameObject.tag == "Player" ){
-				Debug.Log("YOU WIN");
+				Debug.Log("EXITING LEVEL");
 				triggerLock = true; 
-				Invoke("ReloadLevel", 1f); 
+				Invoke("LoadLevel", 1f); 
 			}
 		}
 	}
 
-	private void ReloadLevel(){
-		SceneManager.LoadScene("SampleScene");
+	private void LoadLevel(){
+		SceneManager.LoadScene(nextLevelID);
 	}
 }

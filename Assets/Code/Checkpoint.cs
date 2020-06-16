@@ -8,9 +8,6 @@ using UnityEngine.SceneManagement;
 public class Checkpoint : MonoBehaviour{ 
 
 	// Variables
-	private float timer; 
-	private float lockTime = 1f; 
-	private bool onHitLock; 
 	private bool isCurrCheckpoint; 
 
 	// Reference Variables
@@ -41,17 +38,6 @@ public class Checkpoint : MonoBehaviour{
 		else{ SetSpriteActive(false); }
 	}
 
-	// [[ ----- UPDATE ----- ]]
-	private void Update(){
-		if( onHitLock ){
-			timer += Time.deltaTime;
-			if( timer > lockTime ){ 
-				onHitLock = false; 
-				timer = 0; 
-			}
-		}
-	}
-
 	// [[ ----- UPDATE CHECKPOINT ----- ]]
 	// called by OnCheckpointHit event
 	public void UpdateCheckpoint( string _cpName ){
@@ -65,10 +51,9 @@ public class Checkpoint : MonoBehaviour{
 
 	// [[ ----- ON TRIGGER ENTER 2D ----- ]]
 	private void OnTriggerEnter2D( Collider2D _c ){
-		if( !onHitLock && !isCurrCheckpoint ){
+		if( !isCurrCheckpoint ){
 			if( _c.gameObject.tag == "Player" ){
 				Debug.Log("Checkpoint Hit: " + gameObject.name);
-				onHitLock = true; 
 				// trigger checkpoint event to deactivate all 
 				Checkpoint.OnCheckpointHit( gameObject.name ); 
 			}
