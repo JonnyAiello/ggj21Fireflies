@@ -15,6 +15,7 @@ public class SceneMaster : MonoBehaviour {
     public static SceneMaster active; 
     private string levelID; 
 	private bool gameStart; 
+    private bool pauseGame; 
 	private float timeUpdateTick = 0.5f;
 	private float gameTime; 
 	private float updateTimer;
@@ -43,6 +44,7 @@ public class SceneMaster : MonoBehaviour {
     private void Awake(){
         Scene scene = SceneManager.GetActiveScene();
         levelID = scene.name; 
+        pauseGame = false; 
 
         // if SceneMaster exists from a previous level, delete it
         if( SceneMaster.active != null ){
@@ -88,7 +90,7 @@ public class SceneMaster : MonoBehaviour {
     		|| Input.GetButton("Fire1") || Input.GetAxis("Horizontal") != 0);
     	if( !gameStart && gotInput ){ gameStart = true; }
 
-    	if( gameStart ){
+    	if( gameStart && !pauseGame ){
     		// process in-game timer
     		updateTimer += Time.deltaTime; 
     		if( updateTimer > timeUpdateTick ){
@@ -104,7 +106,14 @@ public class SceneMaster : MonoBehaviour {
     			timerMinutes.text = minutes.ToString("00");
     			timerSeconds.text = remainder.ToString("00");
     		}
-    	}
-        
+    	} 
+    }
+
+// -----------------------------------------------------------------------------
+// Public methods
+
+    // [[ ----- PAUSE TIMER ----- ]]
+    public void PauseTimer( bool _val ){
+        pauseGame = _val;
     }
 }
