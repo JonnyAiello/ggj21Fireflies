@@ -36,7 +36,6 @@ public class PCAnim : MonoBehaviour {
 
     private void Awake(){
     	anim = GetComponent<Animator>(); 
-    	// spriteRenderer = GetComponent<SpriteRenderer>(); 
     	pcState = GetComponent<PCState>();
     	pcInput = GetComponent<PCInput>();
     	mJump = GetComponent<Move_Jump>();
@@ -159,7 +158,13 @@ public class PCAnim : MonoBehaviour {
                         process = false; 
                         anim.SetBool("ToDuck", true);
                         aState = State.BoxDuck; 
-                    }
+                    // go to jump
+    				}else if( mJump.IsActive ){
+    					transition = true;
+    					process = false;  
+    					anim.SetBool("ToJump", true);
+    					aState = State.BoxJump; 
+    				}
     			}
     			break;
     		
