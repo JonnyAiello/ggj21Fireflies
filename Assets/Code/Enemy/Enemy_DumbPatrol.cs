@@ -16,6 +16,7 @@ public class Enemy_DumbPatrol : MonoBehaviour{
     private int targIndex; 
 
     // Reference Variables
+    public GameObject deathPopPref; 
     public Transform[] path;
 
     private void Start(){
@@ -72,6 +73,20 @@ public class Enemy_DumbPatrol : MonoBehaviour{
     	}
     	lastTarg = nextTarg;
     	nextTarg = path[targIndex]; 
+    }
+
+    private void OnTriggerEnter2D( Collider2D _other ){
+    	if( _other.tag == "Player" ){ Die(); }
+    }
+
+    // [[ ----- DIE ----- ]]
+    private void Die(){
+    	GameObject deathPop = (GameObject)Instantiate(
+            deathPopPref, transform.position, transform.rotation); 
+    	deathPop.transform.Find("Sprite").GetComponent<SpriteRenderer>().color 
+    		= Color.black; 
+        deathPop.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 8);
+        Destroy(gameObject); 
     }
 
 }
