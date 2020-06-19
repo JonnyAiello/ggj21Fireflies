@@ -38,7 +38,6 @@ public class Move_Dash : MoveBehavior {
 	private PCInput pcInput; 
 	private PCState pcState;
     private PCMove pcMove; 
-    private Move_Run mRun; 
     public CircleCollider2D bodyCollider;  
     public GameObject cooldownEffectGO;
     public GameObject dashBurstEffectPrefab;
@@ -60,7 +59,6 @@ public class Move_Dash : MoveBehavior {
 		pcInput = GetComponent<PCInput>();
 		pcState = GetComponent<PCState>(); 
         pcMove = GetComponent<PCMove>();
-        mRun = GetComponent<Move_Run>(); 
         colliderRadius = (bodyCollider.bounds.size.x / 2f) + 0.2f; 
 
 	}
@@ -83,7 +81,7 @@ public class Move_Dash : MoveBehavior {
             
             case State.NotDashing:
                 if( !_overridden ){
-                    if( pcInput.DashButton && mRun.IsActive ){
+                    if( pcInput.DashButton && pcState.MovingHoriz ){
                         dState = State.Initialize;
                     }
                 }

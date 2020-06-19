@@ -5,6 +5,12 @@ using UnityEngine;
 Moves at the top of the move list get first priority to be exclusive - once an
 exclusive move is processesed, the rest of the list is ignored. Because of this
 high-priority moves should be placed at the top, in order of preceedence
+
+Move autonomy - move behaviors should not rely on direct references to other 
+move behaviors attached to the object - the PC should compile with any combo of
+attached MBs. To that end, moves that require knowledge of the state of other
+MBs should look to PCState to get that info, and likewise MBs that need to 
+signal their current state should update PCState with that information. 
 */
 
 
@@ -19,10 +25,6 @@ public class PCMove : MonoBehaviour{
 
 	// Reference Variables
 	[SerializeField] private List<MoveBehavior> moveList;
-	private Move_Run run; 	
-	private Move_Jump jump; 
-	private Move_WallSlide wallSlide; 
-	private Move_Dash dash; 
 	private Rigidbody2D rb; 
 	private PCInput pcInput; 
 
@@ -33,11 +35,8 @@ public class PCMove : MonoBehaviour{
 	public float VelocityY { get{return rbVelocity.y;} }
 
 
+	// [[ ----- AWAKE ----- ]]
 	private void Awake(){
-		run = GetComponent<Move_Run>(); 
-		jump = GetComponent<Move_Jump>(); 
-		wallSlide = GetComponent<Move_WallSlide>(); 
-		dash = GetComponent<Move_Dash>(); 
 		rb = GetComponent<Rigidbody2D>();
 		pcInput = GetComponent<PCInput>();  
 	}

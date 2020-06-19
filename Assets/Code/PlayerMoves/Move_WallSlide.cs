@@ -12,7 +12,6 @@ public class Move_WallSlide : MoveBehavior {
 	private PCInput pcInput; 
 	private PCState pcState;
     private PCMove pcMove;  
-    // public ParticleSystem wallSlideEffect;
 
     // Properties
     public bool IsActive { get{return isActive;} }
@@ -30,13 +29,9 @@ public class Move_WallSlide : MoveBehavior {
 	public override void Init( bool _overridden ){
 		bool leftWallSlide = (pcState.WalledLeft && pcInput.LeftButton);
 		bool rightWallSlide = (pcState.WalledRight && pcInput.RightButton); 
-		if( pcState.Airborn && (leftWallSlide || rightWallSlide) ){
+		if( !pcState.Grounded && (leftWallSlide || rightWallSlide) ){
 			isActive = true;
 		}else{ isActive = false; }
-
-		// activate/deactivate particle effect
-		// if( isActive && !wallSlideEffect.isPlaying ){ wallSlideEffect.Play(); }
-		// if( !isActive && wallSlideEffect.isPlaying ){ wallSlideEffect.Stop(); }
 	}
        
     public override bool AffectsVLimits(){ return isActive; }

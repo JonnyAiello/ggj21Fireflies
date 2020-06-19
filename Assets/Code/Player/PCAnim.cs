@@ -258,12 +258,12 @@ public class PCAnim : MonoBehaviour {
                         anim.SetBool("ToDash", true);
                         aState = State.BoxDash; 
                     // go to jump
-                    }else if( mJump.IsActive ){
+                    }/*else if( mJump.IsActive ){
                         transition = true; 
                         process = false; 
                         anim.SetBool("ToJump", true); 
                         aState = State.BoxJump; 
-                    }
+                    }*/
                 }
                 break;
 

@@ -5,7 +5,6 @@ using UnityEngine;
 public class PCState : MonoBehaviour {
 
 	// Flags
-	[SerializeField] private bool airborn;
 	[SerializeField] private bool grounded; 
 	[SerializeField] private bool ceilinged; 
 	[SerializeField] private bool walledLeft;
@@ -13,12 +12,13 @@ public class PCState : MonoBehaviour {
 	[SerializeField] private bool walled; 
 
 	// Properties
-	public bool Airborn { get{return airborn;} }
 	public bool Grounded { get{return grounded;} }
 	public bool Ceilinged { get{return ceilinged;} }
 	public bool WalledLeft { get{return walledLeft;} }
 	public bool WalledRight { get{return walledRight;} }
 	public bool Walled { get{return walled;} }
+	public bool MovingHoriz { get; set; }
+	public bool Ducked { get; set; }
 
 	// Variables
 	const float groundedRadius = .2f;
@@ -50,9 +50,7 @@ public class PCState : MonoBehaviour {
 	// [[ ----- UPDATE ----- ]]
 	public void StateUpdate(){
 
-		// set airborn flag (based on grounded)
-		if( !grounded && !airborn ){ airborn = true; }
-		else if( grounded && airborn ){ airborn = false; }
+		
 	}
 
 

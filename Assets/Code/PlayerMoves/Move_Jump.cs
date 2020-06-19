@@ -56,7 +56,9 @@ public class Move_Jump : MoveBehavior {
 
             case State.Landed_ButtonReleased:
                 if( !pcState.Grounded ){ jState = State.Freefall; }
-                else if( pcInput.JumpButton ){ jState = State.Jumping_Liftoff; }
+                else if( pcInput.JumpButton && !pcState.Ducked ){ 
+                    jState = State.Jumping_Liftoff; 
+                }
                 break;
             
             case State.Jumping_Liftoff:

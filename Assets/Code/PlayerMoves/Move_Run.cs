@@ -35,7 +35,11 @@ public class Move_Run : MoveBehavior {
             && (pcInput.LeftButton || pcInput.RightButton) ){ 
 
             isActive = true; 
-        }else{ isActive = false; }
+            pcState.MovingHoriz = true; 
+        }else{
+            isActive = false; 
+            pcState.MovingHoriz = false; 
+        }
     }
 
     public override bool AffectsForce(){ return isActive; }
