@@ -57183,6 +57183,7 @@ GameObject:
   - component: {fileID: 1164088995}
   - component: {fileID: 1164088994}
   - component: {fileID: 1164088992}
+  - component: {fileID: 1164088996}
   m_Layer: 0
   m_Name: BasicEnemy
   m_TagString: Untagged
@@ -57205,6 +57206,8 @@ MonoBehaviour:
   isActive: 0
   patrolLoop: 1
   moveSpeed: 0.04
+  vulnerableTime: 1
+  dangerTime: 3
   deathPopPref: {fileID: 3971695797696523591, guid: 8e58c732d0d180deb800fd67f4350657,
     type: 3}
   path:
@@ -57274,6 +57277,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.44674742, y: 0.4658432}
   m_EdgeRadius: 0
+--- !u!114 &1164088996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1164088991}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8507e0fca5544fc4d8c1483995abed78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isDangerous: 0
 --- !u!1 &1204480716
 GameObject:
   m_ObjectHideFlags: 0

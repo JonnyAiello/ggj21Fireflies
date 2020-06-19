@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(DangerObject))]
 public class Enemy_DumbPatrol : MonoBehaviour{ 
 
     // Variables
@@ -9,6 +10,10 @@ public class Enemy_DumbPatrol : MonoBehaviour{
     public bool patrolLoop; 
     [Range(0, 0.1f)] public float moveSpeed; 
     	// % of distance between points moved per frame
+    public float vulnerableTime = 1f;
+    public float dangerTime = 3f; 
+    private float timer; 
+    private bool isOffensive; 
     private bool pathForward;
     private float posRatio;  
     private Transform lastTarg;
@@ -18,7 +23,15 @@ public class Enemy_DumbPatrol : MonoBehaviour{
     // Reference Variables
     public GameObject deathPopPref; 
     public Transform[] path;
+    private SpriteRenderer sprite; 
+    private DangerObject dangerObj;
 
+    private void Awake(){
+    	sprite = transform.Find("Sprite").GetComponent<SpriteRenderer>(); 
+    	dangerObj = GetComponent<DangerObject>(); 
+    }
+
+    // [[ ----- START ----- ]]
     private void Start(){
     	pathForward = true; // sets to true in SetNewTarget initializiation 
 
@@ -37,8 +50,32 @@ public class Enemy_DumbPatrol : MonoBehaviour{
     	}
     }
 
+    // [[ ----- UPDATE ----- ]]
     private void Update(){
     	if( isActive ){
+    		// update danger state
+    		if( isOffensive ){
+    			timer += Time.deltaTime; 
+    			if( timer > dangerTime ){
+    				// set to vulnerable
+    				sprite.color = Color.white; 
+    				dangerObj.isDangerous = false; 
+    				timer = 0; 
+    				isOffensive = false; 
+    			}
+    		}else{
+    			timer += Time.deltaTime; 
+    			if( timer > vulnerableTime ){
+    				// set to offensive
+    				sprite.color = Color.black; 
+    				dangerObj.isDangerous = true; 
+    				timer = 0; 
+    				isOffensive = true; 
+    			}
+    		}
+
+
+    		// update position
     		if( posRatio < 1 ){
     			posRatio += moveSpeed; 
     			transform.position = Vector2.Lerp(
@@ -47,6 +84,7 @@ public class Enemy_DumbPatrol : MonoBehaviour{
     	}
     }
 
+    // [[ ----- SET NEW TARGET ----- ]]
     private void SetNewTarget(){
     	// exactly set pos to next target position
     	transform.position = nextTarg.position; 
@@ -75,8 +113,9 @@ public class Enemy_DumbPatrol : MonoBehaviour{
     	nextTarg = path[targIndex]; 
     }
 
+    // [[ ----- ON TRIGGER ENTER 2D ----- ]]
     private void OnTriggerEnter2D( Collider2D _other ){
-    	if( _other.tag == "Player" ){ Die(); }
+    	if( _other.tag == "Player" && !isOffensive ){ Die(); }
     }
 
     // [[ ----- DIE ----- ]]
