@@ -40,6 +40,8 @@ public class Player : MonoBehaviour {
             pcInput.InputUpdate(); 
             pcState.StateUpdate();    
             pcAnim.AnimUpdate(); 
+
+            if( pcInput.LeftDT ){ Debug.Log("TESTING LEFT DT"); }
         }
     }
 
