@@ -325,6 +325,7 @@ GameObject:
   - component: {fileID: 102709965}
   - component: {fileID: 102709973}
   - component: {fileID: 102709966}
+  - component: {fileID: 102709968}
   - component: {fileID: 102709977}
   - component: {fileID: 102709975}
   - component: {fileID: 102709976}
@@ -447,6 +448,7 @@ MonoBehaviour:
   isActive: 0
   accelSpeed: 2
   autoBrakes: 1
+  maxSpeed: 4
 --- !u!114 &102709967
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -461,6 +463,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   deathPopPref: {fileID: 3971695797696523591, guid: 8e58c732d0d180deb800fd67f4350657,
     type: 3}
+--- !u!114 &102709968
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 102709960}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42e3713f3a4ae0f379c1ff44d382e4d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isActive: 0
+  accelSpeed: 2
+  autoBrakes: 1
 --- !u!114 &102709971
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -499,10 +516,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rbVelocity: {x: 0, y: 0}
-  maxHSpeed: 6
+  maxHSpeed: 7
   maxVSpeed: 15
   moveList:
   - {fileID: 102709977}
+  - {fileID: 102709968}
   - {fileID: 102709966}
   - {fileID: 102709975}
   - {fileID: 102709976}
@@ -521,6 +539,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leftButton: 0
   rightButton: 0
+  leftDoubleTap: 0
+  rightDoubleTap: 0
   downButton: 0
   jumpButton: 0
   dashButton: 0

@@ -18,6 +18,7 @@ public class PCState : MonoBehaviour {
 	public bool WalledRight { get{return walledRight;} }
 	public bool Walled { get{return walled;} }
 	public bool MovingHoriz { get; set; }
+	public bool Running { get; set; }
 	public bool Ducked { get; set; }
 
 	// Variables

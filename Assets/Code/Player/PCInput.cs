@@ -13,15 +13,17 @@ input to act more closely to a digital input
 public class PCInput : MonoBehaviour{
 
 	// Variables
-    [SerializeField] private bool leftButton; 
-    [SerializeField] private bool leftDoubleTap; 
-    [SerializeField] private bool rightButton; 
+    [SerializeField] private bool leftButton;  
+    [SerializeField] private bool rightButton;
+    [SerializeField] private bool leftDoubleTap;
+    [SerializeField] private bool rightDoubleTap; 
     [SerializeField] private bool downButton;     
 	[SerializeField] private bool jumpButton; 
     [SerializeField] private bool dashButton; 
     private Dictionary<string, DoubleTapInput> doubleTapDict 
         = new Dictionary<string, DoubleTapInput>();
     private bool leftButtonDownLock; 
+    private bool rightButtonDownLock; 
 
     // Properties
     public bool LeftButton { get{return leftButton;} }
@@ -30,6 +32,7 @@ public class PCInput : MonoBehaviour{
     public bool JumpButton { get{return jumpButton;} }
     public bool DashButton { get{return dashButton;} }
     public bool LeftDT { get{return leftDoubleTap;} }
+    public bool RightDT { get{return rightDoubleTap;} }
 
 
     // [[ ----- INPUT UPDATE ----- ]]
@@ -57,17 +60,34 @@ public class PCInput : MonoBehaviour{
             }
         }
 
-
+        // right
         if( (!rightButton && Input.GetButton("RightButton"))
             || Input.GetAxis("Horizontal") > 0.1f){ 
 
             rightButton = true; 
         }
+
+        // right double-tap logic
+        if( rightButton ){ rightButtonDownLock = true; }
+        if( rightButtonDownLock && !rightButton ){ rightButtonDownLock = false; }
+        else if( rightButtonDownLock ){
+            if( !doubleTapDict.ContainsKey("rightButton") ){ 
+                doubleTapDict.Add("rightButton", new DoubleTapInput());
+            }else{ doubleTapDict["rightButton"].UpdateDP(true); }
+        }else if( !rightButtonDownLock ){
+            if( doubleTapDict.ContainsKey("rightButton") ){
+                doubleTapDict["rightButton"].UpdateDP(false);
+            }
+        }
+
+        // down
         if( (!downButton && Input.GetButton("DownButton"))
             || Input.GetAxis("Vertical") < -0.1f){ 
 
             downButton = true; 
         }
+
+        // jump + dash
         if( !jumpButton && Input.GetButton("Jump") ){ jumpButton = true; }
         if( !dashButton && Input.GetButton("Dash") ){ dashButton = true; }
 
@@ -76,10 +96,11 @@ public class PCInput : MonoBehaviour{
         foreach( KeyValuePair<string,DoubleTapInput> dti in doubleTapDict ){
             if( dti.Value.Succeeded ){
                 switch( dti.Key ){
-                    case "leftButton": leftDoubleTap = true; 
+                    case "leftButton": 
+                        leftDoubleTap = true; 
                         break;
-                    default:
-                        Debug.Log("switch: value match not found");
+                    case "rightButton": 
+                        rightDoubleTap = true; 
                         break;
                 }
             }
@@ -95,15 +116,12 @@ public class PCInput : MonoBehaviour{
             
             leftButton = false;
             leftDoubleTap = false; 
-            /*if( doubleTapDict.ContainsKey("leftButton") ){
-                doubleTapDict["leftButton"].UpdateDP(false);
-            }*/
-              
         }
         if( (rightButton && !Input.GetButton("RightButton"))
             || Input.GetAxis("Horizontal") < 0.1f){ 
 
-            rightButton = false; 
+            rightButton = false;
+            rightDoubleTap = false;  
         }
         if( (downButton && !Input.GetButton("DownButton"))
             || (downButton && Input.GetAxis("Vertical") > -0.1f)){ 
@@ -116,11 +134,14 @@ public class PCInput : MonoBehaviour{
     }
 }
 
+
+
+
 public class DoubleTapInput {
 
     // Variables
-    private const float firstTapMaxDuration = 1f;
-    private const float releaseMaxDuration = 0.5f; 
+    private const float firstTapMaxDuration = 0.5f;
+    private const float releaseMaxDuration = 0.6f; 
     
     // test variables
     public static int instanceIndex; 

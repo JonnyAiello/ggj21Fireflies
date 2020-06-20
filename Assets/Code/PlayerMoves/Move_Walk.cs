@@ -8,7 +8,8 @@ public class Move_Walk : MoveBehavior {
     [SerializeField] private bool isActive; 
     [SerializeField] private float accelSpeed = 2f;
     [SerializeField] private float autoBrakes = 1f;
-    private bool overriden; 
+    [SerializeField] private float maxSpeed = 3f; 
+    private bool overridden; 
 	private float minH;
     private float maxH; 
   
@@ -30,8 +31,9 @@ public class Move_Walk : MoveBehavior {
 // Movebehavior
 
     public override void Init( bool _overridden ){
-        overriden = _overridden; 
-    	if( !overriden
+        overridden = _overridden; 
+    	if( !overridden
+    		&& !pcState.Running
             && (pcInput.LeftButton || pcInput.RightButton) ){ 
 
             isActive = true; 
@@ -51,12 +53,12 @@ public class Move_Walk : MoveBehavior {
     	return new Vector2(hForce, 0); 
     }
 
-    public override bool AffectsHLimits(){ return !overriden; }
+    public override bool AffectsHLimits(){ return !(overridden || pcState.Running); }
     
     // [[ ----- GET H LIMITS ----- ]]
     public override Vector2 GetHLimits(){ 
-        minH = pcMove.MaxHSpeed * -1; 
-        maxH = pcMove.MaxHSpeed; 
+        minH = maxSpeed * -1; 
+        maxH = maxSpeed; 
 
     	// stop at wall
         if( pcState.Walled ){
