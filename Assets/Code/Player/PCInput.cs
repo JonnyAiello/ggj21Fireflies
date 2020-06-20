@@ -21,6 +21,7 @@ public class PCInput : MonoBehaviour{
     [SerializeField] private bool dashButton; 
     private Dictionary<string, DoubleTapInput> doubleTapDict 
         = new Dictionary<string, DoubleTapInput>();
+    private bool leftButtonDownLock; 
 
     // Properties
     public bool LeftButton { get{return leftButton;} }
@@ -35,15 +36,28 @@ public class PCInput : MonoBehaviour{
     public void InputUpdate(){    	
         // only engage here, disengage bool in fixed update after PlayerMove
         // has had a chance to process the button push (avoid dropped inputs)
+        
+        // left
         if( (!leftButton && Input.GetButton("LeftButton"))
             || Input.GetAxis("Horizontal") < -0.1f ){ 
             
             leftButton = true;
-            // double-tap logic
+        }
+
+        // left double-tap logic 
+        if( leftButton ){ leftButtonDownLock = true; }
+        if( leftButtonDownLock && !leftButton ){ leftButtonDownLock = false; }
+        else if( leftButtonDownLock ){
             if( !doubleTapDict.ContainsKey("leftButton") ){ 
                 doubleTapDict.Add("leftButton", new DoubleTapInput());
             }else{ doubleTapDict["leftButton"].UpdateDP(true); }
+        }else if( !leftButtonDownLock ){
+            if( doubleTapDict.ContainsKey("leftButton") ){
+                doubleTapDict["leftButton"].UpdateDP(false);
+            }
         }
+
+
         if( (!rightButton && Input.GetButton("RightButton"))
             || Input.GetAxis("Horizontal") > 0.1f){ 
 
@@ -81,9 +95,9 @@ public class PCInput : MonoBehaviour{
             
             leftButton = false;
             leftDoubleTap = false; 
-            if( doubleTapDict.ContainsKey("leftButton") ){
+            /*if( doubleTapDict.ContainsKey("leftButton") ){
                 doubleTapDict["leftButton"].UpdateDP(false);
-            }
+            }*/
               
         }
         if( (rightButton && !Input.GetButton("RightButton"))
@@ -107,6 +121,12 @@ public class DoubleTapInput {
     // Variables
     private const float firstTapMaxDuration = 1f;
     private const float releaseMaxDuration = 0.5f; 
+    
+    // test variables
+    public static int instanceIndex; 
+    private int index; 
+    // --
+
     private float startTime;
     private State state; 
     private bool isFinished; 
@@ -126,6 +146,10 @@ public class DoubleTapInput {
     public DoubleTapInput(){
         startTime = Time.time; 
         state = State.FirstTap; 
+
+        // test
+        index = DoubleTapInput.instanceIndex;
+        DoubleTapInput.instanceIndex++; 
     }
 
     // [[ ----- UPDATE DP ----- ]]
@@ -134,19 +158,27 @@ public class DoubleTapInput {
         switch( state ){
             case State.FirstTap:
                 if( _inputBool ){
-                    if( timer > firstTapMaxDuration ){ isFinished = true; }
+                    if( timer > firstTapMaxDuration ){
+                        isFinished = true;
+                        Debug.Log("FirstTap held beyond limit, dt finished: " + index); 
+                    }
                 }else{
                     state = State.Release; 
                     startTime = Time.time; 
+                    Debug.Log("FirstTap released, reset timer, move to release state: " + index);
                 }
                 break;
             
             case State.Release:
                 if( !_inputBool ){
-                    if( timer > releaseMaxDuration ){ isFinished = true; }
+                    if( timer > releaseMaxDuration ){ 
+                        isFinished = true; 
+                        Debug.Log("Release exceeds timer, dt finsihed: " + index);
+                    }
                 }else{
                     state = State.Finished; 
                     succeeded = true; 
+                    Debug.Log("DT executed, setting success state: " + index);
                 }
                 break;
             
