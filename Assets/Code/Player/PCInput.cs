@@ -142,12 +142,6 @@ public class DoubleTapInput {
     // Variables
     private const float firstTapMaxDuration = 0.5f;
     private const float releaseMaxDuration = 0.6f; 
-    
-    // test variables
-    public static int instanceIndex; 
-    private int index; 
-    // --
-
     private float startTime;
     private State state; 
     private bool isFinished; 
@@ -167,49 +161,33 @@ public class DoubleTapInput {
     public DoubleTapInput(){
         startTime = Time.time; 
         state = State.FirstTap; 
-
-        // test
-        index = DoubleTapInput.instanceIndex;
-        DoubleTapInput.instanceIndex++; 
     }
 
     // [[ ----- UPDATE DP ----- ]]
     public void UpdateDP( bool _inputBool ){
         float timer = Time.time - startTime;
         switch( state ){
+            
             case State.FirstTap:
                 if( _inputBool ){
-                    if( timer > firstTapMaxDuration ){
-                        isFinished = true;
-                        Debug.Log("FirstTap held beyond limit, dt finished: " + index); 
-                    }
+                    if( timer > firstTapMaxDuration ){ isFinished = true; }
                 }else{
                     state = State.Release; 
                     startTime = Time.time; 
-                    Debug.Log("FirstTap released, reset timer, move to release state: " + index);
                 }
                 break;
             
             case State.Release:
                 if( !_inputBool ){
-                    if( timer > releaseMaxDuration ){ 
-                        isFinished = true; 
-                        Debug.Log("Release exceeds timer, dt finsihed: " + index);
-                    }
+                    if( timer > releaseMaxDuration ){ isFinished = true; }
                 }else{
                     state = State.Finished; 
                     succeeded = true; 
-                    Debug.Log("DT executed, setting success state: " + index);
                 }
                 break;
             
-            case State.Finished:
-                Debug.Log("switch: state = " + State.Finished);
-                break;
-            
-            default:
-                Debug.Log("switch: value match not found");
-                break;
+            case State.Finished: break;
+            default: break;
         }
     }
 
