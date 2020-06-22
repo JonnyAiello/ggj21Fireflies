@@ -476,6 +476,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isActive: 0
+  spriteRenderer: {fileID: 141520465}
 --- !u!114 &102709971
 MonoBehaviour:
   m_ObjectHideFlags: 0
