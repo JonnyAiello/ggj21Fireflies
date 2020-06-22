@@ -14,34 +14,26 @@ public class PCInput : MonoBehaviour{
 
 	// Variables
     private float axisThresh = 0.05f;
-    private DoubleTapInput accessDT; //used to reference DTs contained in dtDict
+    private DoubleTapInput doubleTap; //used to reference DTs contained in dtDict
 
     [SerializeField] private bool leftButton;  
     [SerializeField] private bool rightButton;
-    // [SerializeField] private bool leftDoubleTap;
-    // [SerializeField] private bool rightDoubleTap; 
     [SerializeField] private bool downButton;     
 	[SerializeField] private bool jumpButton; 
     [SerializeField] private bool dashButton; 
-    // private Dictionary<string, DoubleTapInput> doubleTapDict 
-    //     = new Dictionary<string, DoubleTapInput>();
-    private bool leftButtonDownLock; 
-    private bool rightButtonDownLock; 
-
+   
     // Properties
     public bool LeftButton { get{return leftButton;} }
     public bool RightButton { get{return rightButton;} }
     public bool DownButton { get{return downButton;} }
     public bool JumpButton { get{return jumpButton;} }
     public bool DashButton { get{return dashButton;} }
-    // public bool LeftDT { get{return leftDoubleTap;} }
-    // public bool RightDT { get{return rightDoubleTap;} }
-
+  
 
     // [[ ----- AWAKE ----- ]]
     private void Awake(){
         DoubleTapInput.dtDict = null;
-        accessDT = new DoubleTapInput(); 
+        doubleTap = new DoubleTapInput(); 
     }
 
     // [[ ----- INPUT UPDATE ----- ]]
@@ -55,8 +47,7 @@ public class PCInput : MonoBehaviour{
             
             leftButton = true;
             // left double-tap logic
-            Debug.Log("Updating LEFT");
-            accessDT.UpdateDT("leftButton", true);
+            doubleTap.UpdateDT("leftButton", true);
         }
 
         // right
@@ -64,8 +55,7 @@ public class PCInput : MonoBehaviour{
             || (!rightButton && Input.GetAxis("Horizontal") > axisThresh)){ 
 
             rightButton = true; 
-            Debug.Log("Updating RIGHT");
-            accessDT.UpdateDT("rightButton", true);
+            doubleTap.UpdateDT("rightButton", true);
         }
 
         // down
@@ -88,8 +78,8 @@ public class PCInput : MonoBehaviour{
             
             leftButton = false;
             // double-tap logic
-            accessDT.UpdateDT("leftButton", false);
-            accessDT.CleanUpDT("leftButton");
+            doubleTap.UpdateDT("leftButton", false);
+            doubleTap.CleanUpDT("leftButton");
 
         }
         // right
@@ -97,8 +87,8 @@ public class PCInput : MonoBehaviour{
             || (rightButton && Input.GetAxis("Horizontal") < axisThresh) ){ 
 
             rightButton = false;
-            accessDT.UpdateDT("rightButton", false);
-            accessDT.CleanUpDT("rightButton");
+            doubleTap.UpdateDT("rightButton", false);
+            doubleTap.CleanUpDT("rightButton");
         }
         // down
         if( (downButton && !Input.GetButton("DownButton"))
@@ -109,13 +99,11 @@ public class PCInput : MonoBehaviour{
         // jump + dash
         if( jumpButton && !Input.GetButton("Jump") ){ jumpButton = false; }
         if( dashButton && !Input.GetButton("Dash") ){ dashButton = false; }
-         
     }
-
 
     // [[ ----- DOUBLE TAP ACTIVE ----- ]]
     public bool DoubleTapActive( string _inputName ){
-        return accessDT.IsActive( _inputName ); 
+        return doubleTap.IsActive( _inputName ); 
     }
 }
 
@@ -132,11 +120,6 @@ public class DoubleTapInput {
     private State state; 
     private bool isFinished; 
     private bool succeeded;
-
-    // test variables
-    public static int instanceIndex; 
-    public int index; 
-    // --
 
     // Properties
     public State CurrState { get{return state;} }
@@ -159,12 +142,6 @@ public class DoubleTapInput {
         // set up timer + state
         startTime = Time.time; 
         state = State.FirstTap; 
-
-        // test
-        index = DoubleTapInput.instanceIndex;
-        DoubleTapInput.instanceIndex++; 
-
-        Debug.Log("DTI Created: " + index);
     }
 
      // [[ ----- UPDATE DT ----- ]]
@@ -183,9 +160,6 @@ public class DoubleTapInput {
         if( dtDict.ContainsKey(_dtid) ){
             if( dtDict[_dtid].Succeeded ){ isActive = true; }
         }
-        if( isActive ){
-            Debug.Log("Testing IsActive " + _dtid + " " + isActive);
-        }
         return isActive; 
     }
 
@@ -193,7 +167,6 @@ public class DoubleTapInput {
     public void CleanUpDT( string _dtid ){
         if( dtDict.ContainsKey(_dtid) ){
             if( dtDict[_dtid].CurrState == State.Finished ){
-                Debug.Log("CLEANUP REMOVED: " + _dtid + " " + dtDict[_dtid].index);
                 dtDict.Remove(_dtid); 
             }
         }
@@ -202,15 +175,11 @@ public class DoubleTapInput {
     // [[ ----- UPDATE STATE ----- ]]
     private void UpdateState( bool _buttonDown ){
         float timer = Time.time - startTime;
-        // Debug.Log("Updating State, index: " + index + " state: " + state + " timer: " + timer);
-        Debug.Log("updating");
         if( _buttonDown ){
             if( state == State.Release ){
-                Debug.Log("moving to state - finished " + index);
                 state = State.Finished; 
                 if( timer < releaseMaxDuration ){
                     succeeded = true; 
-                    Debug.Log("DT SUCCEEDED: " + index); 
                 }
             }
 
@@ -219,11 +188,9 @@ public class DoubleTapInput {
             if( state == State.FirstTap ){
                 if( timer > firstTapMaxDuration ){
                     state = State.Finished; 
-                    Debug.Log("FirstTap held beyond limit, dt finished: " + index); 
                 }else{
                     state = State.Release;
                     startTime = Time.time; 
-                    Debug.Log("FirstTap released, reset timer, move to release state: " + index);
                 }
             }
         }
