@@ -494,6 +494,7 @@ MonoBehaviour:
   walledLeft: 0
   walledRight: 0
   walled: 0
+  movingHoriz: 0
   whatIsSolid:
     serializedVersion: 2
     m_Bits: 256
@@ -538,8 +539,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leftButton: 0
   rightButton: 0
-  leftDoubleTap: 0
-  rightDoubleTap: 0
   downButton: 0
   jumpButton: 0
   dashButton: 0
@@ -62965,7 +62964,7 @@ GameObject:
   - component: {fileID: 1901520695}
   - component: {fileID: 1901520696}
   m_Layer: 0
-  m_Name: SpriteReference
+  m_Name: DefaultSpriteReference
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

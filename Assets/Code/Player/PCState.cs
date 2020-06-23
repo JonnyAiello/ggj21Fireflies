@@ -10,6 +10,7 @@ public class PCState : MonoBehaviour {
 	[SerializeField] private bool walledLeft;
 	[SerializeField] private bool walledRight; 
 	[SerializeField] private bool walled; 
+	[SerializeField] private bool movingHoriz; 
 
 	// Properties
 	public bool Grounded { get{return grounded;} }
@@ -17,9 +18,12 @@ public class PCState : MonoBehaviour {
 	public bool WalledLeft { get{return walledLeft;} }
 	public bool WalledRight { get{return walledRight;} }
 	public bool Walled { get{return walled;} }
-	public bool MovingHoriz { get; set; }
+	public bool MovingHoriz { get{return (MoveRun || MoveWalk);} }
 	public bool Running { get; set; }
 	public bool Ducked { get; set; }
+
+	public bool MoveRun { get; set; }
+	public bool MoveWalk { get; set; }
 
 	// Variables
 	const float groundedRadius = .2f;

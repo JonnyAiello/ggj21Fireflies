@@ -66,10 +66,10 @@ public class Move_Dash : MoveBehavior {
 	// On Draw Gizmos
 	private void OnDrawGizmos(){
 
-		if( hitPoint != Vector2.zero ){
+		/*if( hitPoint != Vector2.zero ){
 			Gizmos.color = Color.green; 
 			Gizmos.DrawSphere(hitPoint, .2f);
-		}
+		}*/
 
 	}
 

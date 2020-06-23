@@ -40,12 +40,12 @@ public class Move_Run : MoveBehavior {
             ){ 
 
             isActive = true; 
-            pcState.MovingHoriz = true; 
+            pcState.MoveRun = true; 
             pcState.Running = true; 
             spriteRenderer.color = Color.green; 
         }else{
             isActive = false; 
-            pcState.MovingHoriz = false; 
+            pcState.MoveRun = false; 
             pcState.Running = false; 
             spriteRenderer.color = Color.white; 
         }

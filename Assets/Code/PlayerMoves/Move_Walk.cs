@@ -37,10 +37,10 @@ public class Move_Walk : MoveBehavior {
             && (pcInput.LeftButton || pcInput.RightButton) ){ 
 
             isActive = true; 
-            pcState.MovingHoriz = true; 
+            pcState.MoveWalk = true; 
         }else{
             isActive = false; 
-            pcState.MovingHoriz = false; 
+            pcState.MoveWalk = false; 
         }
     }
 
