@@ -15,9 +15,12 @@ public class PCAnim : MonoBehaviour {
     // public GameObject particleEffects;
     public ParticleSystem wallSlideRightEffect;
     public ParticleSystem wallSlideLeftEffect;
+    public ParticleSystem runRightEffect;
+    public ParticleSystem runLeftEffect;
     private Animator anim; 
     private PCState pcState;
-    private PCInput pcInput; 
+    private PCInput pcInput;
+    private PCMove pcMove;  
     private Move_Jump mJump; 
     private Move_WallSlide mWallslide;
     private Move_Dash mDash;
@@ -38,6 +41,7 @@ public class PCAnim : MonoBehaviour {
     	anim = GetComponent<Animator>(); 
     	pcState = GetComponent<PCState>();
     	pcInput = GetComponent<PCInput>();
+        pcMove = GetComponent<PCMove>();
     	mJump = GetComponent<Move_Jump>();
     	mWallslide = GetComponent<Move_WallSlide>(); 
     	mDash = GetComponent<Move_Dash>(); 
@@ -48,8 +52,9 @@ public class PCAnim : MonoBehaviour {
     }
 
     public void AnimUpdate(){
-    	switch( aState ){
-    	
+    	RunEffects(); 
+
+        switch( aState ){
 
     		case State.BoxIdle:
     			if( transition 
@@ -316,5 +321,42 @@ public class PCAnim : MonoBehaviour {
         wallSlideLeftEffect.gameObject.SetActive(false); 
         wallSlideRightEffect.Stop();
         wallSlideLeftEffect.Stop(); 
+    }
+
+    private void RunEffects(){
+        if( pcState.MoveRun && pcState.Grounded ){
+            if( pcMove.VelocityX > 0 ){
+                // turn on right
+                if( !runRightEffect.gameObject.activeSelf ){
+                    runRightEffect.gameObject.SetActive(true);
+                }
+                if( !runRightEffect.isPlaying ){ runRightEffect.Play(); }
+                // turn off left
+                if( runLeftEffect.isPlaying ){ runLeftEffect.Stop(); }
+                if( runLeftEffect.gameObject.activeSelf ){
+                    runLeftEffect.gameObject.SetActive(false);
+                }
+            }else if( pcMove.VelocityX < 0 ){
+                // turn on left
+                if( !runLeftEffect.gameObject.activeSelf ){
+                    runLeftEffect.gameObject.SetActive(true);
+                }
+                if( !runLeftEffect.isPlaying ){ runLeftEffect.Play(); }
+                // turn off right
+                if( runRightEffect.isPlaying ){ runRightEffect.Stop(); }
+                if( runRightEffect.gameObject.activeSelf ){
+                    runRightEffect.gameObject.SetActive(false);
+                }
+            }
+        }else{
+            if( runLeftEffect.isPlaying ){ runLeftEffect.Stop(); }
+            if( runLeftEffect.gameObject.activeSelf ){ 
+                runLeftEffect.gameObject.SetActive(false); 
+            }
+            if( runRightEffect.isPlaying ){ runRightEffect.Stop(); }
+            if( runRightEffect.gameObject.activeSelf ){ 
+                runRightEffect.gameObject.SetActive(false); 
+            }
+        }
     }
 }
