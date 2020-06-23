@@ -218,7 +218,21 @@ public class Move_Dash : MoveBehavior {
             // begin cooldown particle effect
         momentumAddedLock = true; 
 
-        return new Vector2(xForce, 0); 
+        return new Vector2(xForce, 10); 
     } 
+
+    // [[ ----- AFFECTS V LIMITS ----- ]]
+    public override bool AffectsVLimits(){
+        if( dState == State.PostMomentum ){ return true; }
+        return false;
+    }
+
+    // [[ ----- GET V LIMITS ----- ]]
+    public override Vector2 GetVLimits(){
+        // slow the rate of fall after a dash to preserve sense of momentum
+        float minV = -4;
+        float maxV = 5; 
+        return new Vector2(minV, maxV); 
+    }
 
 }
