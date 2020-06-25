@@ -22,6 +22,7 @@ public class PCAnim : MonoBehaviour {
     private PCInput pcInput;
     private PCMove pcMove;  
     private Move_Jump mJump; 
+    private Move_Run mRun; 
     private Move_WallSlide mWallslide;
     private Move_Dash mDash;
     private Move_Duck mDuck; 
@@ -29,6 +30,7 @@ public class PCAnim : MonoBehaviour {
     // Enums
     public enum State{
     	BoxIdle,
+        BoxRun,
     	BoxJump,
     	BoxLand,
     	BoxWallslide,
@@ -43,6 +45,7 @@ public class PCAnim : MonoBehaviour {
     	pcInput = GetComponent<PCInput>();
         pcMove = GetComponent<PCMove>();
     	mJump = GetComponent<Move_Jump>();
+        mRun = GetComponent<Move_Run>(); 
     	mWallslide = GetComponent<Move_WallSlide>(); 
     	mDash = GetComponent<Move_Dash>(); 
         mDuck = GetComponent<Move_Duck>(); 
@@ -64,8 +67,14 @@ public class PCAnim : MonoBehaviour {
     				process = true; 
     				anim.SetBool("ToIdle", false);
     			}else if( process ){
+                    // go to run 
+                    if( mRun.IsActive ){
+                        transition = true; 
+                        process = false; 
+                        anim.SetBool("ToRun", true);
+                        aState = State.BoxRun; 
                     // go to duck 
-                    if( mDuck.IsActive ){
+                    }else if( mDuck.IsActive ){
                         transition = true; 
                         process = false; 
                         anim.SetBool("ToDuck", true);
@@ -99,6 +108,57 @@ public class PCAnim : MonoBehaviour {
     				}
     			}
     			break;
+
+
+            case State.BoxRun:
+                if( transition 
+                    && anim.GetCurrentAnimatorStateInfo(0).IsName("BoxRun")){
+
+                    transition = false; 
+                    process = true; 
+                    anim.SetBool("ToRun", false);
+                }else if( process ){
+                    // go to duck 
+                    if( mDuck.IsActive ){
+                        transition = true; 
+                        process = false; 
+                        anim.SetBool("ToDuck", true);
+                        aState = State.BoxDuck; 
+                    // go to dash
+                    }else if( mDash.DState == Move_Dash.State.Move ){
+                        transition = true; 
+                        process = false;  
+                        anim.SetBool("ToDash", true);
+                        aState = State.BoxDash; 
+                    }else if( !pcState.Grounded ){
+                        // go to Wallslide
+                        if( mWallslide.IsActive ){
+                            transition = true;
+                            process = false;  
+                            anim.SetBool("ToWallslide", true);
+                            aState = State.BoxWallslide; 
+                        // go to jump
+                        }else{
+                            transition = true;
+                            process = false;  
+                            anim.SetBool("ToJump", true);
+                            aState = State.BoxJump; 
+                        }
+                    // go to jump
+                    }else if( mJump.IsActive ){
+                        transition = true;
+                        process = false;  
+                        anim.SetBool("ToJump", true);
+                        aState = State.BoxJump; 
+                    // go to idle
+                    }else if( !mRun.IsActive ){
+                        transition = true; 
+                        process = false; 
+                        anim.SetBool("ToIdle", true);
+                        aState = State.BoxIdle;
+                    }
+                }
+                break;
 
 
     		case State.BoxJump:
@@ -151,6 +211,12 @@ public class PCAnim : MonoBehaviour {
     					process = false;  
     					anim.SetBool("ToIdle", true); 
     					aState = State.BoxIdle; 
+                    // go to run
+                    }else if( mRun.IsActive ){
+                        transition = true; 
+                        process = false; 
+                        anim.SetBool("ToRun", true);
+                        aState = State.BoxRun; 
     				// go to dash
     				}else if( mDash.DState == Move_Dash.State.Move ){
     					transition = true; 
@@ -193,7 +259,7 @@ public class PCAnim : MonoBehaviour {
                         wallSlideRightEffect.gameObject.SetActive(true); 
                         wallSlideRightEffect.Play();
                     }
-    			}else if( process ){
+    			}else if( process ){                    
     				// go to dash
     				if( mDash.DState == Move_Dash.State.Move ){
     					transition = true; 
@@ -293,6 +359,12 @@ public class PCAnim : MonoBehaviour {
                         process = false;  
                         anim.SetBool("ToDash", true);
                         aState = State.BoxDash; 
+                    // got to run
+                    }else if( mRun.IsActive ){
+                        transition = true; 
+                        process = false; 
+                        anim.SetBool("ToRun", true);
+                        aState = State.BoxRun; 
                     // go to jump
                     }else if( mJump.IsActive ){
                         transition = true; 

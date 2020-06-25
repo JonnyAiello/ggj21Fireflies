@@ -18,7 +18,7 @@ public class Move_Run : MoveBehavior {
 	private PCInput pcInput; 
 	private PCState pcState;
     private PCMove pcMove; 
-    public SpriteRenderer spriteRenderer;  
+    // public SpriteRenderer spriteRenderer;  
 
     // Properties
     public bool IsActive { get{return isActive;} }
@@ -35,6 +35,7 @@ public class Move_Run : MoveBehavior {
     public override void Init( bool _overridden ){
         overriden = _overridden; 
     	if( !overriden
+            && !pcState.Ducked
             && (pcInput.DoubleTapActive("leftButton") 
                 || pcInput.DoubleTapActive("rightButton")) 
             ){ 
@@ -42,12 +43,12 @@ public class Move_Run : MoveBehavior {
             isActive = true; 
             pcState.MoveRun = true; 
             pcState.Running = true; 
-            spriteRenderer.color = Color.green; 
+            // spriteRenderer.color = Color.green; 
         }else{
             isActive = false; 
             pcState.MoveRun = false; 
             pcState.Running = false; 
-            spriteRenderer.color = Color.white; 
+            // spriteRenderer.color = Color.white; 
         }
     }
 
