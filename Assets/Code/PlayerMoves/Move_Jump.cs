@@ -10,11 +10,14 @@ public class Move_Jump : MoveBehavior {
     [SerializeField] private float jumpForce = 13f;
     [SerializeField] private float wallJumpForce = 16;
     [SerializeField] private float jumpReleaseLimit = 0.5f; // maximum upward speed once State button released
+    [SerializeField] private float bufferWindow = 0.1f; 
+
      
     private float vForce; 
     private float hForce;  
     private float escapeTimer = 0f; 
 	private float escapeDelay = 0.1f; 
+    private float bufferTimer; 
 
     // Reference Variables
     private PCMove pcMove;
@@ -34,6 +37,7 @@ public class Move_Jump : MoveBehavior {
 		Jumping_ButtonHeld,
 		Jumping_ButtonReleased,
         Jumping_WallJump,
+        JumpBuffer, 
 		Freefall
 	}
 
@@ -41,6 +45,12 @@ public class Move_Jump : MoveBehavior {
     	pcMove = GetComponent<PCMove>(); 
     	pcInput = GetComponent<PCInput>(); 
     	pcState = GetComponent<PCState>(); 
+    }
+
+    private void Update(){
+        if( jState == State.JumpBuffer ){
+            bufferTimer += Time.deltaTime; 
+        }
     }
 
 // -----------------------------------------------------------------------------
@@ -55,8 +65,10 @@ public class Move_Jump : MoveBehavior {
         switch( jState ){
 
             case State.Landed_ButtonReleased:
-                if( !pcState.Grounded ){ jState = State.Freefall; }
-                else if( pcInput.JumpButton && !pcState.Ducked ){ 
+                if( !pcState.Grounded ){ 
+                    jState = State.JumpBuffer;
+                    bufferTimer = 0;  
+                }else if( pcInput.JumpButton && !pcState.Ducked ){ 
                     jState = State.Jumping_Liftoff; 
                 }
                 break;
@@ -100,6 +112,19 @@ public class Move_Jump : MoveBehavior {
             case State.Landed_ButtonHeld:
                 if( !pcState.Grounded ){ jState = State.Freefall; }
                 if( !pcInput.JumpButton ){jState = State.Landed_ButtonReleased;}
+                break;
+
+            // if pc steps off of edge, gives grace period
+            case State.JumpBuffer:
+                if( bufferTimer > bufferWindow ){ jState = State.Freefall; }
+                if( bufferTimer < bufferWindow && pcInput.JumpButton ){
+                    jState = State.Jumping_Liftoff; 
+                }
+                if( pcState.Grounded ){
+                    if( pcInput.JumpButton ){jState = State.Landed_ButtonHeld;}
+                    else{jState = State.Landed_ButtonReleased;}
+                }
+
                 break;
 
             // if pc steps off or airborn not from jumping
