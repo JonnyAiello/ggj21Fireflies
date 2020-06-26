@@ -10,7 +10,7 @@ public class Move_Run : MoveBehavior {
 	// Variables
     [SerializeField] private bool isActive; 
     private float accelSpeed = 2f;
-    private bool overriden; 
+    private bool overridden; 
 	private float minH;
     private float maxH; 
   
@@ -33,8 +33,8 @@ public class Move_Run : MoveBehavior {
 // Movebehavior
 
     public override void Init( bool _overridden ){
-        overriden = _overridden; 
-    	if( !overriden
+        overridden = _overridden; 
+    	if( !overridden
             && !pcState.Ducked
             && (pcInput.DoubleTapActive("leftButton") 
                 || pcInput.DoubleTapActive("rightButton")) 

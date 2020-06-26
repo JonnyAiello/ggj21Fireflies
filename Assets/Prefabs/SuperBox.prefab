@@ -14537,6 +14537,7 @@ GameObject:
   - component: {fileID: 9099117311127632530}
   - component: {fileID: 9099117311127632541}
   - component: {fileID: 9099117311127632524}
+  - component: {fileID: 6965309645133928628}
   m_Layer: 0
   m_Name: SuperBox
   m_TagString: Player
@@ -14656,11 +14657,13 @@ MonoBehaviour:
   walledLeft: 0
   walledRight: 0
   walled: 0
+  ledgeClimbableRight: 0
+  ledgeClimbableLeft: 0
+  ledgeClimbable: 0
   movingHoriz: 0
   whatIsSolid:
     serializedVersion: 2
     m_Bits: 256
-  gizmosOn: 0
   groundCheck: {fileID: 9099117310141092811}
   ceilingCheck: {fileID: 9099117310788171162}
   rightCheck: {fileID: 9099117311272679171}
@@ -14705,6 +14708,7 @@ MonoBehaviour:
   - {fileID: 9099117311127632530}
   - {fileID: 9099117311127632541}
   - {fileID: 9099117311127632524}
+  - {fileID: 6965309645133928628}
 --- !u!114 &9099117311127632523
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14806,6 +14810,20 @@ MonoBehaviour:
   maxHSpeed: 3
   standingCollider: {fileID: 9099117311047906968}
   crouchingCollider: {fileID: 9099117311763104331}
+--- !u!114 &6965309645133928628
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9099117311127632525}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37fa3c211969318f2a74f902a17a4ccb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isActive: 0
+  boostForce: 2
 --- !u!1 &9099117311272679168
 GameObject:
   m_ObjectHideFlags: 0

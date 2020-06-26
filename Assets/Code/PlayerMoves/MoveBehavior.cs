@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class MoveBehavior : MonoBehaviour {
     
     abstract public void Init( bool _overridden );
-        // set up internal move logic, overriden lets higher priority moves
+        // set up internal move logic, overridden lets higher priority moves
         // cancel other moves in progress
     public virtual bool IsExclusive(){ return false; }		
         // this move ignores effects of following moves in the list

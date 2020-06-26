@@ -10,6 +10,9 @@ public class PCState : MonoBehaviour {
 	[SerializeField] private bool walledLeft;
 	[SerializeField] private bool walledRight; 
 	[SerializeField] private bool walled; 
+	[SerializeField] private bool ledgeClimbableRight;
+	[SerializeField] private bool ledgeClimbableLeft;
+	[SerializeField] private bool ledgeClimbable;	
 	[SerializeField] private bool movingHoriz; 
 
 	// Properties
@@ -18,6 +21,9 @@ public class PCState : MonoBehaviour {
 	public bool WalledLeft { get{return walledLeft;} }
 	public bool WalledRight { get{return walledRight;} }
 	public bool Walled { get{return walled;} }
+	public bool LedgeClimbableRight { get{return ledgeClimbableRight;} }
+	public bool LedgeClimbableLeft { get{return ledgeClimbableLeft;} }
+	public bool LedgeClimbable { get{return ledgeClimbable;} }	
 	public bool MovingHoriz { get{return (MoveRun || MoveWalk);} }
 	public bool Running { get; set; }
 	public bool Ducked { get; set; }
@@ -31,16 +37,23 @@ public class PCState : MonoBehaviour {
 
 	// Reference Variables
 	[SerializeField] private LayerMask whatIsSolid;
-	[SerializeField] private bool gizmosOn; 
 	public Transform groundCheck; 
 	public Transform ceilingCheck;
 	public Transform rightCheck;
 	public Transform leftCheck;
+	private PCInput pcInput; 
+	private Rigidbody2D rb2d; 
 
 
 	private void OnDrawGizmos(){
-		// Debug.Log("TESTING");
-		// Gizmos.DrawSphere(ceilingCheck.position, contactRadius); 
+		Gizmos.color = Color.green; 
+		Gizmos.DrawSphere(ceilingCheck.position, contactRadius); 
+		Gizmos.DrawSphere(rightCheck.position, contactRadius);
+	}
+
+	private void Awake(){
+		rb2d = GetComponent<Rigidbody2D>(); 
+		pcInput = GetComponent<PCInput>(); 
 	}
 
 	private bool IsPlayerCollider( Collider2D _c ){
@@ -69,6 +82,7 @@ public class PCState : MonoBehaviour {
         for (int i = 0; i < colliders.Length; i++){
             if( !IsPlayerCollider(colliders[i]) ){ 
                 grounded = true;  
+                break;
             }
         }
 
@@ -79,6 +93,7 @@ public class PCState : MonoBehaviour {
         for (int i = 0; i < colliders.Length; i++){
             if( !IsPlayerCollider(colliders[i]) ){
                 ceilinged = true;  
+                break;
             }
         }
 
@@ -86,19 +101,50 @@ public class PCState : MonoBehaviour {
 		walledLeft = false;
 		walledRight = false; 
 		walled = false; 
+		Collider2D lastCollider = null; 
+		// check walled right
 		colliders = Physics2D.OverlapCircleAll(
         	rightCheck.position, contactRadius, whatIsSolid);
         for (int i = 0; i < colliders.Length; i++){
-        	if( !IsPlayerCollider(colliders[i]) ){ walledRight = true; }
+        	if( !IsPlayerCollider(colliders[i]) ){ 
+        		walledRight = true;
+        		lastCollider = colliders[i]; 
+        		break;
+        	}
 		}
+
+		// set ledge climbable right
+		if( lastCollider != null 
+			&& (transform.position.y > lastCollider.transform.position.y) ){
+
+			ledgeClimbableRight = true; 
+		}else{ ledgeClimbableRight = false; }
+
+		// check walled left
 		colliders = Physics2D.OverlapCircleAll(
         	leftCheck.position, contactRadius, whatIsSolid);
         for (int i = 0; i < colliders.Length; i++){
-        	if( !IsPlayerCollider(colliders[i]) ){ walledLeft = true; }
+        	if( !IsPlayerCollider(colliders[i]) ){ 
+        		walledLeft = true; 
+        		lastCollider = colliders[i]; 
+        		break;
+        	}
 		}
+
+		// set ledge climbable left
+		if( lastCollider != null 
+			&& (transform.position.y > lastCollider.transform.position.y) ){
+
+			ledgeClimbableLeft = true; 
+		}else{ ledgeClimbableLeft = false; }
+
+		// set walled flags
 		if( walledLeft || walledRight ){ walled = true; }
 		else{ walled = false; }
 
+		// set ledge climbable
+		if( ledgeClimbableLeft || ledgeClimbableRight ){ ledgeClimbable = true; }
+		else{ ledgeClimbable = false; }
 	}
 
 // -----------------------------------------------------------------------------
