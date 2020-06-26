@@ -8,8 +8,8 @@ public class DangerObject : MonoBehaviour{
 	// Variables
 	public bool isDangerous; 
 
-	// [[ ----- START ----- ]]
-	private void Start(){
+	// [[ ----- AWAKE ----- ]]
+	private void Awake(){
 		isDangerous = true; 
 	}
 

@@ -58,6 +58,7 @@ public class Player : MonoBehaviour {
             dead = true; 
             SceneMaster.active.PauseTimer(true); 
             pcAnim.spriteRenderer.gameObject.SetActive(false); 
+            Destroy(transform.Find("CamFollowPoint").gameObject);
             // play dead particle effect
             GameObject deathPop = (GameObject)Instantiate(
                 deathPopPref, transform.position, transform.rotation); 

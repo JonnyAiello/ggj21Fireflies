@@ -17,6 +17,27 @@ TextureImporter:
   - first:
       213: -8323251632776858724
     second: EnvironmentAtlas1_4
+  - first:
+      213: 4306256060387904388
+    second: EnvironmentAtlas1_0
+  - first:
+      213: 5634781604754269939
+    second: EnvironmentAtlas1_1
+  - first:
+      213: -1819881181007653995
+    second: EnvironmentAtlas1_2
+  - first:
+      213: -4125931714862954583
+    second: EnvironmentAtlas1_3
+  - first:
+      213: 5633408880978112831
+    second: EnvironmentAtlas1_4
+  - first:
+      213: -5364567444061990488
+    second: EnvironmentAtlas1_5
+  - first:
+      213: 6134894179384374160
+    second: EnvironmentAtlas1_6
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -144,8 +165,8 @@ TextureImporter:
         - {x: 26, y: -26}
       tessellationDetail: 0
       bones: []
-      spriteID: 7fd8e4fe24f4e8060800000000000000
-      internalID: 6957585623235333623
+      spriteID: 48b4b474215e2cb30800000000000000
+      internalID: 4306256060387904388
       vertices: []
       indices: 
       edges: []
@@ -169,8 +190,8 @@ TextureImporter:
         - {x: 26, y: -26}
       tessellationDetail: 0
       bones: []
-      spriteID: e030a69823f02d0c0800000000000000
-      internalID: -4552559563589942514
+      spriteID: 3f6a842e304c23e40800000000000000
+      internalID: 5634781604754269939
       vertices: []
       indices: 
       edges: []
@@ -194,8 +215,8 @@ TextureImporter:
         - {x: 26, y: -26}
       tessellationDetail: 0
       bones: []
-      spriteID: c9269c8b2f0deca60800000000000000
-      internalID: 7696318554123625116
+      spriteID: 593de9045bb7eb6e0800000000000000
+      internalID: -1819881181007653995
       vertices: []
       indices: 
       edges: []
@@ -213,15 +234,15 @@ TextureImporter:
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape:
-      - - {x: -26, y: -4}
+      - - {x: 26, y: -26}
         - {x: -26, y: -26}
-        - {x: 26, y: -26}
-        - {x: 26, y: -4}
-        - {x: 0, y: 25}
+        - {x: -26, y: -6}
+        - {x: 0, y: 24}
+        - {x: 26, y: -6}
       tessellationDetail: 0
       bones: []
-      spriteID: ea480e27274509000800000000000000
-      internalID: 40625247176656046
+      spriteID: 9a7431827febdb6c0800000000000000
+      internalID: -4125931714862954583
       vertices: []
       indices: 
       edges: []
@@ -245,8 +266,58 @@ TextureImporter:
         - {x: 26, y: -26}
       tessellationDetail: 0
       bones: []
-      spriteID: c93352c0dbedd7c80800000000000000
-      internalID: -8323251632776858724
+      spriteID: f313b39b783ed2e40800000000000000
+      internalID: 5633408880978112831
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EnvironmentAtlas1_5
+      rect:
+        serializedVersion: 2
+        x: 260
+        y: 0
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -26, y: 8}
+        - {x: -26, y: 26}
+        - {x: 26, y: 26}
+        - {x: 26, y: 8}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8a15f03155a3d85b0800000000000000
+      internalID: -5364567444061990488
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EnvironmentAtlas1_6
+      rect:
+        serializedVersion: 2
+        x: 312
+        y: 0
+        width: 52
+        height: 52
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -26, y: -26}
+        - {x: -26, y: -8}
+        - {x: 26, y: -8}
+        - {x: 26, y: -26}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 09331d880c5832550800000000000000
+      internalID: 6134894179384374160
       vertices: []
       indices: 
       edges: []

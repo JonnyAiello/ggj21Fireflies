@@ -7,6 +7,8 @@ public class Enemy_DumbPatrol : MonoBehaviour{
 
     // Variables
     public bool isActive; 
+    public bool isWhiteBox; // white boxes act as collectables, no danger
+    public bool isBlackBox; // unkillable enemies, don't have vulnerabilities
     public bool patrolLoop; 
     [Range(0, 0.1f)] public float moveSpeed; 
     	// % of distance between points moved per frame
@@ -33,46 +35,57 @@ public class Enemy_DumbPatrol : MonoBehaviour{
 
     // [[ ----- START ----- ]]
     private void Start(){
-    	pathForward = true; // sets to true in SetNewTarget initializiation 
+    	if( isWhiteBox ){
+    		isOffensive = false;
+    		dangerObj.isDangerous = false; 
+    		sprite.color = Color.white; 
+    	
+    	}else{
+    		sprite.color = Color.black;
+    		isOffensive = true; 
+	    	pathForward = true; // sets to true in SetNewTarget initializiation 
 
-    	// get starting path
-    	if( path.Length < 2 ){ Debug.LogError("Path Length Error: " + name);}
-    	else{
-    		if( patrolLoop ){
-	    		targIndex = path.Length; 
-	    		nextTarg = path[0]; // used to set start pos at start of path
-	    	}else{
-	    		targIndex = 0; 
-	    		nextTarg = path[0]; 
+	    	// get starting path
+	    	if( path.Length < 2 ){ Debug.LogError("Path Length Error: " + name);}
+	    	else{
+	    		if( patrolLoop ){
+		    		targIndex = path.Length; 
+		    		nextTarg = path[0]; // used to set start pos at start of path
+		    	}else{
+		    		targIndex = 0; 
+		    		nextTarg = path[0]; 
+		    	}
+	    		SetNewTarget(); 
+	    		isActive = true; 
 	    	}
-    		SetNewTarget(); 
-    		isActive = true; 
-    	}
+	    }
     }
 
     // [[ ----- UPDATE ----- ]]
     private void Update(){
     	if( isActive ){
-    		// update danger state
-    		if( isOffensive ){
-    			timer += Time.deltaTime; 
-    			if( timer > dangerTime ){
-    				// set to vulnerable
-    				sprite.color = Color.white; 
-    				dangerObj.isDangerous = false; 
-    				timer = 0; 
-    				isOffensive = false; 
-    			}
-    		}else{
-    			timer += Time.deltaTime; 
-    			if( timer > vulnerableTime ){
-    				// set to offensive
-    				sprite.color = Color.black; 
-    				dangerObj.isDangerous = true; 
-    				timer = 0; 
-    				isOffensive = true; 
-    			}
-    		}
+    		if( !isBlackBox ){
+	    		// update danger state
+	    		if( isOffensive ){
+	    			timer += Time.deltaTime; 
+	    			if( timer > dangerTime ){
+	    				// set to vulnerable
+	    				sprite.color = Color.white; 
+	    				dangerObj.isDangerous = false; 
+	    				timer = 0; 
+	    				isOffensive = false; 
+	    			}
+	    		}else{
+	    			timer += Time.deltaTime; 
+	    			if( timer > vulnerableTime ){
+	    				// set to offensive
+	    				sprite.color = Color.black; 
+	    				dangerObj.isDangerous = true; 
+	    				timer = 0; 
+	    				isOffensive = true; 
+	    			}
+	    		}
+	    	}
 
 
     		// update position
