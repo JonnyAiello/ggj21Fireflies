@@ -32,9 +32,7 @@ public class FallBlock : MonoBehaviour {
 
 	// [[ ----- COROUTINE - FALL ROUTINE ----- ]]
 	public IEnumerator FallRoutine(){
-		Debug.Log("Fall Triggered");
 		yield return new WaitForSeconds(triggerDelay);
-		Debug.Log("Executing Fall"); 
 		// make effect block
 		GameObject clone = (GameObject)Instantiate(this.gameObject); 
 		clone.GetComponent<FallBlock>().MakeEffectBlock(); 
@@ -42,11 +40,9 @@ public class FallBlock : MonoBehaviour {
 		sprite.gameObject.SetActive(false); 
 		bc2d.enabled = false;
 		yield return new WaitForSeconds(resetDelay); 
-		Debug.Log("Resetting block");
 		sprite.gameObject.SetActive(true); 
 		bc2d.enabled = true; 
 		yield return new WaitForSeconds(cooldownTime);
-		Debug.Log("Block active again"); 
 		touchLock = false; 
 	}
 
