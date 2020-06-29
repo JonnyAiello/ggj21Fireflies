@@ -8,9 +8,11 @@ public class Player : MonoBehaviour {
 	// Variables
     private bool dead; 
     private string currScene; 
+    private Vector2 defaultCamPos; 
 
     // Reference Variables
     public GameObject deathPopPref; 
+    public Transform camFollowPoint;
     private PCState pcState; 
     private PCInput pcInput; 
     private PCMove pcMove; 
@@ -25,14 +27,13 @@ public class Player : MonoBehaviour {
         pcMove = GetComponent<PCMove>(); 
         pcAnim = GetComponent<PCAnim>(); 
         currScene = SceneManager.GetActiveScene().name;
-        Debug.Log("scene name: " + currScene);
+        defaultCamPos = camFollowPoint.localPosition; 
 	}
 
 
     void Start(){
         transform.position 
             = SceneMaster.active.currentCheckpoint.transform.position;         
-        Debug.Log("Box Position: " + transform.position);
     }
 
     void Update(){
@@ -58,7 +59,7 @@ public class Player : MonoBehaviour {
             dead = true; 
             SceneMaster.active.PauseTimer(true); 
             pcAnim.spriteRenderer.gameObject.SetActive(false); 
-            Destroy(transform.Find("CamFollowPoint").gameObject);
+            Destroy(camFollowPoint.gameObject);
             // play dead particle effect
             GameObject deathPop = (GameObject)Instantiate(
                 deathPopPref, transform.position, transform.rotation); 
@@ -69,6 +70,19 @@ public class Player : MonoBehaviour {
 
     private void ReloadLevel(){
         SceneManager.LoadScene(currScene);
+    }
+
+    public void SetCamPoint( Vector2 _pos ){
+        if( !dead ){
+            Vector2 camPos = (Vector2)camFollowPoint.localPosition;
+            if(  camPos != _pos ){
+                camFollowPoint.localPosition = _pos; 
+            }
+        }
+    }
+
+    public void ResetCamPoint(){
+        if( !dead ){ camFollowPoint.localPosition = defaultCamPos; }
     }
 
 }
