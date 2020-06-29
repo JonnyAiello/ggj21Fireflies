@@ -34,7 +34,7 @@ public class FallBlock : MonoBehaviour {
 	public IEnumerator FallRoutine(){
 		yield return new WaitForSeconds(triggerDelay);
 		// make effect block
-		GameObject clone = (GameObject)Instantiate(this.gameObject); 
+		GameObject clone = (GameObject)Instantiate(this.gameObject, transform.parent); 
 		clone.GetComponent<FallBlock>().MakeEffectBlock(); 
 		// deactivate physics
 		sprite.gameObject.SetActive(false); 
