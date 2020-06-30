@@ -71,7 +71,7 @@ public class SceneMaster : MonoBehaviour {
     // [[ ----- INITIALIZE ----- ]]
     // Logic that should be called at the load of the level 
     private void Initialize( Scene scene, LoadSceneMode mode ){
-        Debug.Log("Initialize called");
+        // Debug.Log("Initialize called");
         // create and bind timer GUI
         Transform canvasTrans = GameObject.FindWithTag("Canvas").transform; 
         GameObject tgui = (GameObject)Instantiate(timerGuiPref, canvasTrans); 

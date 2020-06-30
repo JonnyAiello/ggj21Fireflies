@@ -9,10 +9,8 @@ public class CameraPositionTrigger : MonoBehaviour {
 	private bool triggeredLock; 
 
     private void OnTriggerEnter2D( Collider2D _other ){
-    	Debug.Log("TESTING - Entered");
     	if( !triggeredLock ){
     		if( _other.gameObject.tag == "Player" ){
-    			Debug.Log("Setting location");
     			triggeredLock = true; 
     			Player player = _other.transform.parent.GetComponent<Player>(); 
     			player.SetCamPoint(cameraPosition); 
@@ -22,9 +20,7 @@ public class CameraPositionTrigger : MonoBehaviour {
     }
 
     private void OnTriggerExit2D( Collider2D _other ){
-    	Debug.Log("TESTING - Exited");
     	if( _other.gameObject.tag == "Player" && triggeredLock ){ 
-    		Debug.Log("Resetting location");
     		triggeredLock = false; 
     		Player player = _other.transform.parent.GetComponent<Player>(); 
     		player.SetCamPoint( new Vector2(0,1) ); 
