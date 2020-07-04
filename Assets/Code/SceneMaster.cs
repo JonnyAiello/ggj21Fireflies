@@ -77,6 +77,8 @@ public class SceneMaster : MonoBehaviour {
         GameObject tgui = (GameObject)Instantiate(timerGuiPref, canvasTrans); 
         timerMinutes = tgui.transform.Find("Text_Minutes").GetComponent<Text>();
         timerSeconds = tgui.transform.Find("Text_Seconds").GetComponent<Text>(); 
+        if( pauseGame ){ pauseGame = false; }
+        ProcessTimer(); // only here to prevent a timer of 0:00 after respawn
 
         // catch missing checkpoint error
         if( currentCheckpoint == null ){ 
@@ -90,23 +92,25 @@ public class SceneMaster : MonoBehaviour {
     		|| Input.GetButton("Fire1") || Input.GetAxis("Horizontal") != 0);
     	if( !gameStart && gotInput ){ gameStart = true; }
 
-    	if( gameStart && !pauseGame ){
-    		// process in-game timer
-    		updateTimer += Time.deltaTime; 
-    		if( updateTimer > timeUpdateTick ){
-    			updateTimer = 0;
+    	if( gameStart && !pauseGame ){ ProcessTimer(); }
+    }
 
-    			gameTime += timeUpdateTick; 
+    // [[ ----- PROCESS TIMER ----- ]]
+    private void ProcessTimer(){
+    	updateTimer += Time.deltaTime; 
+		if( updateTimer > timeUpdateTick ){
+			updateTimer = 0;
 
-    			int seconds = (int)gameTime;
-    			int minutes = seconds / 60; 
-    			int remainder = seconds % 60; 
+			gameTime += timeUpdateTick; 
 
-    			// update timer gui
-    			timerMinutes.text = minutes.ToString("00");
-    			timerSeconds.text = remainder.ToString("00");
-    		}
-    	} 
+			int seconds = (int)gameTime;
+			int minutes = seconds / 60; 
+			int remainder = seconds % 60; 
+
+			// update timer gui
+			timerMinutes.text = minutes.ToString("00");
+			timerSeconds.text = remainder.ToString("00");
+		}
     }
 
 // -----------------------------------------------------------------------------
