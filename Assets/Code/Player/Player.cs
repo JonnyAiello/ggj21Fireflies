@@ -11,7 +11,7 @@ public class Player : MonoBehaviour {
     private Vector2 defaultCamPos; 
 
     // Reference Variables
-    public GameObject deathPopPref; 
+    public GameObject deathPopPref;
     public Transform camFollowPoint;
     private PCState pcState; 
     private PCInput pcInput; 
@@ -53,6 +53,10 @@ public class Player : MonoBehaviour {
 
 // -----------------------------------------------------------------------------
 // Public methods
+
+    public void Disengage(){
+        dead = true; 
+    }
 
     public void Die(){
         if( !dead ){

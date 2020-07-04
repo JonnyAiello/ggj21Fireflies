@@ -28,6 +28,7 @@ public class SceneMaster : MonoBehaviour {
 
     // Properties
     public string LevelID { get{return levelID;} }
+    public float GameTime { get{return gameTime;} }	
 
     // [[ ----- ON ENABLE ----- ]]
     private void OnEnable(){
@@ -120,4 +121,6 @@ public class SceneMaster : MonoBehaviour {
     public void PauseTimer( bool _val ){
         pauseGame = _val;
     }
+
+
 }
