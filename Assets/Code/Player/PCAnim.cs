@@ -56,6 +56,7 @@ public class PCAnim : MonoBehaviour {
 
     public void AnimUpdate(){
     	RunEffects(); 
+        WallSlideEffects();
 
         switch( aState ){
 
@@ -253,11 +254,11 @@ public class PCAnim : MonoBehaviour {
 
     					spriteRenderer.flipX = true; 
                         wallSlideLeftEffect.gameObject.SetActive(true);
-                        wallSlideLeftEffect.Play();
+                        // wallSlideLeftEffect.Play();
     				}else{ 
                         spriteRenderer.flipX = false; 
                         wallSlideRightEffect.gameObject.SetActive(true); 
-                        wallSlideRightEffect.Play();
+                        // wallSlideRightEffect.Play();
                     }
     			}else if( process ){                    
     				// go to dash
@@ -386,6 +387,23 @@ public class PCAnim : MonoBehaviour {
     			Debug.Log("switch: value match not found");
     			break;
     	}
+    }
+
+    private void WallSlideEffects(){
+        if( aState == State.BoxWallslide ){
+            if( pcMove.VelocityY < 0 ){
+                if( wallSlideLeftEffect.gameObject.activeSelf 
+                    && !wallSlideLeftEffect.isPlaying){
+
+                    wallSlideLeftEffect.Play();
+                
+                }else if( wallSlideRightEffect.gameObject.activeSelf 
+                    && !wallSlideRightEffect.isPlaying){
+
+                    wallSlideRightEffect.Play();
+                }
+            }
+        }   
     }
 
     private void ResetWallslideEffects(){
