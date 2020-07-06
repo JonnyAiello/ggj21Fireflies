@@ -23,8 +23,10 @@ public class SceneMaster : MonoBehaviour {
 	// Reference Variables
     public Checkpoint currentCheckpoint; 
     public GameObject timerGuiPref;
+    public GameObject timeModPref; 
 	private Text timerMinutes;
 	private Text timerSeconds; 
+	private Transform canvasTrans; 
 
     // Properties
     public string LevelID { get{return levelID;} }
@@ -74,7 +76,7 @@ public class SceneMaster : MonoBehaviour {
     private void Initialize( Scene scene, LoadSceneMode mode ){
         // Debug.Log("Initialize called");
         // create and bind timer GUI
-        Transform canvasTrans = GameObject.FindWithTag("Canvas").transform; 
+        canvasTrans = GameObject.FindWithTag("Canvas").transform; 
         GameObject tgui = (GameObject)Instantiate(timerGuiPref, canvasTrans); 
         timerMinutes = tgui.transform.Find("Text_Minutes").GetComponent<Text>();
         timerSeconds = tgui.transform.Find("Text_Seconds").GetComponent<Text>(); 
@@ -90,9 +92,9 @@ public class SceneMaster : MonoBehaviour {
     // [[ ----- UPDATE ----- ]]
     void Update() {
     	bool gotInput = (Input.GetButton("Jump") 
-    		|| Input.GetButton("Fire1") || Input.GetAxis("Horizontal") != 0);
+    		|| Input.GetButton("Fire1") 
+    		|| Input.GetAxis("Horizontal") != 0);
     	if( !gameStart && gotInput ){ gameStart = true; }
-
     	if( gameStart && !pauseGame ){ ProcessTimer(); }
     }
 
@@ -120,6 +122,14 @@ public class SceneMaster : MonoBehaviour {
     // [[ ----- PAUSE TIMER ----- ]]
     public void PauseTimer( bool _val ){
         pauseGame = _val;
+    }
+
+    // [[ ----- MODIFY GAME TIME ----- ]]
+    public void ModifyGameTime( float _val ){
+    	if( gameTime + _val < 0 ){ gameTime = 0; }
+    	else{ gameTime += _val; }
+    	GameObject mgui = (GameObject)Instantiate(timeModPref, canvasTrans);
+    	Destroy(mgui, 1f); 
     }
 
 

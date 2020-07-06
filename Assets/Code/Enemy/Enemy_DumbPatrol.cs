@@ -133,6 +133,8 @@ public class Enemy_DumbPatrol : MonoBehaviour{
 
     // [[ ----- DIE ----- ]]
     private void Die(){
+        SceneMaster.active.ModifyGameTime(-5); 
+        // death animation
     	GameObject deathPop = (GameObject)Instantiate(
             deathPopPref, transform.position, transform.rotation); 
     	deathPop.transform.Find("Sprite").GetComponent<SpriteRenderer>().color 
