@@ -14,7 +14,9 @@ public class PCInput : MonoBehaviour{
 
 	// Variables
     private float axisThresh = 0.05f;
-    private DoubleTapInput doubleTap; //used to reference DTs contained in dtDict
+    private AxisType aType; // used to isolate joystick axis from key axis
+    private DoubleTapInput doubleTap; 
+        // dummy instance used to reference DTs contained in dtDict
 
     [SerializeField] private bool leftButton;  
     [SerializeField] private bool rightButton;
@@ -29,6 +31,11 @@ public class PCInput : MonoBehaviour{
     public bool JumpButton { get{return jumpButton;} }
     public bool DashButton { get{return dashButton;} }
   
+    // enum
+    public enum AxisType{
+        Key,
+        Joystick
+    }
 
     // [[ ----- AWAKE ----- ]]
     private void Awake(){
@@ -40,10 +47,22 @@ public class PCInput : MonoBehaviour{
     public void InputUpdate(){    	
         // only engage here, disengage bool in fixed update after PlayerMove
         // has had a chance to process the button push (avoid dropped inputs)
+
+        // set axis type
+        if( Input.GetButton("LeftButton") || Input.GetButton("RightButton") ){
+            aType = AxisType.Key; 
+        }else if( (Input.GetAxis("Horizontal") < axisThresh * -1)
+            || (Input.GetAxis("Horizontal") > axisThresh) ){
+            aType = AxisType.Joystick; 
+        }
         
         // left
-        if( (!leftButton && Input.GetButton("LeftButton"))
-            || (!leftButton && Input.GetAxis("Horizontal") < axisThresh * -1) ){ 
+        if( (aType == AxisType.Key 
+                && !leftButton 
+                && Input.GetButton("LeftButton"))
+            || (aType == AxisType.Joystick 
+                && !leftButton 
+                && Input.GetAxis("Horizontal") < axisThresh * -1) ){ 
             
             leftButton = true;
             // left double-tap logic
@@ -51,16 +70,24 @@ public class PCInput : MonoBehaviour{
         }
 
         // right
-        if( (!rightButton && Input.GetButton("RightButton"))
-            || (!rightButton && Input.GetAxis("Horizontal") > axisThresh)){ 
+        if( (aType == AxisType.Key 
+                && !rightButton 
+                && Input.GetButton("RightButton"))
+            || (aType == AxisType.Joystick
+                && !rightButton 
+                && Input.GetAxis("Horizontal") > axisThresh)){ 
 
             rightButton = true; 
             doubleTap.UpdateDT("rightButton", true);
         }
 
         // down
-        if( (!downButton && Input.GetButton("DownButton"))
-            || (!downButton && Input.GetAxis("Vertical") < axisThresh * -1)){ 
+        if( (aType == AxisType.Key 
+                && !downButton 
+                && Input.GetButton("DownButton"))
+            || (aType == AxisType.Joystick 
+                && !downButton 
+                && Input.GetAxis("Vertical") < axisThresh * -1)){ 
 
             downButton = true; 
         }
@@ -73,26 +100,37 @@ public class PCInput : MonoBehaviour{
     // [[ ----- RESET INPUTS ----- ]]
     public void ResetInputs(){
         // left
-        if( (leftButton && !Input.GetButton("LeftButton")) 
-            || (leftButton && Input.GetAxis("Horizontal") > axisThresh * -1)){
-            
+        if( (aType == AxisType.Key
+                && leftButton 
+                && !Input.GetButton("LeftButton")) 
+            || (aType == AxisType.Joystick 
+                && leftButton 
+                && Input.GetAxis("Horizontal") > axisThresh * -1)){
+           
             leftButton = false;
             // double-tap logic
             doubleTap.UpdateDT("leftButton", false);
             doubleTap.CleanUpDT("leftButton");
-
         }
         // right
-        if( (rightButton && !Input.GetButton("RightButton"))
-            || (rightButton && Input.GetAxis("Horizontal") < axisThresh) ){ 
+        if( (aType == AxisType.Key 
+                && rightButton 
+                && !Input.GetButton("RightButton"))
+            || (aType == AxisType.Joystick 
+                && rightButton 
+                && Input.GetAxis("Horizontal") < axisThresh) ){ 
 
             rightButton = false;
             doubleTap.UpdateDT("rightButton", false);
             doubleTap.CleanUpDT("rightButton");
         }
         // down
-        if( (downButton && !Input.GetButton("DownButton"))
-            || (downButton && Input.GetAxis("Vertical") > axisThresh * -1)){ 
+        if( (aType == AxisType.Key 
+                && downButton 
+                && !Input.GetButton("DownButton"))
+            || (aType == AxisType.Joystick 
+                && downButton 
+                && Input.GetAxis("Vertical") > axisThresh * -1)){ 
 
             downButton = false; 
         }
