@@ -58,6 +58,13 @@ public class Player : MonoBehaviour {
         dead = true; 
     }
 
+    public void GetHurt(){
+        if( !dead ){
+            if( SceneMaster.active.FOwnedCount <= 0 ){ Die(); }
+            else{ pcState.HurtOn(); }
+        }
+    }
+
     public void Die(){
         if( !dead ){
             dead = true; 

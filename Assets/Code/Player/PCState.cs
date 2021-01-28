@@ -13,7 +13,7 @@ public class PCState : MonoBehaviour {
 	[SerializeField] private bool ledgeClimbableRight;
 	[SerializeField] private bool ledgeClimbableLeft;
 	[SerializeField] private bool ledgeClimbable;	
-	[SerializeField] private bool movingHoriz; 
+	[SerializeField] private bool movingHoriz;
 
 	// Properties
 	public bool Grounded { get{return grounded;} }
@@ -30,12 +30,16 @@ public class PCState : MonoBehaviour {
 
 	public bool MoveRun { get; set; }
 	public bool MoveWalk { get; set; }
+	public bool Hurt { get; set; }
 
 	// Variables
+	public float hurtDuration = 1f;
+	private float hurtTimer; 
 	const float groundedRadius = .2f;
 	const float contactRadius = .1f;
 
 	// Reference Variables
+	public SpriteRenderer spriteRenderer;
 	[SerializeField] private LayerMask whatIsSolid;
 	public Transform groundCheck; 
 	public Transform ceilingCheck;
@@ -67,8 +71,11 @@ public class PCState : MonoBehaviour {
 
 	// [[ ----- UPDATE ----- ]]
 	public void StateUpdate(){
+		if( Hurt ){ 
+			hurtTimer -= Time.deltaTime; 
 
-		
+			if( hurtTimer <= 0 ){ HurtOff(); }
+		}
 	}
 
 
@@ -151,34 +158,28 @@ public class PCState : MonoBehaviour {
 // Physics Events
 
 	private void OnCollisionEnter2D( Collision2D c ){
-        if( c.gameObject.layer == LayerMask.NameToLayer("Solids") ){
-        	/*
-            // check grounded on collision
-            Collider2D[] colliders = Physics2D.OverlapCircleAll(
-                groundCheck.position, groundedRadius, whatIsSolid);
-            for (int i = 0; i < colliders.Length; i++){
-                if (colliders[i].gameObject != gameObject){ 
-                    grounded = true;  
-                    // Debug.Log("Grounded" + null);
-                }
-            }*/
-        }
+        // if( c.gameObject.layer == LayerMask.NameToLayer("Solids") ){}
     }
 
-/*
-    private void OnCollisionExit2D( Collision2D c ){
-        if( c.gameObject.layer == LayerMask.NameToLayer("Solids") ){
-            // check grounded off collision
-            grounded = false;
-            Collider2D[] colliders = Physics2D.OverlapCircleAll(
-                groundCheck.position, groundedRadius, whatIsSolid); 
-            for (int i = 0; i < colliders.Length; i++){
-                if (colliders[i].gameObject != gameObject){ 
-                    grounded = true;  
-                }
-            }
-            // if( !grounded ){Debug.Log("NOT Grounded" + null);}
-        }
+// -----------------------------------------------------------------------------
+// Public Methods
+
+    // [[ ----- HURT ON ----- ]]
+    public void HurtOn(){
+    	if( !Hurt ){
+    		Debug.Log("OUCH!");
+    		Hurt = true; 
+    		hurtTimer = hurtDuration;
+    		spriteRenderer.color = new Color(1, 1, 1, 0.5f);
+
+    		// decrement fownedcount
+    		SceneMaster.active.UpdateFFCount( -1 ); 
+    	}
     }
- */  
+
+    // [[ ----- HURT OFF ----- ]]
+    public void HurtOff(){
+    	Hurt = false;
+    	spriteRenderer.color = new Color(1, 1, 1, 1);
+    }
 }
