@@ -56,7 +56,14 @@ public class Move_Jump : MoveBehavior {
 
     // [[ ----- SPEND FF ----- ]]
     private void SpendFF(){
-        SceneMaster.active.UpdateFFCount(-1);
+        SceneMaster.active.SpendFFPower(1);
+    }
+
+    // [[ ----- RESET FF POWER ----- ]]
+    private void ResetFFPower(){
+        if( SceneMaster.active.FPowerCount < SceneMaster.active.FOwnedCount ){
+            SceneMaster.active.ResetFFPower();
+        }
     }
 
 // -----------------------------------------------------------------------------
@@ -66,12 +73,13 @@ public class Move_Jump : MoveBehavior {
     // [[ ----- INIT ----- ]]
     public override void Init( bool _overridden ){
         if( _overridden ){ jState = State.Freefall; }
-        bool ffAvailable = (SceneMaster.active.FOwnedCount > 0);
+        bool ffAvailable = (SceneMaster.active.FPowerCount > 0);
 
         // Jump state machine
         switch( jState ){
 
             case State.Landed_ButtonReleased:
+                ResetFFPower();
                 if( !pcState.Grounded ){ 
                     jState = State.JumpBuffer;
                     bufferTimer = 0;  
@@ -113,7 +121,7 @@ public class Move_Jump : MoveBehavior {
                     else{ jState = State.Landed_ButtonReleased; }
                 }else if( ffAvailable && pcInput.JumpButton ){
                     jState = State.Jumping_DJ_Liftoff; 
-                    Debug.Log("DJ Liftoff");
+                    // Debug.Log("DJ Liftoff");
                 }else if( pcState.Walled && pcInput.JumpButton ){
                     jState = State.Jumping_WallJump; 
                 }

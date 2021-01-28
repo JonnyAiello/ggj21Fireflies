@@ -19,4 +19,20 @@ public class CollectionGUI : MonoBehaviour{
     		else{ ffIconArray[i].gameObject.SetActive(false); }
     	}
     }
+
+    // [[ ----- SET AVAILABLE POWER GUI ----- ]]
+    public void SetAvailablePowerGUI( int _spentPower, int _ffs ){
+    	int spentPower = _ffs - _spentPower;
+    	for( int i = 0; i < ffIconArray.Length; i++ ){
+    		if( i < _spentPower ){ ffIconArray[i].color = Color.white; }
+    		else{ ffIconArray[i].color = Color.red; }
+    	}
+    }
+
+    // [[ ----- RESET AVAILABLE POWER GUI ----- ]]
+    public void ResetAvailablePowerGUI(){
+    	for( int i = 0; i < ffIconArray.Length; i++ ){
+    		ffIconArray[i].color = Color.white;
+    	}
+    }
 }

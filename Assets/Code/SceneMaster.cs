@@ -19,8 +19,11 @@ public class SceneMaster : MonoBehaviour {
 	private float timeUpdateTick = 0.5f;
 	private float gameTime; 
 	private float updateTimer;
+
+    // Firefly Variables
     private int fOwnedCount = 0; 
     private int maxFCount = 6;
+    private int fPowerCount;
 
 	// Reference Variables
     public Checkpoint currentCheckpoint; 
@@ -36,6 +39,7 @@ public class SceneMaster : MonoBehaviour {
     public string LevelID { get{return levelID;} }
     public float GameTime { get{return gameTime;} }	
     public int FOwnedCount { get{return fOwnedCount;} }
+    public int FPowerCount { get{return fPowerCount;} }
 
     // [[ ----- ON ENABLE ----- ]]
     private void OnEnable(){
@@ -127,7 +131,7 @@ public class SceneMaster : MonoBehaviour {
     }
 
 // -----------------------------------------------------------------------------
-// Public methods
+// Public Methods
 
     // [[ ----- PAUSE TIMER ----- ]]
     public void PauseTimer( bool _val ){
@@ -147,12 +151,33 @@ public class SceneMaster : MonoBehaviour {
         int total = fOwnedCount + _val; 
         if( total > maxFCount ){ fOwnedCount = maxFCount; }
         else if( total < 0 ){ fOwnedCount = 0; }
-        else{ fOwnedCount = total; }
+        else{ 
+            // number owned changes
+            fOwnedCount = total; 
+            fPowerCount = total; 
+        }
 
         // set gui
         collectionGui.SetGUI( fOwnedCount ); 
 
         Debug.Log("FOwnedCount Updated: " + fOwnedCount);
+    }
+
+    // [[ ----- SPEND FF POWER ----- ]]
+    public bool SpendFFPower( int _val ){
+        // if( fPowerCount == 0 ){ return false; }
+        if( fPowerCount - _val < 0 ){ return false; }
+
+        fPowerCount -= _val;
+        collectionGui.SetAvailablePowerGUI( fPowerCount, fOwnedCount ); 
+        return true;
+    }
+
+    // [[ ----- RESET FF POWER ----- ]]
+    public void ResetFFPower(){
+        fPowerCount = fOwnedCount; 
+        collectionGui.ResetAvailablePowerGUI(); 
+        Debug.Log("fPower reset: " + fPowerCount);
     }
 
 
