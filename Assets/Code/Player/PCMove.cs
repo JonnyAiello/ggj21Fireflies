@@ -24,7 +24,7 @@ public class PCMove : MonoBehaviour{
     [SerializeField] private float maxVSpeed = 15f;
 
 	// Reference Variables
-	[SerializeField] private List<MoveBehavior> moveList;
+	public List<MoveBehavior> moveList;
 	private Rigidbody2D rb; 
 	private PCInput pcInput; 
 

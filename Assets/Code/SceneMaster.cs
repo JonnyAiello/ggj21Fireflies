@@ -19,7 +19,7 @@ public class SceneMaster : MonoBehaviour {
 	private float timeUpdateTick = 0.5f;
 	private float gameTime; 
 	private float updateTimer;
-    private int collectedFCount = 2; 
+    private int fOwnedCount = 0; 
     private int maxFCount = 6;
 
 	// Reference Variables
@@ -35,6 +35,7 @@ public class SceneMaster : MonoBehaviour {
     // Properties
     public string LevelID { get{return levelID;} }
     public float GameTime { get{return gameTime;} }	
+    public int FOwnedCount { get{return fOwnedCount;} }
 
     // [[ ----- ON ENABLE ----- ]]
     private void OnEnable(){
@@ -90,7 +91,7 @@ public class SceneMaster : MonoBehaviour {
         // create and bind collection GUI
         GameObject cgui = (GameObject)Instantiate(collectionGuiPref, canvasTrans); 
         collectionGui = cgui.GetComponent<CollectionGUI>();
-        collectionGui.SetGUI(collectedFCount); 
+        collectionGui.SetGUI(fOwnedCount); 
 
         // catch missing checkpoint error
         if( currentCheckpoint == null ){ 
@@ -143,12 +144,15 @@ public class SceneMaster : MonoBehaviour {
 
     // [[ ----- UPDATE FF COUNT ----- ]]
     public void UpdateFFCount( int _val ){
-        int total = collectedFCount + _val; 
-        if( total > maxFCount ){ collectedFCount = maxFCount; }
-        else if( total < 0 ){ collectedFCount = 0; }
+        int total = fOwnedCount + _val; 
+        if( total > maxFCount ){ fOwnedCount = maxFCount; }
+        else if( total < 0 ){ fOwnedCount = 0; }
+        else{ fOwnedCount = total; }
 
         // set gui
-        collectionGui.SetGUI( collectedFCount ); 
+        collectionGui.SetGUI( fOwnedCount ); 
+
+        Debug.Log("FOwnedCount Updated: " + fOwnedCount);
     }
 
 
