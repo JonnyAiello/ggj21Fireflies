@@ -19,6 +19,8 @@ public class SceneMaster : MonoBehaviour {
 	private float timeUpdateTick = 0.5f;
 	private float gameTime; 
 	private float updateTimer;
+    private int collectedFCount = 2; 
+    private int maxFCount = 6;
 
 	// Reference Variables
     public Checkpoint currentCheckpoint; 
@@ -27,6 +29,8 @@ public class SceneMaster : MonoBehaviour {
 	private Text timerMinutes;
 	private Text timerSeconds; 
 	private Transform canvasTrans; 
+    public GameObject collectionGuiPref;
+    private CollectionGUI collectionGui;
 
     // Properties
     public string LevelID { get{return levelID;} }
@@ -83,6 +87,11 @@ public class SceneMaster : MonoBehaviour {
         if( pauseGame ){ pauseGame = false; }
         ProcessTimer(); // only here to prevent a timer of 0:00 after respawn
 
+        // create and bind collection GUI
+        GameObject cgui = (GameObject)Instantiate(collectionGuiPref, canvasTrans); 
+        collectionGui = cgui.GetComponent<CollectionGUI>();
+        collectionGui.SetGUI(collectedFCount); 
+
         // catch missing checkpoint error
         if( currentCheckpoint == null ){ 
             Debug.LogError("Checkpoint not provided"); 
@@ -130,6 +139,16 @@ public class SceneMaster : MonoBehaviour {
     	else{ gameTime += _val; }
     	GameObject mgui = (GameObject)Instantiate(timeModPref, canvasTrans);
     	Destroy(mgui, 1f); 
+    }
+
+    // [[ ----- UPDATE FF COUNT ----- ]]
+    public void UpdateFFCount( int _val ){
+        int total = collectedFCount + _val; 
+        if( total > maxFCount ){ collectedFCount = maxFCount; }
+        else if( total < 0 ){ collectedFCount = 0; }
+
+        // set gui
+        collectionGui.SetGUI( collectedFCount ); 
     }
 
 
