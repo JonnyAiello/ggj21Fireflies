@@ -33,6 +33,7 @@ public class Move_Jump : MoveBehavior {
 		Landed_ButtonReleased,
 		Landed_ButtonHeld,
 		Jumping_Liftoff,
+        Jumping_DJ_Liftoff,
 		Jumping_EscapeVelocity, 
 		Jumping_ButtonHeld,
 		Jumping_ButtonReleased,
@@ -53,13 +54,19 @@ public class Move_Jump : MoveBehavior {
         }
     }
 
+    // [[ ----- SPEND FF ----- ]]
+    private void SpendFF(){
+        SceneMaster.active.UpdateFFCount(-1);
+    }
+
 // -----------------------------------------------------------------------------
-// MoveBehavior
+// State Machine
 
 
     // [[ ----- INIT ----- ]]
     public override void Init( bool _overridden ){
         if( _overridden ){ jState = State.Freefall; }
+        bool ffAvailable = (SceneMaster.active.FOwnedCount > 0);
 
         // Jump state machine
         switch( jState ){
@@ -74,6 +81,11 @@ public class Move_Jump : MoveBehavior {
                 break;
             
             case State.Jumping_Liftoff:
+                jState = State.Jumping_EscapeVelocity; 
+                break;
+
+            case State.Jumping_DJ_Liftoff:
+                SpendFF();
                 jState = State.Jumping_EscapeVelocity; 
                 break;
 
@@ -99,6 +111,9 @@ public class Move_Jump : MoveBehavior {
                 if( pcState.Grounded ){
                     if( pcInput.JumpButton ){jState = State.Landed_ButtonHeld;}
                     else{ jState = State.Landed_ButtonReleased; }
+                }else if( ffAvailable && pcInput.JumpButton ){
+                    jState = State.Jumping_DJ_Liftoff; 
+                    Debug.Log("DJ Liftoff");
                 }else if( pcState.Walled && pcInput.JumpButton ){
                     jState = State.Jumping_WallJump; 
                 }
@@ -154,10 +169,21 @@ public class Move_Jump : MoveBehavior {
         }else{ isActive = false; }
     }
 
+
+// -----------------------------------------------------------------------------
+// MoveBehavior Overrides 
+
+    // [[ ----- ZERO MOVEMENT ----- ]]
+    public override bool ZeroMovement(){
+        if( jState == State.Jumping_DJ_Liftoff ){ return true; }
+        return false;
+    }
+
     // [[ ----- AFFECTS FORCE ----- ]]
     public override bool AffectsForce(){
         if( jState == State.Jumping_Liftoff
-            || jState == State.Jumping_WallJump){
+            || jState == State.Jumping_WallJump
+            || jState == State.Jumping_DJ_Liftoff ){
 
             return true; 
         }
@@ -169,7 +195,14 @@ public class Move_Jump : MoveBehavior {
         float vForce = 0;
         float hForce = 0; 
 
-        if( jState == State.Jumping_Liftoff ){ vForce = jumpForce; }
+        // if jumping or double-jumping
+        if( jState == State.Jumping_Liftoff
+            || jState == State.Jumping_DJ_Liftoff ){ 
+
+            vForce = jumpForce; 
+        }
+
+        // if wall-jumping
         if( jState == State.Jumping_WallJump ){
             vForce = wallJumpForce;
             if( pcState.WalledLeft ){ hForce += 200; }
@@ -182,7 +215,9 @@ public class Move_Jump : MoveBehavior {
 
     // [[ ----- AFFECTS V LIMITS ----- ]]
     public override bool AffectsVLimits(){
-        if( jState == State.Jumping_ButtonReleased ){ return true; }
+        if( jState == State.Jumping_ButtonReleased ){ 
+            return true; 
+        }
         return false; 
     }
     
