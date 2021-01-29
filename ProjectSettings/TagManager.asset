@@ -46,7 +46,7 @@ TagManager:
   - name: Background
     uniqueID: 2943531091
     locked: 0
-  - name: Solid
+  - name: Midground
     uniqueID: 2119059287
     locked: 0
   - name: Characters
