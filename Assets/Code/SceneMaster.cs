@@ -95,7 +95,10 @@ public class SceneMaster : MonoBehaviour {
         // create and bind collection GUI
         GameObject cgui = (GameObject)Instantiate(collectionGuiPref, canvasTrans); 
         collectionGui = cgui.GetComponent<CollectionGUI>();
-        collectionGui.SetGUI(fOwnedCount); 
+        collectionGui.SetGUI(fOwnedCount);
+
+        // reset collected fireflies
+        UpdateFFCount( fOwnedCount * -1 ); 
 
         // catch missing checkpoint error
         if( currentCheckpoint == null ){ 
