@@ -8,7 +8,8 @@ using UnityEngine.SceneManagement;
 public class Checkpoint : MonoBehaviour{ 
 
 	// Variables
-	private bool isCurrCheckpoint; 
+	private bool isCurrCheckpoint;
+	private bool isUnlocked; 
 
 	// Reference Variables
 	private GameObject activeSprite; 
@@ -34,8 +35,10 @@ public class Checkpoint : MonoBehaviour{
 		// set up sprite references
 		activeSprite = transform.Find("activeSprite").gameObject; 
 		inactiveSprite = transform.Find("inactiveSprite").gameObject; 
-		if( SceneMaster.active.currentCheckpoint == this ){SetSpriteActive(true);}
-		else{ SetSpriteActive(false); }
+		if( SceneMaster.active.currentCheckpoint == this ){
+			// SetSpriteActive(true);
+			UpdateCheckpoint( gameObject.name );
+		}else{ SetSpriteActive(false); }
 	}
 
 	// [[ ----- UPDATE CHECKPOINT ----- ]]
@@ -43,6 +46,7 @@ public class Checkpoint : MonoBehaviour{
 	public void UpdateCheckpoint( string _cpName ){
 		if( gameObject.name == _cpName ){
 			SceneMaster.active.currentCheckpoint = this; 
+			isUnlocked = true;
 			SetSpriteActive(true); 
 		}else{
 			SetSpriteActive(false); 
@@ -51,11 +55,12 @@ public class Checkpoint : MonoBehaviour{
 
 	// [[ ----- ON TRIGGER ENTER 2D ----- ]]
 	private void OnTriggerEnter2D( Collider2D _c ){
-		if( !isCurrCheckpoint ){
+		if( !isCurrCheckpoint && !isUnlocked ){
 			if( _c.gameObject.tag == "Player" ){
 				Debug.Log("Checkpoint Hit: " + gameObject.name);
 				// trigger checkpoint event to deactivate all 
-				Checkpoint.OnCheckpointHit( gameObject.name ); 
+				// Checkpoint.OnCheckpointHit( gameObject.name );
+				PurchaseCheckpoint();
 			}
 		}
 	}
@@ -68,6 +73,19 @@ public class Checkpoint : MonoBehaviour{
 		}else{
 			activeSprite.SetActive(false);
 			inactiveSprite.SetActive(true); 
+		}
+	}
+
+	// [[ ----- PURCHASE CHECKPOINT ----- ]]
+	private void PurchaseCheckpoint(){
+		// check if pc has enough ffs
+		if( SceneMaster.active.FOwnedCount >= 4 ){
+			// deduct the ffs
+			SceneMaster.active.UpdateFFCount( -4 );
+			Checkpoint.OnCheckpointHit( gameObject.name );
+		}else{
+			// display how many ffs required
+			Debug.Log("FIREFLIES NEEDED: " + (4-SceneMaster.active.FOwnedCount));
 		}
 	}
     
