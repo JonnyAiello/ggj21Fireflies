@@ -24,6 +24,11 @@ public class PopupText : MonoBehaviour {
 		popupAnim.Play();
 	}
 
+	// [[ ----- SET TEXT ----- ]]
+	public void SetText( string _txt ){
+		tmp.text = _txt;
+	}
+
 	// [[ ----- ON TRIGGER ENTER 2D ----- ]]
 	private void OnTriggerEnter2D( Collider2D _other ){
 		if( triggerZone && _other.tag == "Player" ){

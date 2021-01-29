@@ -10,10 +10,12 @@ public class Checkpoint : MonoBehaviour{
 	// Variables
 	private bool isCurrCheckpoint;
 	private bool isUnlocked; 
+	private string noticeString1 = " Fireflies \n Required";
 
 	// Reference Variables
 	private GameObject activeSprite; 
 	private GameObject inactiveSprite; 
+	public PopupText popupText;
 
 	// Event setup
 	public delegate void UpdateCheckpointDel( string _cpName ); 
@@ -58,8 +60,6 @@ public class Checkpoint : MonoBehaviour{
 		if( !isCurrCheckpoint && !isUnlocked ){
 			if( _c.gameObject.tag == "Player" ){
 				Debug.Log("Checkpoint Hit: " + gameObject.name);
-				// trigger checkpoint event to deactivate all 
-				// Checkpoint.OnCheckpointHit( gameObject.name );
 				PurchaseCheckpoint();
 			}
 		}
@@ -85,6 +85,9 @@ public class Checkpoint : MonoBehaviour{
 			Checkpoint.OnCheckpointHit( gameObject.name );
 		}else{
 			// display how many ffs required
+			int ffreq = 4-SceneMaster.active.FOwnedCount;
+			popupText.SetText(ffreq + noticeString1);
+			popupText.PlayAnim();
 			Debug.Log("FIREFLIES NEEDED: " + (4-SceneMaster.active.FOwnedCount));
 		}
 	}
