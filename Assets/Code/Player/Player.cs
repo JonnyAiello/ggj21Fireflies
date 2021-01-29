@@ -2,10 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement; 
+using UnityEngine.Experimental.Rendering.Universal;
 
 public class Player : MonoBehaviour {
 
 	// Variables
+    public float[] iLightRadii;
+    public float[] oLightRadii;
+    private int lightIndex;
     private bool dead; 
     private string currScene; 
     private Vector2 defaultCamPos; 
@@ -13,6 +17,7 @@ public class Player : MonoBehaviour {
     // Reference Variables
     public GameObject deathPopPref;
     public Transform camFollowPoint;
+    public Light2D pointLight;
     private PCState pcState; 
     private PCInput pcInput; 
     private PCMove pcMove; 
@@ -33,14 +38,20 @@ public class Player : MonoBehaviour {
 
     void Start(){
         transform.position 
-            = SceneMaster.active.currentCheckpoint.transform.position;         
+            = SceneMaster.active.currentCheckpoint.transform.position;
+        UpdateLightRadius();         
     }
 
     void Update(){
         if( !dead ){
             pcInput.InputUpdate(); 
             pcState.StateUpdate();    
-            pcAnim.AnimUpdate(); 
+            pcAnim.AnimUpdate();
+
+            // update light radius
+            if( lightIndex != SceneMaster.active.FOwnedCount ){
+                UpdateLightRadius();
+            }
         }
     }
 
@@ -49,6 +60,13 @@ public class Player : MonoBehaviour {
             pcState.StateFixedUpdate(); 
             pcMove.MoveFixedUpdate(); 
         }
+    }
+
+    // [[ ----- UPDATE LIGHT RADIUS ----- ]]
+    private void UpdateLightRadius(){
+        lightIndex = SceneMaster.active.FOwnedCount;
+        pointLight.pointLightOuterRadius = oLightRadii[lightIndex];
+        pointLight.pointLightInnerRadius = iLightRadii[lightIndex];
     }
 
 // -----------------------------------------------------------------------------

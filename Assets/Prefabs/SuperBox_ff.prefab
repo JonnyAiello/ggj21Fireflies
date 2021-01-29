@@ -9890,6 +9890,7 @@ GameObject:
   - component: {fileID: 1694576427348804391}
   - component: {fileID: 1694576427348804392}
   - component: {fileID: 1694576427348804409}
+  - component: {fileID: 1999849720}
   m_Layer: 0
   m_Name: SuperBox_ff
   m_TagString: Player
@@ -9974,9 +9975,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba3851c04127607b9a21cfc2cfc37d72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  iLightRadii:
+  - 1
+  - 1.2
+  - 1.5
+  - 1.8
+  - 2
+  - 2.5
+  - 2.8
+  oLightRadii:
+  - 1.5
+  - 2
+  - 2.5
+  - 3
+  - 3.5
+  - 4
+  - 4.5
   deathPopPref: {fileID: 3971695797696523591, guid: 8e58c732d0d180deb800fd67f4350657,
     type: 3}
   camFollowPoint: {fileID: 1694576427124629005}
+  pointLight: {fileID: 1694576427595047644}
 --- !u!114 &1694576427348804390
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10015,6 +10033,8 @@ MonoBehaviour:
   ledgeClimbableLeft: 0
   ledgeClimbable: 0
   movingHoriz: 0
+  hurtDuration: 1
+  spriteRenderer: {fileID: 1694576427175778209}
   whatIsSolid:
     serializedVersion: 2
     m_Bits: 256
@@ -10056,6 +10076,7 @@ MonoBehaviour:
   maxHSpeed: 7
   maxVSpeed: 15
   moveList:
+  - {fileID: 1999849720}
   - {fileID: 1694576427348804384}
   - {fileID: 1694576427348804414}
   - {fileID: 1694576427348804391}
@@ -10138,6 +10159,22 @@ MonoBehaviour:
   maxHSpeed: 3
   standingCollider: {fileID: 1694576427151707949}
   crouchingCollider: {fileID: 1694576426436639742}
+--- !u!114 &1999849720
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1694576427348804408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3e4e4030e58847cf87f730afd42d1d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isActive: 0
+  knockbackForce: 4
+  knockupForce: 4
+  knockbackTime: 0.5
 --- !u!1 &1694576427411442734
 GameObject:
   m_ObjectHideFlags: 0
@@ -19734,8 +19771,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensity: 0
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
-  m_PointLightInnerRadius: 0
-  m_PointLightOuterRadius: 2.8675315
+  m_PointLightInnerRadius: 4
+  m_PointLightOuterRadius: 4
   m_PointLightDistance: 3
   m_PointLightQuality: 1
   m_ShapeLightParametricSides: 5
