@@ -181,7 +181,6 @@ public class SceneMaster : MonoBehaviour {
     public void ResetFFPower(){
         fPowerCount = fOwnedCount; 
         collectionGui.ResetAvailablePowerGUI(); 
-        Debug.Log("fPower reset: " + fPowerCount);
     }
 
 
