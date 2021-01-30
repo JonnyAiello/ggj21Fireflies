@@ -80,13 +80,13 @@ public class Checkpoint : MonoBehaviour{
 	// [[ ----- PURCHASE CHECKPOINT ----- ]]
 	private void PurchaseCheckpoint(){
 		// check if pc has enough ffs
-		if( SceneMaster.active.FOwnedCount >= 4 ){
+		if( SceneMaster.active.FOwnedCount >= 3 ){
 			// deduct the ffs
-			SceneMaster.active.UpdateFFCount( -4 );
+			SceneMaster.active.UpdateFFCount( -3 );
 			Checkpoint.OnCheckpointHit( gameObject.name );
 		}else{
 			// display how many ffs required
-			int ffreq = 4-SceneMaster.active.FOwnedCount;
+			int ffreq = 3-SceneMaster.active.FOwnedCount;
 			popupText.SetText(noticeString1 + ffreq + noticeString2);
 			popupText.PlayAnim();
 		}
