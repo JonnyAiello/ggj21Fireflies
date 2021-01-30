@@ -1070,7 +1070,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingFireflies: 4
-  currentCheckpoint: {fileID: 1308933186}
+  currentCheckpoint: {fileID: 1761941083}
   timerGuiPref: {fileID: 2173843584384548570, guid: e96c80efe3e6091fd820cc9fddb2a14b,
     type: 3}
   timeModPref: {fileID: 3046442987383048556, guid: 36910bd9a9444ca788c237f4a425d143,
@@ -11261,18 +11261,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1308933186 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5525721535467831279, guid: 9714502715f8062208c012ae8c9daecb,
-    type: 3}
-  m_PrefabInstance: {fileID: 96970556}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93b674c5d3d144e7b93d6396a8030dd3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1376385734
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12271,6 +12259,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1756635726}
   m_CullTransparentMesh: 0
+--- !u!114 &1761941083 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5525721535467831279, guid: 9714502715f8062208c012ae8c9daecb,
+    type: 3}
+  m_PrefabInstance: {fileID: 1803609064}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93b674c5d3d144e7b93d6396a8030dd3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1803609064
 PrefabInstance:
   m_ObjectHideFlags: 0

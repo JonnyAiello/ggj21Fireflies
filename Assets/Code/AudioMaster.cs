@@ -93,8 +93,10 @@ public class AudioMaster : MonoBehaviour{
 		if( trackPlaying == musicIntro ){
 			track2Q = musicLoop1; 
 		}else if( trackPlaying == musicLoop1 ){
-			track2Q = musicLoop2;
+			if( SceneMaster.active.DoorsUnlocked > 0 ){ track2Q = musicLoop2; }
+			else{ track2Q = musicLoop1; }
 		}else if( trackPlaying == musicLoop2 ){
+			if( SceneMaster.active.DoorsUnlocked > 1 ){ track2Q = musicLoop1; }
 			track2Q = musicLoop2;
 		}
 
