@@ -84,6 +84,10 @@ public class Checkpoint : MonoBehaviour{
 			// deduct the ffs
 			SceneMaster.active.UpdateFFCount( -3 );
 			Checkpoint.OnCheckpointHit( gameObject.name );
+			// reset ff pickups
+			foreach( FireflyPickup ff in FireflyPickup.MasterList ){
+				ff.SetActive(true); 
+			}
 		}else{
 			// display how many ffs required
 			int ffreq = 3-SceneMaster.active.FOwnedCount;

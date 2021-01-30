@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7282368299601155513}
-  - component: {fileID: 7282368299601155512}
+  - component: {fileID: 4449582550578980683}
   m_Layer: 0
   m_Name: Firefly_Pickup
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7282368299601155512
+--- !u!114 &4449582550578980683
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,7 +41,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7282368299601155511}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2039b432d0cc4af08f8b5591aac58c0, type: 3}
+  m_Script: {fileID: 11500000, guid: 4e8fa41e4cb78d581b72d6502265455e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   angleInc: 0.045
@@ -132,7 +132,7 @@ GameObject:
   - component: {fileID: 7282368301412678425}
   - component: {fileID: 7282368301412678422}
   - component: {fileID: 7341937872386647766}
-  - component: {fileID: 7282368301412678423}
+  - component: {fileID: 3704516352875756200}
   m_Layer: 0
   m_Name: Firefly_Sprite
   m_TagString: Untagged
@@ -247,7 +247,7 @@ Animation:
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
   m_CullingType: 0
---- !u!114 &7282368301412678423
+--- !u!114 &3704516352875756200
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -256,7 +256,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7282368301412678421}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 78358d566004a8400b1a165e9ce6564c, type: 3}
+  m_Script: {fileID: 11500000, guid: ab5b40ff80488b8cf9cecc845c4b7b38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverScript: {fileID: 7282368299601155512}
+  ffPickup: {fileID: 4449582550578980683}
