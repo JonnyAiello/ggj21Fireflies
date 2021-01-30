@@ -37,7 +37,7 @@ public class Move_Jump : MoveBehavior {
 		Jumping_EscapeVelocity, 
 		Jumping_ButtonHeld,
 		Jumping_ButtonReleased,
-        Jumping_WallJump,
+        // Jumping_WallJump,
         JumpBuffer, 
 		Freefall
 	}
@@ -122,13 +122,7 @@ public class Move_Jump : MoveBehavior {
                 }else if( ffAvailable && pcInput.JumpButton ){
                     jState = State.Jumping_DJ_Liftoff; 
                     // Debug.Log("DJ Liftoff");
-                }else if( pcState.Walled && pcInput.JumpButton ){
-                    jState = State.Jumping_WallJump; 
                 }
-                break;
-
-            case State.Jumping_WallJump:
-                jState = State.Jumping_ButtonHeld; 
                 break;
             
             // must release State before next State begins
@@ -170,8 +164,7 @@ public class Move_Jump : MoveBehavior {
         if( jState == State.Jumping_Liftoff
             || jState == State.Jumping_EscapeVelocity
             || jState == State.Jumping_ButtonHeld
-            || jState == State.Jumping_ButtonReleased
-            || jState == State.Jumping_WallJump ){
+            || jState == State.Jumping_ButtonReleased ){
 
             isActive = true; 
         }else{ isActive = false; }
@@ -190,7 +183,6 @@ public class Move_Jump : MoveBehavior {
     // [[ ----- AFFECTS FORCE ----- ]]
     public override bool AffectsForce(){
         if( jState == State.Jumping_Liftoff
-            || jState == State.Jumping_WallJump
             || jState == State.Jumping_DJ_Liftoff ){
 
             return true; 
@@ -210,12 +202,12 @@ public class Move_Jump : MoveBehavior {
             vForce = jumpForce; 
         }
 
-        // if wall-jumping
+        /*// if wall-jumping
         if( jState == State.Jumping_WallJump ){
             vForce = wallJumpForce;
             if( pcState.WalledLeft ){ hForce += 200; }
             else{ hForce += -200; }
-        }
+        }*/
 
         return new Vector2(hForce, vForce); 
     } 

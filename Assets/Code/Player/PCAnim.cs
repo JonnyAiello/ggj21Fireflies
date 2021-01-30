@@ -277,7 +277,7 @@ public class PCAnim : MonoBehaviour {
                         ResetWallslideEffects();
     				// go to jump
     				}else if( !mWallslide.IsActive
-    					|| mJump.JState == Move_Jump.State.Jumping_WallJump ){
+    					/*|| mJump.JState == Move_Jump.State.Jumping_WallJump*/ ){
     					transition = true;
     					process = false;  
     					anim.SetBool("ToJump", true); 
