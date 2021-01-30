@@ -19,11 +19,12 @@ public class FireflyPickup : MonoBehaviour {
 
 	// [[ ----- AWAKE ----- ]]
 	private void Awake(){
-		MasterList.Add(this);
+		// MasterList.Add(this);
 	}
 
     // Start is called before the first frame update
     void Start(){
+    	MasterList.Add(this);
         radius = maxRadius; 
         growRadius = false;
         SetActive( true );

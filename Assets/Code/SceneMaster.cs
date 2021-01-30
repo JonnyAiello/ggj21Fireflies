@@ -20,7 +20,7 @@ public class SceneMaster : MonoBehaviour {
 	private float timeUpdateTick = 0.5f;
 	private float gameTime; 
 	private float updateTimer;
-    private float doorsUnlocked;
+    private int doorsUnlocked;
 
     // Firefly Variables
     private int fOwnedCount = 0; 
@@ -42,6 +42,7 @@ public class SceneMaster : MonoBehaviour {
     public float GameTime { get{return gameTime;} }	
     public int FOwnedCount { get{return fOwnedCount;} }
     public int FPowerCount { get{return fPowerCount;} }
+    public int DoorsUnlocked { get{return doorsUnlocked;} }
 
     // [[ ----- ON ENABLE ----- ]]
     private void OnEnable(){
@@ -104,6 +105,9 @@ public class SceneMaster : MonoBehaviour {
 
         // unlock previously unlocked doors
         UpdateDoors();
+
+        // reset fireflies master list
+        FireflyPickup.MasterList.Clear();
 
         // catch missing checkpoint error
         if( currentCheckpoint == null ){ 
