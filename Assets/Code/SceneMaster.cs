@@ -20,6 +20,7 @@ public class SceneMaster : MonoBehaviour {
 	private float timeUpdateTick = 0.5f;
 	private float gameTime; 
 	private float updateTimer;
+    private float doorsUnlocked;
 
     // Firefly Variables
     private int fOwnedCount = 0; 
@@ -100,6 +101,9 @@ public class SceneMaster : MonoBehaviour {
 
         // reset collected fireflies
         UpdateFFCount( (fOwnedCount * -1) + startingFireflies ); 
+
+        // unlock previously unlocked doors
+        UpdateDoors();
 
         // catch missing checkpoint error
         if( currentCheckpoint == null ){ 
@@ -183,5 +187,19 @@ public class SceneMaster : MonoBehaviour {
         collectionGui.ResetAvailablePowerGUI(); 
     }
 
+    // [[ ----- UNLOCK DOOR ----- ]]
+    public void UnlockDoor(){
+        doorsUnlocked += 1; 
+        if( doorsUnlocked > 2 ){ doorsUnlocked = 2; }
+        UpdateDoors();
+    }
 
+    // [[ ----- UPDATE DOORS ----- ]]
+    public void UpdateDoors(){
+        GameObject[] doors = GameObject.FindGameObjectsWithTag("Door"); 
+        for( int i = 0; i < doors.Length; i++ ){
+            if( i < doorsUnlocked ){ Destroy(doors[i]); }
+        }
+
+    }
 }

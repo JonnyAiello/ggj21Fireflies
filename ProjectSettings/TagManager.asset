@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Canvas
   - CheckpointContainer
+  - Door
   layers:
   - Default
   - TransparentFX

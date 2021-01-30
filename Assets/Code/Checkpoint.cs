@@ -81,6 +81,7 @@ public class Checkpoint : MonoBehaviour{
 	private void PurchaseCheckpoint(){
 		// check if pc has enough ffs
 		if( SceneMaster.active.FOwnedCount >= 3 ){
+			// PURCHASE CHECKPOINT
 			// deduct the ffs
 			SceneMaster.active.UpdateFFCount( -3 );
 			Checkpoint.OnCheckpointHit( gameObject.name );
@@ -88,6 +89,8 @@ public class Checkpoint : MonoBehaviour{
 			foreach( FireflyPickup ff in FireflyPickup.MasterList ){
 				ff.SetActive(true); 
 			}
+			// Unlock door
+			SceneMaster.active.UnlockDoor();
 		}else{
 			// display how many ffs required
 			int ffreq = 3-SceneMaster.active.FOwnedCount;
