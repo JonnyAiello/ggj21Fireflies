@@ -10,7 +10,8 @@ public class Checkpoint : MonoBehaviour{
 	// Variables
 	private bool isCurrCheckpoint;
 	private bool isUnlocked; 
-	private string noticeString1 = " Fireflies \n Required";
+	private string noticeString1 = "+";
+	private string noticeString2 = " Fireflies \n Required";
 
 	// Reference Variables
 	private GameObject activeSprite; 
@@ -86,9 +87,8 @@ public class Checkpoint : MonoBehaviour{
 		}else{
 			// display how many ffs required
 			int ffreq = 4-SceneMaster.active.FOwnedCount;
-			popupText.SetText(ffreq + noticeString1);
+			popupText.SetText(noticeString1 + ffreq + noticeString2);
 			popupText.PlayAnim();
-			Debug.Log("FIREFLIES NEEDED: " + (4-SceneMaster.active.FOwnedCount));
 		}
 	}
     

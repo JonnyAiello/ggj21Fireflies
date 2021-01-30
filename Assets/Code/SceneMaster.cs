@@ -13,6 +13,7 @@ public class SceneMaster : MonoBehaviour {
 
 	// Variables
     public static SceneMaster active; 
+    public int startingFireflies; 
     private string levelID; 
 	private bool gameStart; 
     private bool pauseGame; 
@@ -98,7 +99,7 @@ public class SceneMaster : MonoBehaviour {
         collectionGui.SetGUI(fOwnedCount);
 
         // reset collected fireflies
-        UpdateFFCount( fOwnedCount * -1 ); 
+        UpdateFFCount( (fOwnedCount * -1) + startingFireflies ); 
 
         // catch missing checkpoint error
         if( currentCheckpoint == null ){ 
