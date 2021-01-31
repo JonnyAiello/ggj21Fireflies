@@ -191,7 +191,7 @@ public class AudioMaster : MonoBehaviour{
 				break;
 			
 			case FXType.Death:
-				duckTime = 3.25f;
+				duckTime = 2.75f;
 				audioC.PlayOneShot( deathFx ); 
 				break;
 			

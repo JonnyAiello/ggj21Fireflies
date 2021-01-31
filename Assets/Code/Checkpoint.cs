@@ -11,8 +11,8 @@ public class Checkpoint : MonoBehaviour{
 	// Variables
 	private bool isCurrCheckpoint;
 	private bool isUnlocked; 
-	private string noticeString1 = "+";
-	private string noticeString2 = " Fireflies \n Required";
+	private string noticeString1 = "Need ";
+	private string noticeString2 = " more \n fireflies";
 
 	// Reference Variables
 	private GameObject activeSprite; 

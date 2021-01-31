@@ -1493,8 +1493,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f312b23472bcb9f59c269bfdd784344, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingFireflies: 1
-  currentCheckpoint: {fileID: 1421503143}
+  startingFireflies: 2
+  currentCheckpoint: {fileID: 870077038}
   timerGuiPref: {fileID: 2173843584384548570, guid: e96c80efe3e6091fd820cc9fddb2a14b,
     type: 3}
   timeModPref: {fileID: 3046442987383048556, guid: 36910bd9a9444ca788c237f4a425d143,
@@ -1610,7 +1610,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   musicVol: 0.3
-  musicDuckVol: 0.1
+  musicDuckVol: 0.15
   audioA: {fileID: 222910495}
   audioB: {fileID: 222910497}
   audioC: {fileID: 222910498}
@@ -44538,6 +44538,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 858072372}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &870077038 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5525721535467831279, guid: 9714502715f8062208c012ae8c9daecb,
+    type: 3}
+  m_PrefabInstance: {fileID: 1803609064}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93b674c5d3d144e7b93d6396a8030dd3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &876086395
 GameObject:
   m_ObjectHideFlags: 0
@@ -46859,7 +46871,7 @@ PrefabInstance:
     - target: {fileID: 6818661603773578135, guid: 9714502715f8062208c012ae8c9daecb,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8663697026993011179, guid: 9714502715f8062208c012ae8c9daecb,
         type: 3}
@@ -46924,18 +46936,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1421503141}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1421503143 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5525721535467831279, guid: 9714502715f8062208c012ae8c9daecb,
-    type: 3}
-  m_PrefabInstance: {fileID: 1421503141}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93b674c5d3d144e7b93d6396a8030dd3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1448296388 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2805570363007771369, guid: bd27012fcf4b8a3748585d2ce17e9c44,
