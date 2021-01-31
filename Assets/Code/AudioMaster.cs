@@ -138,7 +138,6 @@ public class AudioMaster : MonoBehaviour{
 			case FXType.Jump:
 				int j = Mathf.Clamp(jumpFx.Length, 1, _num) - 1;
 				audioC.PlayOneShot(jumpFx[j]);
-				Debug.Log("Playing " + jumpFx[j]);
 				break;
 			
 			case FXType.Pickup:

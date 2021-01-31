@@ -63,6 +63,9 @@ public class Checkpoint : MonoBehaviour{
 				Debug.Log("Checkpoint Hit: " + gameObject.name);
 				PurchaseCheckpoint();
 			}
+		
+		}else if( !isCurrCheckpoint && isUnlocked ){
+			Checkpoint.OnCheckpointHit( gameObject.name );
 		}
 	}
 
@@ -85,6 +88,7 @@ public class Checkpoint : MonoBehaviour{
 			AudioMaster.active.SoundEffect(AudioMaster.FXType.Checkpoint, 0); 
 			// deduct the ffs
 			SceneMaster.active.UpdateFFCount( -3 );
+			// Make active checkpoint
 			Checkpoint.OnCheckpointHit( gameObject.name );
 			// reset ff pickups
 			foreach( FireflyPickup ff in FireflyPickup.MasterList ){
