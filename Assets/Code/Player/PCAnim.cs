@@ -301,7 +301,7 @@ public class PCAnim : MonoBehaviour {
     				process = true; 
     				anim.SetBool("ToWallslide", false);
     				// flip sprite
-    				if( pcState.WalledLeft 
+    				/*if( pcState.WalledLeft 
     					&& spriteRenderer.transform.localScale.x > 0 ){
 
     					spriteRenderer.flipX = true; 
@@ -311,7 +311,7 @@ public class PCAnim : MonoBehaviour {
                         spriteRenderer.flipX = false; 
                         wallSlideRightEffect.gameObject.SetActive(true); 
                         // wallSlideRightEffect.Play();
-                    }
+                    }*/
     			}else if( process ){                    
     				// go to dash
     				// if( mDash.DState == Move_Dash.State.Move ){
@@ -321,7 +321,13 @@ public class PCAnim : MonoBehaviour {
     				// 	aState = State.BoxDash; 
         //                 ResetWallslideEffects();
     				// go to idle
-    				if( pcState.Grounded ){
+    				if( pcState.Grounded && mWalk.IsActive ){
+    					transition = true;
+    					process = false;  
+    					anim.SetBool("ToWalk", true); 
+    					aState = State.BoxWalk; 
+                        ResetWallslideEffects();
+    				}else if( pcState.Grounded ){
     					transition = true;
     					process = false;  
     					anim.SetBool("ToIdle", true); 

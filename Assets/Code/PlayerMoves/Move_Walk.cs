@@ -14,6 +14,7 @@ public class Move_Walk : MoveBehavior {
     private float maxH; 
   
 	// Reference Variables
+    public Transform foxSprite;
 	private PCInput pcInput; 
 	private PCState pcState;
     private PCMove pcMove;  
@@ -38,10 +39,19 @@ public class Move_Walk : MoveBehavior {
 
             isActive = true; 
             pcState.MoveWalk = true; 
+
+            // Flip Sprite
+            if( pcInput.LeftButton ){
+                if( foxSprite.localScale.x > 0 ){ foxSprite.localScale = new Vector2(-0.5f, 0.5f); } 
+            }
+            else if( pcInput.RightButton ){
+                if( foxSprite.localScale.x < 0 ){ foxSprite.localScale = new Vector2(0.5f, 0.5f); }
+            }
+
         }else{
             isActive = false; 
             pcState.MoveWalk = false; 
-        }
+        }   
     }
 
     public override bool AffectsForce(){ return isActive; }
