@@ -15,6 +15,7 @@ public class AudioMaster : MonoBehaviour{
 	// private bool playingA;
 	private AudioSource currentlyPlaying;
 	private bool queueLock; 
+	private int loop2Count; 
 
 	// Test
 	private double testLength = 4; 
@@ -24,7 +25,12 @@ public class AudioMaster : MonoBehaviour{
 	public AudioSource audioB;
 	public AudioSource audioC; // for sound effects
 	public AudioClip musicIntro;
-	public AudioClip musicLoop1;
+	public AudioClip musicLoop1pt1;
+	public AudioClip musicLoop1pt2;
+	public AudioClip musicLoop1pt3;
+	public AudioClip musicLoop1pt4;
+	public AudioClip musicLoop1pt5;
+	public AudioClip musicLoop1pt6;
 	public AudioClip musicLoop2;
 	public AudioClip deathFx;
 	public AudioClip checkpointFx;
@@ -52,6 +58,7 @@ public class AudioMaster : MonoBehaviour{
 		currentlyPlaying = audioA;
 		aTrack = musicIntro; 
 		audioA.Play(); 
+		loop2Count = 0; 
 	}
 
 	// [[ ----- UPDATE ----- ]]
@@ -104,6 +111,44 @@ public class AudioMaster : MonoBehaviour{
 
 		// determine what comes next based on game state
 		if( trackPlaying == musicIntro ){
+			track2Q = musicLoop1pt1;
+
+		}else if( trackPlaying == musicLoop1pt1 ){
+			if( SceneMaster.active.DoorsUnlocked > 0 ){ track2Q = musicLoop2; }
+			else{ track2Q = musicLoop1pt2; }
+
+		}else if( trackPlaying == musicLoop1pt2 ){
+			if( SceneMaster.active.DoorsUnlocked > 0 ){ track2Q = musicLoop2; }
+			else{ track2Q = musicLoop1pt3;}
+
+		}else if( trackPlaying == musicLoop1pt3 ){
+			if( SceneMaster.active.DoorsUnlocked > 0 ){ track2Q = musicLoop2; }
+			else{ track2Q = musicLoop1pt5;}
+
+		/*}else if( trackPlaying == musicLoop1pt4 ){
+			track2Q = musicLoop1pt5;*/
+
+		}else if( trackPlaying == musicLoop1pt5 ){
+			if( SceneMaster.active.DoorsUnlocked > 0 ){ track2Q = musicLoop2; }
+			else{ track2Q = musicLoop1pt6;}
+		
+		}else if( trackPlaying == musicLoop1pt6 ){
+			if( SceneMaster.active.DoorsUnlocked > 0 ){ track2Q = musicLoop2; }
+			else{ track2Q = musicLoop2;}
+		
+		}else if( trackPlaying == musicLoop2 ){
+			if( loop2Count >= 2 ){ 
+				track2Q = musicLoop1pt2; 
+				loop2Count = 0; 
+			}
+			else{ 
+				track2Q = musicLoop2;
+				loop2Count++;
+			}
+		}
+
+/*
+		if( trackPlaying == musicIntro ){
 			track2Q = musicLoop1; 
 		}else if( trackPlaying == musicLoop1 ){
 			if( SceneMaster.active.DoorsUnlocked > 0 ){ track2Q = musicLoop2; }
@@ -112,7 +157,7 @@ public class AudioMaster : MonoBehaviour{
 			if( SceneMaster.active.DoorsUnlocked > 1 ){ track2Q = musicLoop1; }
 			track2Q = musicLoop2;
 		}
-
+*/
 		// add track to audio source
 		if( currentlyPlaying == audioA ){ bTrack = track2Q; }
 		else{ aTrack = track2Q; }
