@@ -7,6 +7,13 @@ public class PopupText : MonoBehaviour {
 
 	// Variables
 	public bool triggerZone;
+	public bool minFireflyTrigger;
+	public bool maxFireflyTrigger;
+	public bool singleFire;
+	public int minFirefly;
+	public int maxFirefly;
+
+	private bool singleLock;
 
 	// Reference Variables
 	public GameObject textMesh;
@@ -21,7 +28,10 @@ public class PopupText : MonoBehaviour {
 
 	// [[ ----- PLAY ANIM ----- ]]
 	public void PlayAnim(){
-		popupAnim.Play();
+		if( !singleLock ){
+			if( singleFire ){ singleLock = true; }
+			popupAnim.Play();
+		}
 	}
 
 	// [[ ----- SET TEXT ----- ]]
@@ -31,8 +41,12 @@ public class PopupText : MonoBehaviour {
 
 	// [[ ----- ON TRIGGER ENTER 2D ----- ]]
 	private void OnTriggerEnter2D( Collider2D _other ){
-		if( triggerZone && _other.tag == "Player" ){
-			PlayAnim();
+		if( _other.tag == "Player" && !singleLock ){
+			if( triggerZone && minFireflyTrigger ){
+				if( SceneMaster.active.FOwnedCount >= minFirefly ){ PlayAnim(); }
+			}else if( triggerZone && maxFireflyTrigger ){
+				if( SceneMaster.active.FOwnedCount <= maxFirefly ){ PlayAnim(); }
+			}else if( triggerZone ){ PlayAnim(); }
 		}
 	}
 }
