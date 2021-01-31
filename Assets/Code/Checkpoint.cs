@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Experimental.Rendering.Universal;
 
 // all checkpoint game objects require unique names 
 
@@ -15,8 +16,16 @@ public class Checkpoint : MonoBehaviour{
 
 	// Reference Variables
 	private GameObject activeSprite; 
+	private GameObject unlockedSprite; 
 	private GameObject inactiveSprite; 
+	public Light2D pointLight; 
 	public PopupText popupText;
+	public Color activeColor;
+	public Color unlockedColor;
+	public Color inactiveColor;
+	public float activeLightRng;
+	public float unlockedLightRng;
+	public float inactiveLightRng;
 
 	// Event setup
 	public delegate void UpdateCheckpointDel( string _cpName ); 
@@ -37,6 +46,7 @@ public class Checkpoint : MonoBehaviour{
 	private void Start(){
 		// set up sprite references
 		activeSprite = transform.Find("activeSprite").gameObject; 
+		unlockedSprite = transform.Find("unlockedSprite").gameObject; 
 		inactiveSprite = transform.Find("inactiveSprite").gameObject; 
 		if( SceneMaster.active.currentCheckpoint == this ){
 			// SetSpriteActive(true);
@@ -73,10 +83,22 @@ public class Checkpoint : MonoBehaviour{
 	private void SetSpriteActive( bool _true ){
 		if( _true ){
 			activeSprite.SetActive(true);
+			unlockedSprite.SetActive(false);
 			inactiveSprite.SetActive(false);
+			pointLight.color = activeColor;
+			pointLight.pointLightOuterRadius = activeLightRng; 
+		}else if( isUnlocked ){
+			activeSprite.SetActive(false);
+			unlockedSprite.SetActive(true);
+			inactiveSprite.SetActive(false); 
+			pointLight.color = unlockedColor;
+			pointLight.pointLightOuterRadius = unlockedLightRng;
 		}else{
 			activeSprite.SetActive(false);
+			unlockedSprite.SetActive(false);
 			inactiveSprite.SetActive(true); 
+			pointLight.color = inactiveColor;
+			pointLight.pointLightOuterRadius = inactiveLightRng;
 		}
 	}
 
