@@ -6,6 +6,8 @@ public class AudioMaster : MonoBehaviour{
 
 	// Variables
 	public static AudioMaster active;
+	public float musicVol;
+	public float musicDuckVol;
 	private double trackChangeTime;
 	private double trackQueueTime;
 	private AudioClip aTrack;
@@ -20,9 +22,22 @@ public class AudioMaster : MonoBehaviour{
 	// Reference Variables
 	public AudioSource audioA;
 	public AudioSource audioB;
+	public AudioSource audioC; // for sound effects
 	public AudioClip musicIntro;
 	public AudioClip musicLoop1;
 	public AudioClip musicLoop2;
+	public AudioClip deathFx;
+	public AudioClip checkpointFx;
+	public AudioClip[] jumpFx;
+	public AudioClip[] pickupFx;
+
+	// enum
+	public enum FXType{
+		Jump,
+		Pickup,
+		Death,
+		Checkpoint
+	}
 
 	// [[ ----- AWAKE ----- ]]
 	private void Awake(){
@@ -42,7 +57,7 @@ public class AudioMaster : MonoBehaviour{
 	// [[ ----- UPDATE ----- ]]
 	private void Update(){
 
-
+		// check to queue track
 		if( AudioSettings.dspTime > trackQueueTime && !queueLock ){
 			queueLock = true; 
 			QueueTrack(); 
@@ -70,11 +85,9 @@ public class AudioMaster : MonoBehaviour{
 				Debug.Log("Playing audio source A");
 			}
 		}
-		
 	}
 
-
-
+	// [[ ----- QUEUE TRACK ----- ]]
 	private void QueueTrack(){
 		AudioSource source2Q = null;
 		AudioClip track2Q = null;
@@ -106,6 +119,44 @@ public class AudioMaster : MonoBehaviour{
 		source2Q.clip = track2Q; 
 
 		Debug.Log("Queued to play next: " + track2Q);
+	}
+
+	private void Unduck(){
+		audioA.volume = musicVol; 
+		audioB.volume = musicVol; 
+	}
+
+// -----------------------------------------------------------------------------
+// Public Methods
+
+
+	// [[ ----- SOUND EFFECT ----- ]]
+	public void SoundEffect( FXType _type, int _num ){
+		float duckTime = 0;
+
+		switch( _type ){
+			case FXType.Jump:
+				Debug.Log("switch: _type = " + FXType.Jump);
+				break;
+			case FXType.Pickup:
+				Debug.Log("switch: _type = " + FXType.Pickup);
+				break;
+			case FXType.Death:
+				duckTime = 3.25f;
+				audioC.PlayOneShot( deathFx ); 
+				break;
+			case FXType.Checkpoint:
+				duckTime = 3f;
+				audioC.PlayOneShot( checkpointFx ); 
+				break;
+		}
+
+		// duck audio
+		if( duckTime > 0 ){
+			audioA.volume = musicDuckVol; 
+			audioB.volume = musicDuckVol; 
+			Invoke( "Unduck", duckTime ); 
+		}
 	}
 
 }

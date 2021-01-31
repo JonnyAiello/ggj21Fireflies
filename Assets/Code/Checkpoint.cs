@@ -82,6 +82,7 @@ public class Checkpoint : MonoBehaviour{
 		// check if pc has enough ffs
 		if( SceneMaster.active.FOwnedCount >= 3 ){
 			// PURCHASE CHECKPOINT
+			AudioMaster.active.SoundEffect(AudioMaster.FXType.Checkpoint, 0); 
 			// deduct the ffs
 			SceneMaster.active.UpdateFFCount( -3 );
 			Checkpoint.OnCheckpointHit( gameObject.name );

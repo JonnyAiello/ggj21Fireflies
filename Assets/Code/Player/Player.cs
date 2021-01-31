@@ -87,6 +87,7 @@ public class Player : MonoBehaviour {
         if( !dead ){
             dead = true; 
             SceneMaster.active.PauseTimer(true); 
+            AudioMaster.active.SoundEffect( AudioMaster.FXType.Death, 0 );
             pcAnim.spriteRenderer.gameObject.SetActive(false); 
             Destroy(camFollowPoint.gameObject);
             // play dead particle effect
