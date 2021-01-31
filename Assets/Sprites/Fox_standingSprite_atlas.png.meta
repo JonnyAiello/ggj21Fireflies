@@ -1,0 +1,344 @@
+fileFormatVersion: 2
+guid: ddbe9cbde41c65e359055baaf06e03c0
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -2102261746420989968
+    second: Fox_standingSprite_atlas_0
+  - first:
+      213: -1801979529026140120
+    second: Fox_standingSprite_atlas_1
+  - first:
+      213: 2668528928338294118
+    second: Fox_standingSprite_atlas_2
+  - first:
+      213: 7430100313399383611
+    second: Fox_standingSprite_atlas_3
+  - first:
+      213: -517303374547301068
+    second: Fox_standingSprite_atlas_4
+  - first:
+      213: -2457941331881576285
+    second: Fox_standingSprite_atlas_5
+  - first:
+      213: -1503141068500394375
+    second: Fox_standingSprite_atlas_6
+  - first:
+      213: 3660000100049729943
+    second: Fox_standingSprite_atlas_7
+  - first:
+      213: 1905443086539269235
+    second: Fox_standingSprite_atlas_8
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Fox_standingSprite_atlas_0
+      rect:
+        serializedVersion: 2
+        x: 19
+        y: 113
+        width: 45
+        height: 89
+      alignment: 9
+      pivot: {x: 0.50810707, y: 0.25405318}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0ff3fa3741443d2e0800000000000000
+      internalID: -2102261746420989968
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fox_standingSprite_atlas_1
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 124
+        width: 98
+        height: 84
+      alignment: 9
+      pivot: {x: 0.38087478, y: 0.15255156}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8280fd76a251ef6e0800000000000000
+      internalID: -1801979529026140120
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fox_standingSprite_atlas_2
+      rect:
+        serializedVersion: 2
+        x: 212
+        y: 121
+        width: 51
+        height: 86
+      alignment: 9
+      pivot: {x: 0.33547285, y: 0.8139155}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 665357efbe4880520800000000000000
+      internalID: 2668528928338294118
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fox_standingSprite_atlas_3
+      rect:
+        serializedVersion: 2
+        x: 287
+        y: 120
+        width: 38
+        height: 86
+      alignment: 9
+      pivot: {x: 0.5, y: 0.83936805}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b3650b16ed40d1760800000000000000
+      internalID: 7430100313399383611
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fox_standingSprite_atlas_4
+      rect:
+        serializedVersion: 2
+        x: 351
+        y: 99
+        width: 79
+        height: 109
+      alignment: 9
+      pivot: {x: 0.46305636, y: 0.16530189}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 43d4ff6525b22d8f0800000000000000
+      internalID: -517303374547301068
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fox_standingSprite_atlas_5
+      rect:
+        serializedVersion: 2
+        x: 447
+        y: 128
+        width: 42
+        height: 75
+      alignment: 9
+      pivot: {x: 0.5173718, y: 0.90859926}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3a8b272a163a3edd0800000000000000
+      internalID: -2457941331881576285
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fox_standingSprite_atlas_6
+      rect:
+        serializedVersion: 2
+        x: 14
+        y: 27
+        width: 42
+        height: 71
+      alignment: 9
+      pivot: {x: 0.4652552, y: 0.26877534}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 97e9bb48925c32be0800000000000000
+      internalID: -1503141068500394375
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fox_standingSprite_atlas_7
+      rect:
+        serializedVersion: 2
+        x: 90
+        y: 18
+        width: 130
+        height: 100
+      alignment: 9
+      pivot: {x: 0.41581059, y: 0.5985015}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 799bb5113beeac230800000000000000
+      internalID: 3660000100049729943
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fox_standingSprite_atlas_8
+      rect:
+        serializedVersion: 2
+        x: 239
+        y: 5
+        width: 109
+        height: 91
+      alignment: 9
+      pivot: {x: 0.72424763, y: 0.48797297}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 374a5e8446e717a10800000000000000
+      internalID: 1905443086539269235
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
