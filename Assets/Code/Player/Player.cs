@@ -16,6 +16,8 @@ public class Player : MonoBehaviour {
 
     // Reference Variables
     public GameObject deathPopPref;
+    public GameObject foxSprite;
+    public Light2D globalLight;
     public Transform camFollowPoint;
     public Light2D pointLight;
     private PCState pcState; 
@@ -89,6 +91,8 @@ public class Player : MonoBehaviour {
             SceneMaster.active.PauseTimer(true); 
             AudioMaster.active.SoundEffect( AudioMaster.FXType.Death, 0 );
             pcAnim.spriteRenderer.gameObject.SetActive(false); 
+            foxSprite.SetActive(false);
+            globalLight.intensity = 0.3f;
             Destroy(camFollowPoint.gameObject);
             // play dead particle effect
             GameObject deathPop = (GameObject)Instantiate(

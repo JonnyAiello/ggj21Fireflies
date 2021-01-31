@@ -40275,6 +40275,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 2028203744}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &596722613 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 596722613, guid: 30289732b7a154f1987a8dfc1ab11157,
+    type: 3}
+  m_PrefabInstance: {fileID: 1694576427317295600}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &608054791
 GameObject:
   m_ObjectHideFlags: 0
@@ -54165,6 +54171,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1694576427348804415, guid: 30289732b7a154f1987a8dfc1ab11157,
+        type: 3}
+      propertyPath: foxSprite
+      value: 
+      objectReference: {fileID: 596722613}
+    - target: {fileID: 1694576427348804415, guid: 30289732b7a154f1987a8dfc1ab11157,
+        type: 3}
+      propertyPath: globalLight
+      value: 
+      objectReference: {fileID: 818262270}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 30289732b7a154f1987a8dfc1ab11157, type: 3}
 --- !u!1001 &2805570362506442959
