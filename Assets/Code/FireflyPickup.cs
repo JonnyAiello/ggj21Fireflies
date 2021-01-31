@@ -64,6 +64,8 @@ public class FireflyPickup : MonoBehaviour {
     // [[ ----- ON HIT ----- ]]
     public void OnHit(){
     	SceneMaster.active.UpdateFFCount( 1 ); 
+    	AudioMaster.active.SoundEffect(
+    		AudioMaster.FXType.Pickup, SceneMaster.active.FOwnedCount);
 		SetActive( false ); 
     }
 }

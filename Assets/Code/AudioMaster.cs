@@ -136,15 +136,21 @@ public class AudioMaster : MonoBehaviour{
 
 		switch( _type ){
 			case FXType.Jump:
-				Debug.Log("switch: _type = " + FXType.Jump);
+				int j = Mathf.Clamp(jumpFx.Length, 1, _num) - 1;
+				audioC.PlayOneShot(jumpFx[j]);
+				Debug.Log("Playing " + jumpFx[j]);
 				break;
+			
 			case FXType.Pickup:
-				Debug.Log("switch: _type = " + FXType.Pickup);
+				int f = Mathf.Clamp(pickupFx.Length, 1, _num) - 1;
+				audioC.PlayOneShot(pickupFx[f]);
 				break;
+			
 			case FXType.Death:
 				duckTime = 3.25f;
 				audioC.PlayOneShot( deathFx ); 
 				break;
+			
 			case FXType.Checkpoint:
 				duckTime = 3f;
 				audioC.PlayOneShot( checkpointFx ); 

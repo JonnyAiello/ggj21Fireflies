@@ -11,13 +11,14 @@ public class Move_Jump : MoveBehavior {
     [SerializeField] private float wallJumpForce = 16;
     [SerializeField] private float jumpReleaseLimit = 0.5f; // maximum upward speed once State button released
     [SerializeField] private float bufferWindow = 0.1f; 
-
      
     private float vForce; 
     private float hForce;  
     private float escapeTimer = 0f; 
 	private float escapeDelay = 0.1f; 
     private float bufferTimer; 
+
+    private int jumpCount;
 
     // Reference Variables
     private PCMove pcMove;
@@ -80,6 +81,7 @@ public class Move_Jump : MoveBehavior {
 
             case State.Landed_ButtonReleased:
                 ResetFFPower();
+                jumpCount = 0; 
                 if( !pcState.Grounded ){ 
                     jState = State.JumpBuffer;
                     bufferTimer = 0;  
@@ -89,11 +91,15 @@ public class Move_Jump : MoveBehavior {
                 break;
             
             case State.Jumping_Liftoff:
+                jumpCount += 1;
+                AudioMaster.active.SoundEffect(AudioMaster.FXType.Jump, jumpCount);
                 jState = State.Jumping_EscapeVelocity; 
                 break;
 
             case State.Jumping_DJ_Liftoff:
                 SpendFF();
+                jumpCount += 1;
+                AudioMaster.active.SoundEffect(AudioMaster.FXType.Jump, jumpCount);
                 jState = State.Jumping_EscapeVelocity; 
                 break;
 
