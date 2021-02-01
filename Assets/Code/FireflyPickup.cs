@@ -13,6 +13,7 @@ public class FireflyPickup : MonoBehaviour {
 	private float radius;
 	private float angle = 0;
 	private bool growRadius;
+	private bool swapDirection;
 
 	// Reference Variables
 	public Transform ffTrans;
@@ -22,13 +23,17 @@ public class FireflyPickup : MonoBehaviour {
 		// MasterList.Add(this);
 	}
 
-    // Start is called before the first frame update
+    // [[ ----- START ----- ]]
     void Start(){
     	MasterList.Add(this);
         radius = maxRadius; 
         growRadius = false;
         SetActive( true );
-        // ffTrans.GetComponent<Animation>().Play();
+        
+        // set random hover cycle
+        angle = Random.Range(0, 5);
+        swapDirection = (Random.value > 0.5f);
+        radius = Random.Range( 0.25f, 0.5f ); 
     }
     
 
@@ -48,7 +53,15 @@ public class FireflyPickup : MonoBehaviour {
 		 
 		    ffTrans.localPosition = new Vector2(x, y);
 		 
-		    angle += angleInc * Mathf.Rad2Deg * Time.deltaTime;        
+		 	// reset angles to keep numbers from getting astro
+		 	if( !swapDirection && angle > 20 ){ swapDirection = true; }
+		 	else if( swapDirection && angle < -20 ){ swapDirection = false; }
+
+		 	if( !swapDirection ){
+		    	angle += angleInc * Mathf.Rad2Deg * Time.deltaTime;        
+		    }else{
+		    	angle -= angleInc * Mathf.Rad2Deg * Time.deltaTime; 
+		    }
 		}
     }
 
