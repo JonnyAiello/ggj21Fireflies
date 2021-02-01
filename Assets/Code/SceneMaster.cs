@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI; 
 using UnityEngine.SceneManagement; 
+using UnityEngine.Experimental.Rendering.Universal;
 
 /*
 Because SceneMaster is persistent across loads, have it instantiate elements
@@ -28,7 +29,7 @@ public class SceneMaster : MonoBehaviour {
     private int fPowerCount;
 
 	// Reference Variables
-    public Checkpoint currentCheckpoint; 
+    public Checkpoint currentCheckpoint;
     public GameObject timerGuiPref;
     public GameObject timeModPref; 
 	private Text timerMinutes;
@@ -36,6 +37,7 @@ public class SceneMaster : MonoBehaviour {
 	private Transform canvasTrans; 
     public GameObject collectionGuiPref;
     private CollectionGUI collectionGui;
+    private Light2D globalLight;
 
     // Properties
     public string LevelID { get{return levelID;} }
@@ -94,6 +96,10 @@ public class SceneMaster : MonoBehaviour {
         timerSeconds = tgui.transform.Find("Text_Seconds").GetComponent<Text>(); 
         if( pauseGame ){ pauseGame = false; }
         ProcessTimer(); // only here to prevent a timer of 0:00 after respawn
+
+        // turn out the world lights
+        globalLight = GameObject.FindWithTag("GlobalLight").GetComponent<Light2D>();
+        globalLight.intensity = 0;
 
         // create and bind collection GUI
         GameObject cgui = (GameObject)Instantiate(collectionGuiPref, canvasTrans); 
