@@ -1089,7 +1089,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &121857829
 RectTransform:
   m_ObjectHideFlags: 0
@@ -49172,7 +49172,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &519169006
 RectTransform:
   m_ObjectHideFlags: 0
@@ -49829,7 +49829,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &608054792
 RectTransform:
   m_ObjectHideFlags: 0
@@ -55222,6 +55222,8 @@ MonoBehaviour:
   player: {fileID: 554031860}
   camFocusPoint: {fileID: 719738676}
   gameOverTxt: {fileID: 1214793798}
+  timeToBeatTxt: {fileID: 519169005}
+  beatTimeTxt: {fileID: 1653354443}
   yourTimeTxt: {fileID: 2116363831}
   timeStampTxt: {fileID: 121857830}
   creditsPanel: {fileID: 1188210831}
@@ -56131,7 +56133,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1188210832
 RectTransform:
   m_ObjectHideFlags: 0
@@ -56305,7 +56307,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1214793799
 RectTransform:
   m_ObjectHideFlags: 0
@@ -57055,7 +57057,7 @@ PrefabInstance:
     - target: {fileID: 6818661603773578135, guid: 9714502715f8062208c012ae8c9daecb,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8663697026993011179, guid: 9714502715f8062208c012ae8c9daecb,
         type: 3}
@@ -57112,7 +57114,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1337852327318266653, guid: 9714502715f8062208c012ae8c9daecb, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 9714502715f8062208c012ae8c9daecb, type: 3}
 --- !u!4 &1421503142 stripped
 Transform:
@@ -58155,7 +58158,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1653354444
 RectTransform:
   m_ObjectHideFlags: 0
@@ -64850,7 +64853,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2116363832
 RectTransform:
   m_ObjectHideFlags: 0

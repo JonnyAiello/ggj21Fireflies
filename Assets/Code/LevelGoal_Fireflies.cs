@@ -14,6 +14,8 @@ public class LevelGoal_Fireflies : MonoBehaviour {
 	public Player player;
 	public Transform camFocusPoint;
 	public GameObject gameOverTxt;
+	public GameObject timeToBeatTxt;
+	public GameObject beatTimeTxt;
 	public GameObject yourTimeTxt;
 	public Text timeStampTxt;
 	public GameObject creditsPanel;
@@ -49,6 +51,10 @@ public class LevelGoal_Fireflies : MonoBehaviour {
 		gameOverTxt.SetActive(true);
 
 		yield return new WaitForSeconds(1.25f);
+		timeToBeatTxt.SetActive(true);
+		beatTimeTxt.SetActive(true);
+
+		yield return new WaitForSeconds(1f);
 		yourTimeTxt.SetActive(true);
 		timeStampTxt.gameObject.SetActive(true);
 
