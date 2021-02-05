@@ -14,6 +14,7 @@ public class PCState : MonoBehaviour {
 	[SerializeField] private bool ledgeClimbableLeft;
 	[SerializeField] private bool ledgeClimbable;	
 	[SerializeField] private bool movingHoriz;
+	[SerializeField] private bool downwardFall;
 
 	// Properties
 	public bool Grounded { get{return grounded;} }
@@ -31,6 +32,7 @@ public class PCState : MonoBehaviour {
 	public bool MoveRun { get; set; }
 	public bool MoveWalk { get; set; }
 	public bool Hurt { get; set; }
+	public bool DownwardFall { get{return downwardFall;} }
 
 	// Variables
 	public float hurtDuration = 1f;
@@ -152,6 +154,10 @@ public class PCState : MonoBehaviour {
 		// set ledge climbable
 		if( ledgeClimbableLeft || ledgeClimbableRight ){ ledgeClimbable = true; }
 		else{ ledgeClimbable = false; }
+
+		// set downward fall
+		if( rb2d.velocity.y < -0.5 ){ downwardFall = true; }
+		else{ downwardFall = false; }
 	}
 
 // -----------------------------------------------------------------------------

@@ -34,6 +34,7 @@ public class PCAnim : MonoBehaviour {
     	BoxWalk,
         BoxRun,
     	BoxJump,
+    	BoxFall,
     	BoxLand,
     	BoxWallslide,
     	BoxDash,
@@ -95,6 +96,12 @@ public class PCAnim : MonoBehaviour {
 	    					process = false;  
 	    					anim.SetBool("ToWallslide", true);
 	    					aState = State.BoxWallslide; 
+	    				// go to fall
+                        }else if( pcState.DownwardFall ){
+	    					transition = true;
+	    					process = false;  
+	    					anim.SetBool("ToDownfall", true); 
+	    					aState = State.BoxFall;
 	    				// go to jump
     					}else{
     						transition = true;
@@ -133,6 +140,12 @@ public class PCAnim : MonoBehaviour {
                             process = false;  
                             anim.SetBool("ToWallslide", true);
                             aState = State.BoxWallslide; 
+                        // go to fall
+                        }else if( pcState.DownwardFall ){
+	    					transition = true;
+	    					process = false;  
+	    					anim.SetBool("ToDownfall", true); 
+	    					aState = State.BoxFall; 
                         // go to jump
                         }else{
                             transition = true;
@@ -228,12 +241,57 @@ public class PCAnim : MonoBehaviour {
     					process = false; 
     					anim.SetBool("ToWallslide", true);
     					aState = State.BoxWallslide;
+    				// to fall
+    				}else if( !pcState.Grounded && pcState.DownwardFall ){
+    					transition = true;
+    					process = false;  
+    					anim.SetBool("ToDownfall", true); 
+    					aState = State.BoxFall; 
     				// go to walk
     				}else if( pcState.Grounded  && mWalk.IsActive ){
     					transition = true;
     					process = false;  
     					anim.SetBool("ToWalk", true); 
     					aState = State.BoxWalk; 
+    				// go to land
+    				}else if( pcState.Grounded 
+    					|| mJump.JState == Move_Jump.State.Landed_ButtonHeld
+    					|| mJump.JState == Move_Jump.State.Landed_ButtonReleased){
+
+    					transition = true;
+    					process = false;  
+    					anim.SetBool("ToLand", true); 
+    					aState = State.BoxLand; 
+    				}
+    			}   			
+    			break;
+
+
+    		case State.BoxFall:
+    			if( transition 
+    				&& anim.GetCurrentAnimatorStateInfo(0).IsName("BoxFall")){
+    				
+    				transition = false; 
+    				process = true; 
+    				anim.SetBool("ToDownfall", false);
+    			}else if( process ){
+    				if( mWallslide.IsActive ){
+    					transition = true; 
+    					process = false; 
+    					anim.SetBool("ToWallslide", true);
+    					aState = State.BoxWallslide;
+    				// go to walk
+    				}else if( pcState.Grounded  && mWalk.IsActive ){
+    					transition = true;
+    					process = false;  
+    					anim.SetBool("ToWalk", true); 
+    					aState = State.BoxWalk; 
+    				// go to jump
+    				}else if( mJump.IsActive && !pcState.DownwardFall ){
+    					transition = true;
+    					process = false;  
+    					anim.SetBool("ToJump", true);
+    					aState = State.BoxJump; 
     				// go to land
     				}else if( pcState.Grounded 
     					|| mJump.JState == Move_Jump.State.Landed_ButtonHeld
@@ -333,6 +391,15 @@ public class PCAnim : MonoBehaviour {
     					anim.SetBool("ToIdle", true); 
     					aState = State.BoxIdle; 
                         ResetWallslideEffects();
+                    // go to fall
+                    }else if( !pcState.Grounded 
+                    	&& !mWallslide.IsActive 
+                    	&& pcState.DownwardFall ){
+    					
+    					transition = true;
+    					process = false;  
+    					anim.SetBool("ToDownfall", true); 
+    					aState = State.BoxFall;
     				// go to jump
     				}else if( !mWallslide.IsActive
     					/*|| mJump.JState == Move_Jump.State.Jumping_WallJump*/ ){
