@@ -15,6 +15,7 @@ public class Move_Walk : MoveBehavior {
   
 	// Reference Variables
     public Transform foxSprite;
+    public Transform foxSpriteWallSlide;
 	private PCInput pcInput; 
 	private PCState pcState;
     private PCMove pcMove;  
@@ -42,10 +43,16 @@ public class Move_Walk : MoveBehavior {
 
             // Flip Sprite
             if( pcInput.LeftButton ){
-                if( foxSprite.localScale.x > 0 ){ foxSprite.localScale = new Vector2(-0.5f, 0.5f); } 
+                if( foxSprite.localScale.x > 0 ){ 
+                    foxSprite.localScale = new Vector2(-0.5f, 0.5f); 
+                    foxSpriteWallSlide.localScale = new Vector2(0.5f, 0.5f); 
+                } 
             }
             else if( pcInput.RightButton ){
-                if( foxSprite.localScale.x < 0 ){ foxSprite.localScale = new Vector2(0.5f, 0.5f); }
+                if( foxSprite.localScale.x < 0 ){ 
+                    foxSprite.localScale = new Vector2(0.5f, 0.5f);
+                    foxSpriteWallSlide.localScale = new Vector2(-0.5f, 0.5f); 
+                }
             }
 
         }else{
